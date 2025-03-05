@@ -1,8 +1,11 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { isAuthenticated } from "./utils/Authentication";
+import { Outlet } from "react-router-dom";
 
 const PublicRoute = () => {
-  return isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  return (
+    <div>
+      <Outlet />
+    </div>
+  );
 };
 
 export default PublicRoute;

@@ -1,16 +1,20 @@
 .navbar {
     background: #222;
     color: #fff;
-    padding: 15px;
-    height: 50px;
+    padding: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
 }
 
-.navRight {
-    justify-self: flex-end;
+.navbar a {
+    text-decoration: none;
+    color: #fff;
 }
-  
-.navRight .icon {
-    font-size: 22px;
-    margin-left: 15px;
-    cursor: pointer;
+
+.navbar .active {
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    background-color: #fff;
+    color: #000;
 }
