@@ -163,7 +163,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AuthContextProvider>
-      <ToastContainer />
+      <ToastContainer theme="colored" style={{ zIndex: 9999 }} />
       <RouterProvider router={router} />
     </AuthContextProvider>
   );

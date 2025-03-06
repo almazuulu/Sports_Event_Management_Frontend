@@ -23,6 +23,7 @@ export const SPORT_EVENTS_STATUS = [
 export const ROLE_LABELS = {
   admin: "Administrator",
   team_captain: "Team Captain",
+  team_manager: "Team Manager",
   scorekeeper: "Scorekeeper",
   public: "Public User",
 };

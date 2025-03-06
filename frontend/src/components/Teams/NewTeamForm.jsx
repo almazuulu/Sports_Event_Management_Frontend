@@ -4,6 +4,7 @@ import classes from "./NewTeamForm.module.css";
 
 // icons
 import { CgCloseO } from "react-icons/cg";
+import { toast } from "react-toastify";
 
 function NewTeamForm({ initialData, onSubmit, loading, onClose }) {
   const [formData, setFormData] = useState({
@@ -64,6 +65,11 @@ function NewTeamForm({ initialData, onSubmit, loading, onClose }) {
           contact_email: "",
           contact_phone: "",
         });
+      }
+
+      if (!res.success) {
+        const message = Object.values(res.data)[0];
+        toast.error(message);
       }
     } catch (error) {
       console.error("Error Response:", error);

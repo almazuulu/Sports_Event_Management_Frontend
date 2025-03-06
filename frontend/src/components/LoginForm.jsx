@@ -27,7 +27,7 @@ function LoginForm() {
 
     const res = await login(credentials);
     if (!res.success) {
-      setErrorMessage(res.data.detail);
+      setErrorMessage(res.data.error);
     }
   };
 

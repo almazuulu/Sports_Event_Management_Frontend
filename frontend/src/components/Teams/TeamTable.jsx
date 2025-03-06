@@ -19,10 +19,10 @@ function TeamTable({ teams = [], onRefetchData }) {
             <tr>
               <th>No</th>
               <th>Team Name</th>
-              <th>Team Logo</th>
               <th>Team Captain</th>
-              {/* <th>Contact Info</th>
-              <th>Status</th> */}
+              <th>Team Manager</th>
+              <th>Contact Info</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -31,29 +31,20 @@ function TeamTable({ teams = [], onRefetchData }) {
               <tr key={team.id}>
                 <td>{index + 1}</td>
                 <td>{team.name}</td>
+                <td>{team.team_captain ?? 'N/A'}</td>
                 <td>
-                  <img
-                    src={"https://placehold.co/50"}
-                    alt="Team Logo"
-                    width="50"
-                    height="50"
-                  />
+                  {team.manager.first_name} {team.manager.last_name}
                 </td>
-                <td>
-                  {team.captain_name
-                    ? team.captain_name
-                    : `${team.captain.first_name} ${team.captain.last_name}`}
-                </td>
-                {/* <td style={{ textAlign: "left" }}>
+                <td style={{ textAlign: "left" }}>
                   <p>Email: {team.contact_email}</p>
                   <p>Phone: {team.contact_phone}</p>
                 </td>
                 <td>
                   <TeamStatusChip status={team.status} />
-                </td> */}
+                </td>
                 <td>
                   <ViewButton onClick={() => handleView(team.id)}>
-                    View Details
+                    View
                   </ViewButton>
                 </td>
               </tr>
