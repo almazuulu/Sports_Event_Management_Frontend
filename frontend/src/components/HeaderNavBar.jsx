@@ -97,7 +97,7 @@ export default HeaderNavBar;
 const NAVIGATIONS = [
   {
     title: "Home",
-    path: "/home",
+    path: "/",
   },
   {
     title: "Fixtures",
