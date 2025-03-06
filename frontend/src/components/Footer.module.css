@@ -1,0 +1,12 @@
+.footerContainer {
+    background-color: #222;
+    color: #fff;
+    padding: 1.5rem;
+    font-size: small;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footerContainer p {
+    margin: 0;
+}

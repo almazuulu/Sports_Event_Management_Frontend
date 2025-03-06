@@ -16,11 +16,14 @@ import MyTeamsPage from "./pages/MyTeams";
 import TeamDetailsPage from "./pages/TeamDetails";
 import PlayersPage from "./pages/Players";
 import PlayerDetailsPage from "./pages/PlayerDetails";
-import DashboardPage from "./pages/Dashboard/Dashboard";
 import ManageEventsPage from "./pages/Admin-panels/ManageEvents";
 import ManageSportEventsPage from "./pages/Admin-panels/ManageSportEvents";
 import ManageTeamRegistrationsPage from "./pages/Admin-panels/ManageTeamRegistrations";
-import { AuthProvider } from "./context/AuthContext";
+import DashboardPage from "./pages/PublicDashboard/Dashboard";
+import FixturesPage from "./pages/PublicDashboard/Fixtures";
+import ResultsPage from "./pages/PublicDashboard/Results";
+import StatsPage from "./pages/PublicDashboard/Stats";
+import { AuthContextProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
@@ -31,21 +34,36 @@ const router = createBrowserRouter([
       {
         element: <PublicRoute />,
         children: [
-          { index: true, element: <DashboardPage /> },
           {
-            path: "events",
-            element: <EventsPage />,
+            path: "login",
+            element: <LoginPage />,
+          },
+          { path: "home", element: <DashboardPage /> },
+          {
+            path: "fixtures",
+            element: <FixturesPage />,
+          },
+          {
+            path: "results",
+            element: <ResultsPage />,
+          },
+          {
+            path: "stats",
+            element: <StatsPage />,
           },
           {
             path: "teams",
             element: <TeamsPage />,
+          },
+          {
+            path: "players",
+            element: <PlayersPage />,
           },
         ],
       },
       // {
       //   element: <ProtectedRoute />,
       //   children: [
-      //     // { path: "dashboard", element: <DashboardPage /> },
       //     {
       //       path: "events",
       //       element: <PageRootLayout />,
@@ -142,10 +160,10 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
-    <AuthProvider>
+    <AuthContextProvider>
       <ToastContainer />
       <RouterProvider router={router} />
-    </AuthProvider>
+    </AuthContextProvider>
   );
 }
 

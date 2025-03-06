@@ -18,7 +18,7 @@ function TeamsPage() {
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch teams");
       if (response.ok) {
-        console.log(data)
+        console.log(data);
         setTeams(data);
       }
     } catch (error) {
@@ -37,7 +37,7 @@ function TeamsPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={"All Teams"} />
+        <Header title={"Live Scores"} />
         <div className={classes.card}>
           <TeamTable teams={teams} />
         </div>

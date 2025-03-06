@@ -1,13 +1,12 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { createContext, useState, useEffect } from "react";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext({
+  user: {},
+  login: () => {},
+  logout: () => {},
+});
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
-
-export function AuthProvider({ children }) {
+export function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export function AuthProvider({ children }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          login: credentials.username,
+          login: credentials.email,
           email: credentials.email,
           password: credentials.password,
         }),
@@ -32,33 +31,36 @@ export function AuthProvider({ children }) {
       const data = await response.json();
 
       if (!response.ok) {
-        toast.error("Login failed!");
+        return { success: false, data };
       }
 
-      if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("user", JSON.stringify(data));
 
-        const getProfileUser = await fetch(
-          "http://127.0.0.1:8000/api/users/profile/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${data.access}`,
-            },
-          }
-        );
-
-        const profileData = await getProfileUser.json();
-
-        if (getProfileUser.ok) {
-          const existingUser = JSON.parselocalStorage.getItem("user");
-          const updatedUser = { ...existingUser, ...profileData };
-          localStorage.setItem("user", JSON.stringify(updatedUser));
+      const getProfileUser = await fetch(
+        "http://127.0.0.1:8000/api/users/profile/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.access}`,
+          },
         }
+      );
+
+      const profileData = await getProfileUser.json();
+
+      if (getProfileUser.ok) {
+        const existingUser = JSON.parse(localStorage.getItem("user"));
+        const updatedUser = { ...existingUser, ...profileData };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        window.location.reload();
+        return { success: true };
       }
+
+      return { success: false };
     } catch (error) {
       console.error("Login error:", error);
+      return { success: false };
     }
   };
 
@@ -67,9 +69,15 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("user");
   };
 
+  const authCtx = {
+    user,
+    login,
+    logout,
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authCtx}>{children}</AuthContext.Provider>
   );
 }
+
+export default AuthContext;
