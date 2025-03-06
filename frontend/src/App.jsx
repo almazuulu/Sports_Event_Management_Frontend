@@ -25,6 +25,7 @@ import ResultsPage from "./pages/PublicDashboard/Results";
 import StatsPage from "./pages/PublicDashboard/Stats";
 import { AuthContextProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
+import SettingsPage from "./pages/Settings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -34,11 +35,15 @@ const router = createBrowserRouter([
       {
         element: <PublicRoute />,
         children: [
+          { index: true, element: <DashboardPage /> },
           {
             path: "login",
             element: <LoginPage />,
           },
-          { path: "home", element: <DashboardPage /> },
+          {
+            path: "logout",
+            element: <LogoutPage />,
+          },
           {
             path: "fixtures",
             element: <FixturesPage />,
@@ -58,6 +63,15 @@ const router = createBrowserRouter([
           {
             path: "players",
             element: <PlayersPage />,
+          },
+        ],
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "settings",
+            element: <SettingsPage />,
           },
         ],
       },
@@ -117,18 +131,6 @@ const router = createBrowserRouter([
       //       path: "admin-panel",
       //       element: <ProtectedRoute allowedRoles={["admin"]} />,
       //       children: [
-      //         {
-      //           path: "manage-users",
-      //           element: <UsersPage />,
-      //         },
-      //         {
-      //           path: "manage-events",
-      //           element: <ManageEventsPage />,
-      //         },
-      //         {
-      //           path: "manage-sport-events",
-      //           element: <ManageSportEventsPage />,
-      //         },
       //         {
       //           path: "manage-team-registrations",
       //           element: <ManageTeamRegistrationsPage />,

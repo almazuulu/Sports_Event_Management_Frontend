@@ -9,7 +9,7 @@ const StatusChip = ({ status }) => {
       color: "white",
       border: "1px solid #388E3C",
     },
-    draft: {
+    registration: {
       background: "linear-gradient(to right, #FF9800, #FFB74D)",
       color: "white",
       border: "1px solid #E65100",
@@ -23,6 +23,11 @@ const StatusChip = ({ status }) => {
       background: "linear-gradient(to right, #E53935, #EF5350)",
       color: "white",
       border: "1px solid #B71C1C",
+    },
+    draft: {
+      background: "linear-gradient(to right, #9E9E9E, #BDBDBD)",
+      color: "white",
+      border: "1px solid #616161",
     },
     default: {
       background: "linear-gradient(to right, #9E9E9E, #BDBDBD)",
@@ -60,7 +65,8 @@ const StatusChip = ({ status }) => {
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
       }}
     >
-      {status.charAt(0).toUpperCase() + status.slice(1)} {/* Capitalize first letter */}
+      {status.charAt(0).toUpperCase() + status.slice(1)}{" "}
+      {/* Capitalize first letter */}
     </span>
   );
 };

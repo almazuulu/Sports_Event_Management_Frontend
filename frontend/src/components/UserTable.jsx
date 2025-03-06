@@ -110,7 +110,7 @@ function UserTable({ userList = [], onRefetchData, roles = [] }) {
 
   return (
     <>
-      <div>
+      <div className="tableContainer">
         <table>
           <thead>
             <tr>

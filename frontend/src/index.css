@@ -67,12 +67,16 @@ ul {
 }
 
 /* TABLE CSS */
+.tableContainer {
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
   background: white;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 table thead {

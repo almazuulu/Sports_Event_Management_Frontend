@@ -51,4 +51,11 @@
   .button:hover {
     background: #000;
   }
+
+.errorMessage {
+  color: red;
+  width: 100%;
+  font-size: small;
+  text-align: center;
+}
   

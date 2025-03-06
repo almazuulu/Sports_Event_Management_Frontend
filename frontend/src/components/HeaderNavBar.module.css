@@ -3,7 +3,7 @@
     top: 0;
     z-index: 99999;
     box-shadow: 0px 1px 4px 0px rgba(0,0,0, 0.15);
-    z-index: 99999;
+    z-index: 1;
 }
 
 .navContainerMain {
@@ -41,6 +41,7 @@
 .navbar .active, .navbar a:hover {
     padding: 0.5rem 1rem;
     border-bottom: 2px solid #222;
+    font-weight: bold;
 }
 
 .loginContainer {
@@ -90,4 +91,41 @@
 
 .dropdownMenu {
     position: absolute;
+    right: 0;
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0, 0.15);
+    gap: 10px;
+}
+
+.dropdownMenu a{
+    text-decoration: none;
+    color: #000;
+    padding: 5px;
+}
+
+.dropdownMenu .active {
+    background-color: #222;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.dropdownMenu span {
+    display: flex;
+    align-items: center;
+}
+
+.dropdownMenu span .icon{
+    font-size: large;
+    margin-right: 10px;
+}
+
+.dropdownMenu a:hover{
+    background-color: #222;
+    color: #fff;
+    border-radius: 5px;
 }
