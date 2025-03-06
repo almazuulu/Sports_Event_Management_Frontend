@@ -127,7 +127,7 @@ function SportEventTable({ sportEventList = [], onRefetchData }) {
 
   return (
     <>
-      <div>
+      <div className="tableContainer">
         <table>
           <thead>
             <tr>
@@ -139,7 +139,7 @@ function SportEventTable({ sportEventList = [], onRefetchData }) {
               <th>End Date</th>
               <th>Status</th>
               {role === "admin" &&
-                window.location.pathname.includes("/admin-panel/") && (
+                window.location.pathname.includes("/settings") && (
                   <th>Action</th>
                 )}
             </tr>
@@ -157,7 +157,7 @@ function SportEventTable({ sportEventList = [], onRefetchData }) {
                   <StatusChip status={data.status} />
                 </td>
                 {role === "admin" &&
-                  window.location.pathname.includes("/admin-panel/") && (
+                  window.location.pathname.includes("/settings") && (
                     <td style={{ width: "200px" }}>
                       <ViewButton
                         style={{ marginRight: "10px" }}

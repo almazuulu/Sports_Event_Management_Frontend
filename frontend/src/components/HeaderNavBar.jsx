@@ -8,6 +8,8 @@ import AuthContext from "../context/AuthContext";
 
 // icons
 import { CgProfile } from "react-icons/cg";
+import { CiLogout } from "react-icons/ci";
+import { MdOutlineSettings } from "react-icons/md";
 
 const HeaderNavBar = () => {
   const { user } = useContext(AuthContext);
@@ -41,7 +43,32 @@ const HeaderNavBar = () => {
             </button>
 
             {isDropdownOpen && (
-              <div className={classes.dropdownMenu}>dropdown</div>
+              <div className={classes.dropdownMenu}>
+                <NavLink
+                  to={"/settings"}
+                  onClick={() => setIsDropdownOpen(false)}
+                  className={({ isActive }) =>
+                    `${isActive ? classes.active : ""}`
+                  }
+                >
+                  <span>
+                    <MdOutlineSettings className={classes.icon} />
+                    Settings
+                  </span>
+                </NavLink>
+                <NavLink
+                  to={"/logout"}
+                  onClick={() => setIsDropdownOpen(false)}
+                  className={({ isActive }) =>
+                    `${isActive ? classes.active : ""}`
+                  }
+                >
+                  <span>
+                    <CiLogout className={classes.icon} />
+                    Logout
+                  </span>
+                </NavLink>
+              </div>
             )}
           </section>
         )}

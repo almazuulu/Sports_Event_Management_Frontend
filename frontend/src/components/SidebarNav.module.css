@@ -10,25 +10,9 @@
   padding: 1rem;
 }
 
-.side
-
 .logo {
   width: 40px;
   height: 40px;
-}
-
-.titleSection {
-  margin-bottom: 12px;
-  border-bottom: 1px solid #fff;
-  padding-bottom: 12px;
-}
-
-.titleContent {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px;
-  justify-content: center;
 }
 
 .navigationSection {

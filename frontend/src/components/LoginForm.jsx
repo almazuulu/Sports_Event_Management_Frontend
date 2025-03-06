@@ -7,6 +7,7 @@ function LoginForm() {
   const { login } = useContext(AuthContext);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const emailChange = (event) => {
     setUserEmail(event.target.value);
@@ -16,7 +17,7 @@ function LoginForm() {
     setUserPassword(event.target.value);
   };
 
-  const loginHandler = (event) => {
+  const loginHandler = async (event) => {
     event.preventDefault();
     const credentials = {
       username: userEmail,
@@ -24,7 +25,10 @@ function LoginForm() {
       password: userPassword,
     };
 
-    login(credentials);
+    const res = await login(credentials);
+    if (!res.success) {
+      setErrorMessage(res.data.detail);
+    }
   };
 
   return (
@@ -53,6 +57,11 @@ function LoginForm() {
             autoComplete="off"
           />
         </div>
+        {errorMessage && (
+          <p className={classes.errorMessage}>
+            <span>{errorMessage}</span>
+          </p>
+        )}
         <div className={classes.inputSubmit}>
           <button type="submit" className={classes.button}>
             Sign In

@@ -7,7 +7,7 @@ const PublicRoute = () => {
   const location = useLocation();
 
   if (user && location.pathname === "/login") {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

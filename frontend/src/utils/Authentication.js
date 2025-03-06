@@ -1,15 +1,19 @@
 export const isAuthenticated = () => {
-    return localStorage.getItem('accessToken') !== null
-}
+  let userData = JSON.parse(localStorage.getItem("user"));
+  return userData !== null;
+};
 
 export const getAccessToken = () => {
-    return localStorage.getItem('accessToken')
-}
+  let userData = JSON.parse(localStorage.getItem("user"));
+  return userData.access;
+};
 
 export const getRefreshToken = () => {
-    return localStorage.getItem('refreshToken')
-}
+  let userData = JSON.parse(localStorage.getItem("user"));
+  return userData.refresh;
+};
 
 export const getUserRole = () => {
-    return localStorage.getItem('userRole')
-}
+  let userData = JSON.parse(localStorage.getItem("user"));
+  return userData.role;
+};
