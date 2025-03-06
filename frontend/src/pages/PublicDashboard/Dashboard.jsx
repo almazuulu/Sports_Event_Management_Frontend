@@ -202,7 +202,7 @@ const DashboardPage = () => {
               <td>{team.start_datetime}</td>
                 <td>{team.location}</td>
                   <td>{team.status}</td>
-                    <td>{team.count}</td>
+                    <td>{team.teams_count}</td>
                     
             
            
