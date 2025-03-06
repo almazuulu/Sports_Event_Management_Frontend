@@ -1,14 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useContext, useState } from "react";
 
 import classes from "./LoginForm.module.css";
-import { saveTokens } from "../utils/FetchClient";
+import AuthContext from "../context/AuthContext";
 
 function LoginForm() {
-  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const emailChange = (event) => {
     setUserEmail(event.target.value);
@@ -18,57 +17,24 @@ function LoginForm() {
     setUserPassword(event.target.value);
   };
 
-  const formHandler = async (event) => {
+  const loginHandler = async (event) => {
     event.preventDefault();
+    const credentials = {
+      username: userEmail,
+      email: userEmail,
+      password: userPassword,
+    };
 
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/token/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          login: userEmail,
-          email: userEmail,
-          password: userPassword,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        saveTokens(data.access, data.refresh);
-
-        const profileResponse = await fetch(
-          "http://127.0.0.1:8000/api/users/profile/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${data.access}`,
-            },
-          }
-        );
-
-        const profileData = await profileResponse.json();
-
-        if (profileResponse.ok) {
-          localStorage.setItem("userRole", profileData.role);
-          navigate("dashboard");
-        }
-      } else {
-        toast.error("Invalid credentials! Please, try again.");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Something went wrong. Please try again later.");
+    const res = await login(credentials);
+    if (!res.success) {
+      setErrorMessage(res.data.detail);
     }
   };
+
   return (
     <section className={classes.container}>
-      <h1 className={classes.loginHeader}>Sport Event Management System</h1>
-
-      <form onSubmit={formHandler}>
+      <h1 className={classes.loginHeader}>Sign In</h1>
+      <form onSubmit={loginHandler}>
         <div>
           <input
             type="email"
@@ -91,9 +57,15 @@ function LoginForm() {
             autoComplete="off"
           />
         </div>
+        {errorMessage && (
+          <p className={classes.errorMessage}>
+            <span>{errorMessage}</span>
+          </p>
+        )}
         <div className={classes.inputSubmit}>
-          <button className={classes.button}></button>
-          <label>Sign In</label>
+          <button type="submit" className={classes.button}>
+            Sign In
+          </button>
         </div>
       </form>
     </section>

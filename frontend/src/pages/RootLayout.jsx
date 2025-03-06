@@ -1,22 +1,16 @@
-import { Outlet, useLocation } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-
-import MainNavigation from "../components/MainNavigation";
+import { Outlet } from "react-router-dom";
 import HeaderNavBar from "../components/HeaderNavBar";
+import Footer from "../components/Footer";
 
 function RootLayout() {
-  const location = useLocation();
-  const isLoginPage = location.pathname === "/";
-
   return (
-    <div style={{ display: "flex" }}>
-      <ToastContainer />
-      {!isLoginPage && <MainNavigation />}
-      <main style={{ width: "100%" }}>
-        {!isLoginPage && <HeaderNavBar />}
+    <>
+      <HeaderNavBar />
+      <main style={{minHeight: '100vh'}}>
         <Outlet />
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
 

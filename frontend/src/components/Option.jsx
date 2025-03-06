@@ -1,22 +1,19 @@
-import { NavLink } from "react-router-dom";
+import classes from "./Option.module.css";
 
-import classes from './Option.module.css'
-
-function Option({ Icon, title, path, notifs }) {
+function Option({ Icon, title, path, notifs, activeTab, ...props }) {
   return (
-    <NavLink
-      to={path}
-      className={({ isActive }) =>
-        `${isActive ? classes.optionSelected : ""} ${classes.option}`
-      }
-      end
+    <button
+      className={`${classes.option} ${
+        activeTab === path ? classes.optionSelected : ""
+      }`}
+      {...props}
     >
       <div className={classes.iconContainer}>
         <Icon />
       </div>
       <span className={classes.optionText}>{title}</span>
       {/* {notifs && <span className={classes.notification}>{notifs}</span>} */}
-    </NavLink>
+    </button>
   );
 }
 

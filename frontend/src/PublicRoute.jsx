@@ -1,8 +1,16 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { isAuthenticated } from "./utils/Authentication";
+import { useContext } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import AuthContext from "./context/AuthContext";
 
 const PublicRoute = () => {
-  return isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  const { user } = useContext(AuthContext);
+  const location = useLocation();
+
+  if (user && location.pathname === "/login") {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PublicRoute;

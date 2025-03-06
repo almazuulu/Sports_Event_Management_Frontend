@@ -84,22 +84,25 @@ function ManageEventsPage() {
     fetchEventsData();
   }, []);
 
+  if (isFetching) return <LoadingScreen />;
+
   return (
     <>
       <div className={classes.container}>
         <Header title={"Manage Events"} />
-        {isFetching ? (
-          <LoadingScreen />
-        ) : (
-          <div className={classes.card}>
-            <section className={classes.sectionButton}>
-              <CreateButton onClick={handleCreateNew}>
-                Create New Event
-              </CreateButton>
-            </section>
+        <div className={classes.card}>
+          <section className={classes.sectionButton}>
+            <CreateButton onClick={handleCreateNew}>
+              Create New Event
+            </CreateButton>
+          </section>
+          {eventList.length === 0 && (
+            <p style={{ color: "#000", textAlign: 'center' }}>No events available at the moment.</p>
+          )}
+          {eventList.length > 0 && (
             <EventTable eventList={eventList} onRefetchData={fetchEventsData} />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <Modal

@@ -31,8 +31,10 @@ function MyProfilePage() {
 
       if (!response.ok) toast.error("Failed to update user");
 
-      handleEdit();
-      toast.success("User updated successfully!");
+      if (response.ok) {
+        handleEdit();
+        toast.success("User updated successfully!");
+      }
     } catch (error) {
       console.error("Error updating user", error);
     } finally {
@@ -73,10 +75,7 @@ function MyProfilePage() {
 
   useEffect(() => {
     fetchUser();
-    if (role === "admin") {
-      fetchUserRoles();
-    }
-  }, [role]);
+  }, []);
 
   useEffect(() => {
     if (role === "admin") {

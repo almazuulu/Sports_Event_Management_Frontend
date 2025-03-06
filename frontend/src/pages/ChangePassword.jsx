@@ -40,7 +40,6 @@ function ChangePasswordPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        console.log(data);
         toast.error(
           <div>
             <strong>Failed to submit form:</strong>

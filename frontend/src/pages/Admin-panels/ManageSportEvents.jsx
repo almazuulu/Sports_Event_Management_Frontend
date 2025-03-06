@@ -99,35 +99,36 @@ function ManageSportEventsPage() {
     }
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     fetchEventsList();
     fetchSportEvents();
   }, []);
 
+  if (loading) return <LoadingScreen />;
+
   return (
     <>
       <div className={classes.container}>
         <Header title={"Manage Sport Events"} />
-        {loading ? (
-          <LoadingScreen />
-        ) : (
-          <div className={classes.card}>
-            {role === "admin" && (
-              <section className={classes.sectionButton}>
-                <CreateButton
-                  title={"Create New Sport Event"}
-                  onClick={handleCreateNew}
-                />
-              </section>
-            )}
+        <div className={classes.card}>
+          <section className={classes.sectionButton}>
+            <CreateButton
+              title={"Create New Sport Event"}
+              onClick={handleCreateNew}
+            />
+          </section>
+          {sportEventList.length === 0 && (
+            <p style={{ color: "#000", textAlign: "center" }}>
+              No sport events available at the moment.
+            </p>
+          )}
+          {sportEventList.length > 0 && (
             <SportEventTable
               sportEventList={sportEventList}
               onRefetchData={fetchSportEvents}
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <Modal

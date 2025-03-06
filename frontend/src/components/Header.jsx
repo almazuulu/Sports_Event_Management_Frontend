@@ -9,9 +9,7 @@ function Header({ title, enableBack = false }) {
   return (
     <header className={classes.header}>
       {enableBack && <NormalButton onClick={() => navigate("..")} />}
-      <section className={classes.section}>
-        <h1 className={classes.title}>{title}</h1>
-      </section>
+      <h1 className={classes.title}>{title}</h1>
     </header>
   );
 }

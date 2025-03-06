@@ -121,7 +121,7 @@ function EventTable({ eventList = [], onRefetchData }) {
               <th>End Date</th>
               <th>Status</th>
               {role === "admin" &&
-                window.location.pathname.includes("/admin-panel/") && (
+                window.location.pathname.includes("/settings") && (
                   <th>Action</th>
                 )}
             </tr>
@@ -142,7 +142,7 @@ function EventTable({ eventList = [], onRefetchData }) {
                   <StatusChip status={event.status} />
                 </td>
                 {role === "admin" &&
-                  window.location.pathname.includes("/admin-panel/") && (
+                  window.location.pathname.includes("/settings") && (
                     <td style={{ width: "200px" }}>
                       <ViewButton
                         style={{ marginRight: "10px" }}
