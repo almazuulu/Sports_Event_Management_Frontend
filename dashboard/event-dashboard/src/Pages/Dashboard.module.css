@@ -1,121 +1,225 @@
-/* 🌟 GLOBAL STYLES */
-html, body {
+/* Global Reset */
+* {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
-  font-family: 'Arial', sans-serif;
-  background: radial-gradient(circle at center, #121826, #0d141f);
-}
-
-.dashboard {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  padding: 15px;
-}
-
-/* 🌟 GRID LAYOUT */
-.gridContainer {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  grid-template-columns: 2fr 1fr 2fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 15px;
-  padding: 15px;
   box-sizing: border-box;
 }
 
-/* 🌟 BASE CARD STYLE */
-.card {
-  background: linear-gradient(145deg, #1a2333, #0d141f);
-  padding: 20px;
-  border-radius: 16px;
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Container */
+.container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.4);
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
+  height: 100vh;
+  width: 100vw;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* 🌟 ASYMMETRIC CARD SIZES */
-.largeHeader {
-  grid-column: span 4;
-  grid-row: span 1;
-}
-
-.wideCard {
-  grid-column: span 2;
-  grid-row: span 1;
-}
-
-.tallCard {
-  grid-column: span 2;
-  grid-row: span 1;
-}
-
-/* 🌟 TABLE STYLES */
-.table {
+/* Premier League Styled Top Navbar */
+.navbar {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.table th, .table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  text-align: left;
+  background: #37003c; /* Dark Premier League Purple */
   color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
-.table th {
-  background-color: rgba(255, 255, 255, 0.1);
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Arial Black', sans-serif;
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navItem {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  position: relative;
+}
+
+.navItem:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fdda24;
+  transform: scale(1.05);
+}
+
+/* White Sub-navbar */
+.subNavbar {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  /* padding: 0.5rem 0; */
+  position: fixed;
+  top: 60px; /* Below main navbar */
+  left: 0;
+  z-index: 999;
+  border-bottom: 3px solid #00b8f5; /* Blue bar under it */
+}
+
+.subNavLinks {
+  display: flex;
+  gap: 5rem;
+  list-style: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.subNavItem {
+  cursor: pointer;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.subNavItem:hover {
+  background-color: #f4f4f4;
+}
+
+/* Blue Background Banner */
+.banner {
+  margin-top: 100px;
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(to right, #0098db, #1e2ad2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
   font-weight: bold;
 }
 
-.table tr:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+/* Main Content */
+.mainContent {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  margin-top: 100px;
 }
 
-/* 🌟 ICONS */
-.icon {
-  font-size: 35px;
-  margin-bottom: 10px;
-  color: #4caf50;
+/* Footer */
+.footer {
+  width: 100%;
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+.subNavbar {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
+  position: fixed;
+  top: 60px; /* Below main navbar */
+  left: 0;
+  z-index: 999;
+  border-bottom: 3px solid #00b8f5; /* Blue bar under it */
 }
 
-/* 🌟 STATUS COLORS */
-.statusOngoing {
-  color: #ff9800;
+/* Modern and Stylish Sub Navbar */
+.subNavbar {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  z-index: 999;
+  border-bottom: 4px solid #00b8f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* 🌟 CIRCULAR PROGRESS */
-.progressContainer {
-  width: 80px;
-  height: 80px;
-  margin: 10px 0;
+/* Simple and Clean Sub Navbar (Premier League Style) */
+.subNavbar {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.8rem 0;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  z-index: 999;
+  border-bottom: 3px solid #00b8f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 🌟 RESPONSIVE DESIGN */
-@media (max-width: 1200px) {
-  .gridContainer {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Sub Navbar Links */
+.subNavLinks {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
 }
 
-@media (max-width: 900px) {
-  .gridContainer {
-    grid-template-columns: repeat(1, 1fr);
-  }
+.subNavItem {
+  cursor: pointer;
+  /* padding: 0.5rem 1rem; */
+  position: relative;
+  font-family: Arial, sans-serif;
+  transition: color 0.3s ease-in-out;
+}
+
+.subNavItem:hover {
+  color: #00b8f5;
+}
+
+/* Active Tab Indicator */
+.subNavItem.active {
+  color: #00b8f5;
+}
+
+.subNavItem.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 50%;
+  height: 3px;
+  background-color: #00b8f5;
+  transform: translateX(-50%);
+  border-radius: 2px;
 }

@@ -22,6 +22,7 @@ import ManageSportEventsPage from "./pages/Admin-panels/ManageSportEvents";
 import ManageTeamRegistrationsPage from "./pages/Admin-panels/ManageTeamRegistrations";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
+import ResultsPage from "../../frontend/src/pages/Dashboard/Results";
 
 const router = createBrowserRouter([
   {
@@ -31,11 +32,19 @@ const router = createBrowserRouter([
       {
         element: <PublicRoute />,
         children: [
-          { index: true, element: <DashboardPage /> },
+          { index: true, element: <DashboardPage />,
+            // children: [
+            //   { path: "results", element: <ResultsPage /> },
+            //   { path: "stats", element: <StatsPage /> },
+            //   { path: "tables", element: <TablesPage /> },
+            // ],
+           },
+          
           {
             path: "events",
             element: <EventsPage />,
           },
+          { path: "results", element: <ResultsPage /> },
           {
             path: "teams",
             element: <TeamsPage />,
