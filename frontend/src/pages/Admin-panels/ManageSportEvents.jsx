@@ -3,16 +3,15 @@ import { toast } from "react-toastify";
 
 import classes from "./ManageSportEvents.module.css";
 import Header from "../../components/Header";
-import { getUserRole } from "../../utils/Authentication";
 import CreateButton from "../../components/Button/CreateButton";
 import SportEventTable from "../../components/SportEvents/SportEventTable";
 import Modal from "../../components/UI/Modal";
 import SportEventForm from "../../components/SportEvents/SportEventForm";
 import LoadingScreen from "../../components/UI/LoadingScreen";
 import { fetchWithAuth } from "../../utils/FetchClient";
+import SportEventsFilter from "../../components/SportEvents/SportEventsFilter";
 
 function ManageSportEventsPage() {
-  const role = getUserRole();
   const [sportEventList, setSportEventList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,10 +61,14 @@ function ManageSportEventsPage() {
     }
   };
 
-  const fetchSportEvents = async () => {
+  const fetchSportEvents = async (filters = {}) => {
     try {
       setLoading(true);
-      const response = await fetchWithAuth("/api/events/sport-events/");
+      const queryParams = new URLSearchParams(filters).toString();
+      const url = `/api/events/sport-events/${
+        queryParams ? `?${queryParams}` : ""
+      }`;
+      const response = await fetchWithAuth(url);
 
       const data = await response.json();
 
@@ -104,7 +107,6 @@ function ManageSportEventsPage() {
     fetchSportEvents();
   }, []);
 
-  if (loading) return <LoadingScreen />;
 
   return (
     <>
@@ -117,6 +119,7 @@ function ManageSportEventsPage() {
               onClick={handleCreateNew}
             />
           </section>
+          <SportEventsFilter onFilter={fetchSportEvents} />
           {sportEventList.length === 0 && (
             <p style={{ color: "#000", textAlign: "center" }}>
               No sport events available at the moment.

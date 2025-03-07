@@ -11,6 +11,14 @@ export const SPORTS_TYPE_OPTIONS = [
   { id: "other", name: "Other" },
 ];
 
+export const EVENTS_STATUS = [
+  { id: "draft", name: "Draft" },
+  { id: "registration", name: "Registration" },
+  { id: "active", name: "Active" },
+  { id: "completed", name: "Completed" },
+  { id: "cancelled", name: "Cancelled" },
+];
+
 export const SPORT_EVENTS_STATUS = [
   { id: "scheduled", name: "Scheduled" },
   { id: "registration", name: "Registration Open" },
@@ -29,7 +37,7 @@ export const ROLE_LABELS = {
 };
 
 export const TEAM_STATUS_OPTIONS = [
-  { id: 'active', name: 'Active'},
-  { id: 'inactive', name: 'Inactive'},
-  { id: 'suspended', name: 'Suspended'},
-]
+  { id: "active", name: "Active" },
+  { id: "inactive", name: "Inactive" },
+  { id: "suspended", name: "Suspended" },
+];

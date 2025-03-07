@@ -13,7 +13,7 @@ function TeamTable({ teams = [], onRefetchData }) {
 
   return (
     <>
-      <div>
+      <div className="tableContainer">
         <table>
           <thead>
             <tr>
@@ -31,7 +31,7 @@ function TeamTable({ teams = [], onRefetchData }) {
               <tr key={team.id}>
                 <td>{index + 1}</td>
                 <td>{team.name}</td>
-                <td>{team.team_captain ?? 'N/A'}</td>
+                <td>{team.team_captain ?? "N/A"}</td>
                 <td>
                   {team.manager.first_name} {team.manager.last_name}
                 </td>

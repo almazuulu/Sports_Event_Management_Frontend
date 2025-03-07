@@ -5,6 +5,9 @@
     border-bottom: 1px solid #ddd;
     border-radius: 10px;
     color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 50px;
 }
 
 .title {
@@ -13,3 +16,19 @@
     margin-right: 1.5rem;
 }
   
+
+.button {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  /* .button:hover {
+    background-color: #000;
+    color: #fff;
+  } */

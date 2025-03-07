@@ -25,7 +25,10 @@ import ResultsPage from "./pages/PublicDashboard/Results";
 import StatsPage from "./pages/PublicDashboard/Stats";
 import { AuthContextProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
-import SettingsPage from "./pages/Settings/Settings";
+import SettingsRootLayout from "./pages/SettingsRoot";
+import ManageUsersPage from "./pages/Admin-panels/ManageUsers";
+import ManageTeamsPage from "./pages/Admin-panels/ManageTeams";
+import ManageGamesPage from "./pages/Admin-panels/ManageGames";
 
 const router = createBrowserRouter([
   {
@@ -58,7 +61,14 @@ const router = createBrowserRouter([
           },
           {
             path: "teams",
-            element: <TeamsPage />,
+            element: <PageRootLayout />,
+            children: [
+              { index: true, element: <TeamsPage /> },
+              {
+                path: ":teamId",
+                //element: team details page
+              },
+            ],
           },
           {
             path: "players",
@@ -71,7 +81,67 @@ const router = createBrowserRouter([
         children: [
           {
             path: "settings",
-            element: <SettingsPage />,
+            element: <SettingsRootLayout />,
+            children: [
+              {
+                element: <ProtectedRoute allowedRoles={["admin"]} />,
+                children: [
+                  {
+                    path: "manage-users",
+                    element: <ManageUsersPage />,
+                  },
+                  {
+                    path: "manage-events",
+                    element: <ManageEventsPage />,
+                  },
+                  {
+                    path: "manage-sport-events",
+                    element: <ManageSportEventsPage />,
+                  },
+                  {
+                    path: "manage-teams",
+                    element: <PageRootLayout />,
+                    children: [
+                      {
+                        index: true,
+                        element: <ManageTeamsPage />,
+                      },
+                      {
+                        path: ":teamId",
+                        element: <TeamDetailsPage />,
+                      },
+                    ],
+                  },
+                  {
+                    path: "manage-games",
+                    element: <ManageGamesPage />,
+                  },
+                ],
+              },
+              {
+                element: <ProtectedRoute allowedRoles={["team_manager"]} />,
+                children: [
+                  {
+                    path: "my-teams",
+                    element: <PageRootLayout />,
+                    children: [
+                      {
+                        index: true,
+                        element: <MyTeamsPage />,
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                path: "my-profile",
+                element: <MyProfilePage />,
+              },
+              {
+                path: "change-password",
+                element: <ChangePasswordPage />,
+              },
+            ],
           },
         ],
       },
