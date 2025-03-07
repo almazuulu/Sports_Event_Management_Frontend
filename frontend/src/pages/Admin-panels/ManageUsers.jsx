@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import classes from "./Users.module.css";
+import classes from "./ManageUsers.module.css";
 import Header from "../../components/Header";
 import UserTable from "../../components/UserTable";
 import { fetchWithAuth } from "../../utils/FetchClient";
@@ -10,7 +10,7 @@ import CreateUserForm from "../../components/CreateUserForm";
 import LoadingScreen from "../../components/UI/LoadingScreen";
 import CreateButton from "../../components/Button/CreateButton";
 
-function UsersPage() {
+function ManageUsersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -133,4 +133,4 @@ function UsersPage() {
   );
 }
 
-export default UsersPage;
+export default ManageUsersPage;

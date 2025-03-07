@@ -1,12 +1,15 @@
-import { useContext } from "react";
 import { getAccessToken, getRefreshToken } from "./Authentication";
-import AuthContext from "../context/AuthContext";
 
 const API_URL = "http://127.0.0.1:8000";
 
-const saveTokens = (accessToken, refreshToken) => {
-  localStorage.setItem("accessToken", accessToken);
-  if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
+const saveTokens = (accessToken) => {
+  const existingUser = JSON.parse(localStorage.getItem("user"));
+  const updatedUser = {
+    ...existingUser,
+    access: accessToken,
+  };
+
+  localStorage.setItem("user", JSON.stringify(updatedUser));
 };
 
 const verifyAccessToken = async (accessToken) => {

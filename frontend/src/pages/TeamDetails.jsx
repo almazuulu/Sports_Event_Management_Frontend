@@ -40,7 +40,7 @@ function TeamDetailsPage() {
   const [isModalAddPlayerOpen, setIsModalAddPlayerOpen] = useState(false);
   const [isModalJoinSportEventsOpen, setIsModalJoinSportEventsOpen] =
     useState(false);
-  const [activeTab, setActiveTab] = useState("info");
+  const [activeTab, setActiveTab] = useState("details");
   const [isFetchingSportEvents, setIsFetchingSportEvents] = useState(false);
 
   const handleEdit = () => {
@@ -94,6 +94,7 @@ function TeamDetailsPage() {
 
       if (response.ok) {
         toast.success("Team updated successfully!");
+        setIsModalOpen(false);
         fetchTeam();
       }
     } catch (error) {
@@ -224,7 +225,8 @@ function TeamDetailsPage() {
       }
 
       if (response.ok) {
-        setPlayers(data.results);
+        console.log("playes", data);
+        setPlayers(data);
       }
     } catch (error) {
       console.error(error);
@@ -237,7 +239,7 @@ function TeamDetailsPage() {
     try {
       setIsFetchingJoinedSportEvents(true);
       const response = await fetchWithAuth(
-        `/api/teams/registrations/?team=${teamId}`
+        `/api/teams/teams/${teamId}/registrations/`
       );
       const data = await response.json();
 
@@ -246,7 +248,7 @@ function TeamDetailsPage() {
       }
 
       if (response.ok) {
-        setSportEventsJoined(data.results);
+        setSportEventsJoined(data);
       }
     } catch (error) {
       console.error(error);
@@ -295,13 +297,13 @@ function TeamDetailsPage() {
           <button
             type="button"
             className={
-              activeTab === "info"
+              activeTab === "details"
                 ? `${classes.tabsButton} ${classes.active}`
                 : classes.tabsButton
             }
-            onClick={() => setActiveTab("info")}
+            onClick={() => setActiveTab("details")}
           >
-            Team Info
+            Details
           </button>
           <button
             type="button"
@@ -312,7 +314,7 @@ function TeamDetailsPage() {
             }
             onClick={() => setActiveTab("players")}
           >
-            Team Players
+            Players
           </button>
           <button
             type="button"
@@ -328,20 +330,22 @@ function TeamDetailsPage() {
         </div>
 
         <div className={classes.card}>
-          {activeTab === "info" && (
+          {activeTab === "details" && (
             <>
-              {(role === "admin" || role === "team_captain") &&
-                window.location.pathname.includes("/my-teams/") && (
-                  <section className={classes.sectionButton}>
-                    <CreateButton
-                      style={{ marginRight: "10px" }}
-                      onClick={handleEdit}
-                    >
-                      Edit
-                    </CreateButton>
-                    <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
-                  </section>
-                )}
+              {((role === "admin" &&
+                window.location.pathname.includes("/manage-teams/")) ||
+                (role === "team_manager" &&
+                  window.location.pathname.includes("/my-teams/"))) && (
+                <section className={classes.sectionButton}>
+                  <CreateButton
+                    style={{ marginRight: "10px" }}
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </CreateButton>
+                  <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
+                </section>
+              )}
               <ViewTeamForm initialData={team} />
             </>
           )}
@@ -400,11 +404,11 @@ function TeamDetailsPage() {
           loading={isSubmitting}
           onClose={() => setIsModalOpen(false)}
           initialData={{
-            // logo: data.logo,
             name: team.name,
             description: team.description,
             contact_email: team.contact_email,
             contact_phone: team.contact_phone,
+            status: team.status,
           }}
         />
       </Modal>

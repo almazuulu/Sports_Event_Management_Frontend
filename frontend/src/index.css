@@ -90,12 +90,10 @@ table thead th {
   font-weight: 600;
   text-transform: capitalize;
   text-align: center;
-  
 }
 
 table tbody tr {
   background: white;
-  transition: background 0.3s ease;
 }
 
 table tbody tr:nth-child(even) {

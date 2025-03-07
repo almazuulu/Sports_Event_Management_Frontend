@@ -23,7 +23,7 @@ function StatusEventDropdown({ value, onChange, allowedEdit = false }) {
           className={classes.select}
           disabled={allowedEdit}
         >
-          <option value={''} disabled>Status</option>
+          <option value={''} disabled>Please select a status</option>
           {STATUS_EVENTS.map((status) => (
             <option key={status.id} value={status.id}>
               {status.name}

@@ -21,15 +21,6 @@ function MyTeamsPage() {
   };
 
   const handleSubmit = async (formData) => {
-    // const formDataToSend = new FormData();
-    // formDataToSend.append("logo", formData.logo); // Append file
-    // formDataToSend.append("name", formData.name);
-    // formDataToSend.append("description", formData.description);
-    // formDataToSend.append("contact_email", formData.contact_email);
-    // formDataToSend.append("contact_phone", formData.contact_phone);
-
-    // console.log("formDataToSend: ", formDataToSend);
-
     try {
       setIsSubmitting(true);
       const response = await fetchWithAuth("/api/teams/teams/", {
@@ -40,18 +31,7 @@ function MyTeamsPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        toast.error(
-          <div>
-            <strong>Failed to submit form:</strong>
-            <ul>
-              {Object.entries(data).map(([field, messages]) => (
-                <li key={field}>
-                  <strong>{field}:</strong> {messages.join(", ")}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
+        return { success: false, data };
       }
 
       if (response.ok) {
@@ -75,7 +55,6 @@ function MyTeamsPage() {
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch teams");
       if (response.ok) {
-        console.log(data.results)
         setTeams(data.results);
       }
     } catch (error) {
@@ -89,26 +68,25 @@ function MyTeamsPage() {
     fetchMyTeams();
   }, []);
 
+  if (isFetchingTeams) return <LoadingScreen />;
+
   return (
     <>
       <div className={classes.container}>
         <Header title={"My Teams"} />
-        {isFetchingTeams ? (
-          <LoadingScreen />
-        ) : (
-          <div className={classes.card}>
-            <section className={classes.sectionButton}>
-              <CreateButton onClick={handleCreateNew}>
-                Create New Team
-              </CreateButton>
-            </section>
-            {teams.length === 0 && (
-              <p>No teams available. Please create a new team.</p>
-            )}
 
-            {teams.length > 0 && <TeamTable teams={teams} />}
-          </div>
-        )}
+        <div className={classes.card}>
+          <section className={classes.sectionButton}>
+            <CreateButton onClick={handleCreateNew}>
+              Create New Team
+            </CreateButton>
+          </section>
+          {teams.length === 0 && (
+            <p>No teams found. Please create a new team to begin managing.</p>
+          )}
+
+          {teams.length > 0 && <TeamTable teams={teams} />}
+        </div>
       </div>
 
       <Modal

@@ -74,6 +74,7 @@ const HeaderNavBar = () => {
         )}
       </nav>
 
+      {/* {!window.location.pathname.includes("/settings") && ( */}
       <nav className={classes.navContainerSecond}>
         <section className={classes.navbar}>
           {NAVIGATIONS.map((nav) => (
@@ -88,6 +89,7 @@ const HeaderNavBar = () => {
           ))}
         </section>
       </nav>
+      {/* )} */}
     </section>
   );
 };

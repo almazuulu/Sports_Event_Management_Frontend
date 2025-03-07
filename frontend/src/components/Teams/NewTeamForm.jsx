@@ -4,6 +4,8 @@ import classes from "./NewTeamForm.module.css";
 
 // icons
 import { CgCloseO } from "react-icons/cg";
+import { toast } from "react-toastify";
+import { TEAM_STATUS_OPTIONS } from "../../constant";
 
 function NewTeamForm({ initialData, onSubmit, loading, onClose }) {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ function NewTeamForm({ initialData, onSubmit, loading, onClose }) {
     description: "",
     contact_email: "",
     contact_phone: "",
+    status: "",
   });
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -64,6 +67,11 @@ function NewTeamForm({ initialData, onSubmit, loading, onClose }) {
           contact_email: "",
           contact_phone: "",
         });
+      }
+
+      if (!res.success) {
+        const message = Object.values(res.data)[0];
+        toast.error(message);
       }
     } catch (error) {
       console.error("Error Response:", error);
@@ -171,6 +179,28 @@ function NewTeamForm({ initialData, onSubmit, loading, onClose }) {
             autoComplete="off"
           />
         </div>
+        {formData.status && (
+          <div>
+            <label className={classes.label}>
+              Status <span>*</span>
+            </label>
+            <select
+              name="status"
+              className={classes.select}
+              value={formData.status}
+              onChange={handleChange}
+            >
+              <option value={""} disabled>
+                Please select a status
+              </option>
+              {TEAM_STATUS_OPTIONS.map((status) => (
+                <option key={status.id} value={status.id}>
+                  {status.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <button type="submit" className={classes.button} disabled={loading}>
           {loading ? "Submitting..." : "Submit"}

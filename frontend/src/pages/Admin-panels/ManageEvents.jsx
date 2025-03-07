@@ -9,6 +9,7 @@ import CreateEventForm from "../../components/CreateEventForm";
 import { toast } from "react-toastify";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import LoadingScreen from "../../components/UI/LoadingScreen";
+import EventFilter from "../../components/Events/EventFilter";
 
 function ManageEventsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,10 +60,13 @@ function ManageEventsPage() {
     }
   };
 
-  const fetchEventsData = async () => {
+  const fetchEventsData = async (filters = {}) => {
     try {
       setIsFetching(true);
-      const response = await fetchWithAuth("/api/events/events/");
+      const queryParams = new URLSearchParams(filters).toString();
+      const url = `/api/events/events/${queryParams ? `?${queryParams}` : ""}`;
+
+      const response = await fetchWithAuth(url);
 
       const data = await response.json();
 
@@ -84,8 +88,6 @@ function ManageEventsPage() {
     fetchEventsData();
   }, []);
 
-  if (isFetching) return <LoadingScreen />;
-
   return (
     <>
       <div className={classes.container}>
@@ -96,11 +98,23 @@ function ManageEventsPage() {
               Create New Event
             </CreateButton>
           </section>
-          {eventList.length === 0 && (
-            <p style={{ color: "#000", textAlign: 'center' }}>No events available at the moment.</p>
-          )}
-          {eventList.length > 0 && (
-            <EventTable eventList={eventList} onRefetchData={fetchEventsData} />
+          <EventFilter onFilter={fetchEventsData} />
+          {isFetching ? (
+            <LoadingScreen />
+          ) : (
+            <>
+              {eventList.length === 0 && (
+                <p style={{ color: "#000", textAlign: "center" }}>
+                  No events available at the moment.
+                </p>
+              )}
+              {eventList.length > 0 && (
+                <EventTable
+                  eventList={eventList}
+                  onRefetchData={fetchEventsData}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
