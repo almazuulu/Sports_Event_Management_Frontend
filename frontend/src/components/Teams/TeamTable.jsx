@@ -1,59 +1,17 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import styles from "./TeamCard.module.css";
+// import logo1 from "../../../../frontend/src/assets/images/logo3.jpg"
 
-import TeamStatusChip from "./TeamStatusChip";
-import ViewButton from "../Button/ViewButton";
-
-function TeamTable({ teams = [], onRefetchData }) {
-  const navigate = useNavigate();
-
-  const handleView = (teamId) => {
-    navigate(`${teamId}`);
-  };
-
+const TeamTable = ({ team }) => {
   return (
-    <>
-      <div className="tableContainer">
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Team Name</th>
-              <th>Team Captain</th>
-              <th>Team Manager</th>
-              <th>Contact Info</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {teams.map((team, index) => (
-              <tr key={team.id}>
-                <td>{index + 1}</td>
-                <td>{team.name}</td>
-                <td>{team.team_captain ?? "N/A"}</td>
-                <td>
-                  {team.manager.first_name} {team.manager.last_name}
-                </td>
-                <td style={{ textAlign: "left" }}>
-                  <p>Email: {team.contact_email}</p>
-                  <p>Phone: {team.contact_phone}</p>
-                </td>
-                <td>
-                  <TeamStatusChip status={team.status} />
-                </td>
-                <td>
-                  <ViewButton onClick={() => handleView(team.id)}>
-                    View
-                  </ViewButton>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className={styles.card}>
+      <img alt={team.name} className={styles.logo} />
+      <div className={styles.info}>
+        <span className={styles.name}>{team.name}</span>
+        <span className={styles.arrow}>➝</span>
       </div>
-    </>
+    </div>
   );
-}
+};
 
 export default TeamTable;

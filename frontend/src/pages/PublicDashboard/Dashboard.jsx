@@ -1,4 +1,5 @@
 import classes from "./Dashboard.module.css";
+import { useEffect, useState } from "react";
 
 import image1 from "../../../../frontend/src/assets/images/image1.jpg";
 import image2 from "../../../../frontend/src/assets/images/image2.jpg";
@@ -11,13 +12,7 @@ const DUMMY_DATA = [
   { title: "Upcoming Matches", count: "6" },
 ];
 const DashboardPage = () => {
-  const teamData = [
-    { teamname: "Thunderbolts", decription: "Local basketball team from Australia", manager: "John", captain: "Michael", status: "Active", playercount: "12", number: "+1234567890"},
-    { teamname: "LIV-Club", decription: "Local basketball team from New York", manager: "James", captain: "Mathew", status: "Active", playercount: "22", number: "+12349090909"},
-    { teamname: "Team FC", decription: "Local basketball team from New York", manager: "Paul", captain: "Michael", status: "Active", playercount: "12", number: "+124347890"},
-    { teamname: "Barcelona", decription: "Local basketball team from Germany", manager: "John", captain: "Paul", status: "Active", playercount: "11", number: "+1234567890"},
-    { teamname: "Team-Milan", decription: "Local basketball team from Australia", manager: "Eric", captain: "Michael", status: "Active", playercount: "10", number: "+1454567890"},
-  ];
+   const [data, setData] = useState([]);
   const gameData = [
     { name: "Thunderbolts", sport_event_name: "Local basketball team from Australia", start_datetime: "John", location: "Michael", status: "Active", teams_count: "12"},
     { name: "Thunderbolts", sport_event_name: "Local basketball team from Australia", start_datetime: "John", location: "Michael", status: "Active", teams_count: "12"},
@@ -34,6 +29,24 @@ const DashboardPage = () => {
     { position: 4, club: "MCI", played: 27, won: 14, drawn: 5, lost: 8, gf: 53, ga: 37, gd: 16, points: 47 },
     { position: 5, club: "CHE", played: 27, won: 13, drawn: 7, lost: 7, gf: 52, ga: 36, gd: 16, points: 46 },
   ];
+  const fetchAllTeams = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/teams/teams/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const jsonData = await response.json();
+      console.log(jsonData.results)
+      setData(jsonData.results);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+     
+    }
+  };
+   useEffect(() => {
+      fetchAllTeams();
+    }, []);
   return (
   
 
@@ -150,7 +163,7 @@ const DashboardPage = () => {
             <th>Team Name</th>
             <th>Description</th>
             <th>Manager</th>
-            <th>Captain</th>
+            <th>Manager Role</th>
             <th>Status</th>
             <th>Player count</th>
             <th>Contact No</th>
@@ -158,15 +171,15 @@ const DashboardPage = () => {
           </tr>
         </thead>
         <tbody>
-        {teamData.map((team, index) => (
+        {data.map((team, index) => (
           <tr>
-            <td>{team.teamname}</td>
-            <td>{team.decription}</td>
-              <td>{team.manager}</td>
-                <td>{team.captain}</td>
+            <td>{team.name}</td>
+            <td>{team.description}</td>
+              <td>{team.manager.first_name} {team.manager.last_name} </td>
+                <td>{team.manager.role}</td>
                   <td>{team.status}</td>
-                    <td>{team.playercount}</td>
-                    <td>{team.number}</td>
+                    <td>{team.player_count}</td>
+                    <td>{team.contact_phone}</td>
             
            
           </tr>

@@ -1,30 +1,32 @@
 import { useEffect, useState } from "react";
 
-import classes from "./Teams.module.css";
+import styles from "./Teams.module.css";
 import Header from "../components/Header";
 import TeamTable from "../components/Teams/TeamTable";
 import { fetchWithAuth } from "../utils/FetchClient";
 import { toast } from "react-toastify";
 import LoadingScreen from "../components/UI/LoadingScreen";
 
-function TeamsPage() {
-  const [teams, setTeams] = useState([]);
-  const [isFetchingTeams, setIsFetchingTeams] = useState(false);
 
+function TeamsPage() {
+
+
+  const [isFetchingTeams, setIsFetchingTeams] = useState(false);
+  const [data, setData] = useState([]);
+
+  const [error, setError] = useState(null);
   const fetchAllTeams = async () => {
     try {
-      setIsFetchingTeams(true);
-      const response = await fetchWithAuth("/api/teams/public/teams/");
-      const data = await response.json();
-      if (!response.ok) return toast.error("Failed to fetch teams");
-      if (response.ok) {
-        console.log(data);
-        setTeams(data);
+      const response = await fetch("http://127.0.0.1:8000/api/teams/teams/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+      const jsonData = await response.json();
+      setData(jsonData.results);
     } catch (error) {
-      console.error(error);
+      setError(error.message);
     } finally {
-      setIsFetchingTeams(false);
+     
     }
   };
 
@@ -35,14 +37,20 @@ function TeamsPage() {
   if (isFetchingTeams) return <LoadingScreen />;
 
   return (
-    <>
-      <div className={classes.container}>
-        <Header title={"Live Scores"} />
-        <div className={classes.card}>
-          <TeamTable teams={teams} />
-        </div>
-      </div>
-    </>
+   <div className={styles.container}>
+      {/* Banner Section */}
+      <header className={styles.banner}>
+        <h1>Teams</h1>
+      </header>
+
+      {/* Team Cards Grid */}
+      <section className={styles.teamGrid}>
+        {data.map((team) => (
+         
+          <TeamTable key={team.id} team={team} />
+        ))}
+      </section>
+    </div>
   );
 }
 
