@@ -113,6 +113,10 @@ const router = createBrowserRouter([
                     ],
                   },
                   {
+                    path: "manage-registrations",
+                    element: <ManageTeamRegistrationsPage />,
+                  },
+                  {
                     path: "manage-games",
                     element: <ManageGamesPage />,
                   },
@@ -128,6 +132,10 @@ const router = createBrowserRouter([
                       {
                         index: true,
                         element: <MyTeamsPage />,
+                      },
+                      {
+                        path: ":teamId",
+                        element: <TeamDetailsPage />,
                       },
                     ],
                   },

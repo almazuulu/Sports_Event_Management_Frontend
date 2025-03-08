@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./ManageTeams.module.css";
 import Header from "../../components/Header";
 import TeamTable from "../../components/Teams/TeamTable";
-import { toast } from "react-toastify";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import TeamsFilter from "../../components/Teams/TeamsFilter";
 

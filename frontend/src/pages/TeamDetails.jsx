@@ -11,17 +11,15 @@ import { getUserRole } from "../utils/Authentication";
 import CreateButton from "../components/Button/CreateButton";
 import Modal from "../components/UI/Modal";
 import NewTeamForm from "../components/Teams/NewTeamForm";
-import DeleteButton from "../components/Button/DeleteButton";
-import CancelButton from "../components/Button/CancelButton";
 import PlayerTable from "../components/Players/PlayerTable";
 import SportEventTable from "../components/SportEvents/SportEventTable";
 import PlayerForm from "../components/Players/PlayerForm";
 import RegisterSportEventForm from "../components/SportEvents/RegisterSportEventForm";
 import JoinedSportEventTable from "../components/Teams/JoinedSportEventTable";
+import CreatePlayerForm from "../components/Players/CreatePlayerForm";
 
 function TeamDetailsPage() {
   const role = getUserRole();
-  const navigate = useNavigate();
   const { teamId } = useParams();
   const [isFetchingTeam, setIsFetchingTeam] = useState(false);
   const [isFetchingPlayers, setIsFetchingPlayers] = useState(false);
@@ -36,7 +34,6 @@ function TeamDetailsPage() {
   const [isSubmittingNewPlayer, setIsSubmittingNewPlayer] = useState(false);
   const [isSubmittingJoinSportEvent, setIsSubmittingJoinSportEvent] =
     useState(false);
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalAddPlayerOpen, setIsModalAddPlayerOpen] = useState(false);
   const [isModalJoinSportEventsOpen, setIsModalJoinSportEventsOpen] =
     useState(false);
@@ -47,37 +44,12 @@ function TeamDetailsPage() {
     setIsModalOpen((prevData) => !prevData);
   };
 
-  const handleDelete = () => {
-    setIsModalDeleteOpen(true);
-  };
-
   const handleAddPlayer = () => {
     setIsModalAddPlayerOpen(true);
   };
 
   const handleJoinSportEvents = () => {
     setIsModalJoinSportEventsOpen(true);
-  };
-
-  const confirmDelete = async () => {
-    try {
-      const response = await fetchWithAuth(`/api/teams/teams/${teamId}/`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        toast.error(`Failed to delete team ${teamId}`);
-      }
-
-      if (response.ok) {
-        toast.success("Team deleted successfully!");
-        navigate("..");
-      }
-    } catch (error) {
-      console.error("Error deleting team:", error);
-    } finally {
-      setIsModalDeleteOpen(false);
-    }
   };
 
   const handleSubmit = async (formData) => {
@@ -156,29 +128,16 @@ function TeamDetailsPage() {
     };
     try {
       setIsSubmittingJoinSportEvent(true);
-      const response = await fetchWithAuth(
-        `/api/teams/teams/${formDataToSend.team}/registrations/`,
-        {
-          method: "POST",
-          body: JSON.stringify(formDataToSend),
-        }
-      );
+      const response = await fetchWithAuth(`/api/teams/registrations/`, {
+        method: "POST",
+        body: JSON.stringify(formDataToSend),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        toast.error(
-          <div>
-            <strong>Failed to submit form:</strong>
-            <ul>
-              {Object.entries(data).map(([field, messages]) => (
-                <li key={field}>
-                  <strong>{field}:</strong> {messages.join(", ")}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
+        const message = data.error[0];
+        toast.error(message);
       }
 
       if (response.ok) {
@@ -189,6 +148,7 @@ function TeamDetailsPage() {
       }
     } catch (error) {
       console.error(error);
+      toast.warning("Your team has been registered for this sport event.");
     } finally {
       setIsSubmittingJoinSportEvent(false);
     }
@@ -343,7 +303,6 @@ function TeamDetailsPage() {
                   >
                     Edit
                   </CreateButton>
-                  <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
                 </section>
               )}
               <ViewTeamForm initialData={team} />
@@ -352,7 +311,7 @@ function TeamDetailsPage() {
 
           {activeTab === "players" && (
             <>
-              {(role === "admin" || role === "team_captain") &&
+              {role === "team_manager" &&
                 window.location.pathname.includes("/my-teams/") && (
                   <section className={classes.sectionButton}>
                     <CreateButton
@@ -373,7 +332,7 @@ function TeamDetailsPage() {
           {/* ONLY TEAM CAPTAIN AND ADMIN CAN VIEW */}
           {activeTab === "sport-events" && (
             <>
-              {role === "team_captain" &&
+              {role === "team_manager" &&
                 window.location.pathname.includes("/my-teams/") && (
                   <section className={classes.sectionButton}>
                     <CreateButton
@@ -413,30 +372,15 @@ function TeamDetailsPage() {
         />
       </Modal>
 
-      {/* DELETE MODAL */}
-      <Modal
-        open={isModalDeleteOpen}
-        onClose={() => setIsModalDeleteOpen(false)}
-        className={classes.modalContainer}
-      >
-        <p>Are you sure you want to delete this team?</p>
-        <CreateButton style={{ marginRight: "10px" }} onClick={confirmDelete}>
-          Yes
-        </CreateButton>
-        <CancelButton onClick={() => setIsModalOpen(false)} />
-      </Modal>
-
       {/* ADD PLAYER MODAL */}
       <Modal
         open={isModalAddPlayerOpen}
         onClose={() => setIsModalAddPlayerOpen(false)}
         className={classes.modalContainer}
       >
-        <PlayerForm
+        <CreatePlayerForm
           onSubmit={handleSubmitAddPlayer}
-          teamId={teamId}
           onClose={() => setIsModalAddPlayerOpen(false)}
-          allowedEdit
           loading={isSubmittingNewPlayer}
         />
       </Modal>

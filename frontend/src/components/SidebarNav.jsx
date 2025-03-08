@@ -101,6 +101,12 @@ const SECTIONS = [
         allowedRoles: ["admin"],
       },
       {
+        Icon: HiOutlineRectangleGroup,
+        title: "Manage Registrations",
+        path: "/settings/manage-registrations",
+        allowedRoles: ["admin"],
+      },
+      {
         Icon: TbDeviceGamepad3,
         title: "Manage Games",
         path: "/settings/manage-games",

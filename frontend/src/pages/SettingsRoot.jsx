@@ -6,7 +6,7 @@ function SettingsRootLayout() {
     <main style={{ display: "flex" }}>
       <SidebarNav />
       <section style={{ width: "100%" }}>
-        <Outlet />;
+        <Outlet />
       </section>
     </main>
   );
