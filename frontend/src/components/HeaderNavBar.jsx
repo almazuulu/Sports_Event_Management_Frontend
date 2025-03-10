@@ -50,6 +50,7 @@ const HeaderNavBar = () => {
                   className={({ isActive }) =>
                     `${isActive ? classes.active : ""}`
                   }
+                  end
                 >
                   <span>
                     <MdOutlineSettings className={classes.icon} />
@@ -62,6 +63,7 @@ const HeaderNavBar = () => {
                   className={({ isActive }) =>
                     `${isActive ? classes.active : ""}`
                   }
+                  end
                 >
                   <span>
                     <CiLogout className={classes.icon} />
@@ -74,7 +76,6 @@ const HeaderNavBar = () => {
         )}
       </nav>
 
-      {/* {!window.location.pathname.includes("/settings") && ( */}
       <nav className={classes.navContainerSecond}>
         <section className={classes.navbar}>
           {NAVIGATIONS.map((nav) => (
@@ -89,7 +90,6 @@ const HeaderNavBar = () => {
           ))}
         </section>
       </nav>
-      {/* )} */}
     </section>
   );
 };

@@ -4,6 +4,7 @@ import classes from "./RegisterSportEventForm.module.css";
 
 // icons
 import { CgCloseO } from "react-icons/cg";
+import { toast } from "react-toastify";
 
 function RegisterSportEventForm({
   sportEvents = null,

@@ -1,9 +1,9 @@
 import styles from "./CancelButton.module.css";
 
-function CancelButton({ ...props }) {
+function CancelButton({ children, ...props }) {
   return (
     <button type="button" className={styles.cancelButton} {...props}>
-      Cancel
+      {children || "Cancel"}
     </button>
   );
 }

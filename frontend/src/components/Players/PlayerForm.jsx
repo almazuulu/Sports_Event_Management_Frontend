@@ -13,7 +13,7 @@ function PlayerForm({
   allowedEdit = false,
 }) {
   const [formData, setFormData] = useState({
-    userID: "",
+    // user: "",
     first_name: "",
     last_name: "",
     jersey_number: "",
@@ -43,7 +43,7 @@ function PlayerForm({
 
       if (res.success) {
         setFormData({
-          userID: "",
+          // user: "",
           first_name: "",
           last_name: "",
           jersey_number: "",
@@ -67,7 +67,7 @@ function PlayerForm({
 
   const handleClose = () => {
     setFormData({
-      userID: "",
+      // user: "",
       first_name: "",
       last_name: "",
       jersey_number: "",
@@ -107,20 +107,18 @@ function PlayerForm({
           : "Create New Player"}
       </h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label className={classes.label}>
-            User ID (optional for existing user only)
-          </label>
+        {/* <div>
+          <label className={classes.label}>User ID</label>
           <input
             className={classes.input}
             type="text"
             name="userID"
-            value={formData.userID}
+            value={formData.user}
             onChange={handleChange}
             autoComplete="off"
-            disabled={!allowedEdit}
+            disabled
           />
-        </div>
+        </div> */}
 
         <div>
           <label className={classes.label}>

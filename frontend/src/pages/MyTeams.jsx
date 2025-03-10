@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import LoadingScreen from "../components/UI/LoadingScreen";
 import Modal from "../components/UI/Modal";
 import NewTeamForm from "../components/Teams/NewTeamForm";
+import TeamTableManager from "../components/Teams/TeamTableManager";
 
 function MyTeamsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,11 +52,11 @@ function MyTeamsPage() {
   const fetchMyTeams = async () => {
     try {
       setIsFetchingTeams(true);
-      const response = await fetchWithAuth("/api/teams/my-teams/");
+      const response = await fetchWithAuth("/api/teams/teams/by-manager/");
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch teams");
       if (response.ok) {
-        setTeams(data.results);
+        setTeams(data[0].teams);
       }
     } catch (error) {
       console.error(error);
@@ -85,7 +86,7 @@ function MyTeamsPage() {
             <p>No teams found. Please create a new team to begin managing.</p>
           )}
 
-          {teams.length > 0 && <TeamTable teams={teams} />}
+          {teams.length > 0 && <TeamTableManager teams={teams} />}
         </div>
       </div>
 

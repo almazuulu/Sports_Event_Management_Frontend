@@ -9,7 +9,7 @@ function LogoutPage() {
 
   useEffect(() => {
     logout();
-    navigate("/", { replace: true });
+    navigate("/login", { replace: true });
   });
 }
 

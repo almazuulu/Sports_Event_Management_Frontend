@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./PlayerTable.module.css";
 import ViewButton from "../Button/ViewButton";
 import Modal from "../UI/Modal";
 import PlayerForm from "./PlayerForm";
 import { fetchWithAuth } from "../../utils/FetchClient";
-import { toast } from "react-toastify";
 import { getUserRole } from "../../utils/Authentication";
 import DeleteButton from "../Button/DeleteButton";
 import CancelButton from "../Button/CancelButton";
@@ -19,7 +19,7 @@ function PlayerTable({ players = [], onRefetchData }) {
   const [playerData, setPlayerData] = useState(null);
   const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
   const [isDeletingPlayer, setIsDeletingPlayer] = useState(false);
-  const [playerId, setPlayerId] = useState("null");
+  const [playerId, setPlayerId] = useState("");
 
   const handleViewPlayer = (playerId) => {
     setIsModalViewOpen(true);
@@ -91,7 +91,7 @@ function PlayerTable({ players = [], onRefetchData }) {
   const fetchPlayerData = async (playerId) => {
     try {
       setIsFetchingPlayerData(true);
-      const res = await fetchWithAuth(`/api/teams/players/${playerId}`);
+      const res = await fetchWithAuth(`/api/teams/players/${playerId}/`);
       const data = await res.json();
       if (!res.ok) toast.error("Failed to fetch player data!");
 
@@ -118,7 +118,9 @@ function PlayerTable({ players = [], onRefetchData }) {
             <tr>
               <th>No</th>
               <th>Player Name</th>
-              <th>Team Name</th>
+              {!window.location.pathname.includes("/organize-teams") && (
+                <th>Team Name</th>
+              )}
               <th>Jersey Number</th>
               <th>Position</th>
               <th>Status</th>
@@ -130,15 +132,18 @@ function PlayerTable({ players = [], onRefetchData }) {
               <tr key={player.id}>
                 <td>{index + 1}</td>
                 <td>
-                  {player.first_name} {player.last_name}
+                  {player.first_name} {player.last_name}{" "}
+                  {player.is_captain && <span>©</span>}
                 </td>
-                <td>{player.team_name}</td>
+                {!window.location.pathname.includes("/organize-teams") && (
+                  <td>{player.team_name}</td>
+                )}
                 <td>{player.jersey_number}</td>
                 <td>{player.position}</td>
                 <td>{player.is_active === true ? "Active" : "Inactive"}</td>
                 <td>
-                  {(role === "admin" || role === "team_captain") &&
-                  window.location.pathname.includes("/my-teams/") ? (
+                  {role === "team_manager" &&
+                  window.location.pathname.includes("organize-teams/") ? (
                     <>
                       <ViewButton
                         style={{ marginRight: "10px" }}
@@ -147,6 +152,7 @@ function PlayerTable({ players = [], onRefetchData }) {
                         Edit
                       </ViewButton>
                       <DeleteButton
+                        style={{ marginRight: "10px" }}
                         onClick={() => handleDeletePlayer(player.id)}
                       >
                         Delete

@@ -1,27 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import classes from "./TeamDetails.module.css";
 import { fetchWithAuth } from "../utils/FetchClient";
-import LoadingScreen from "../components/UI/LoadingScreen";
 import Header from "../components/Header";
 import ViewTeamForm from "../components/Teams/ViewTeamForm";
 import { getUserRole } from "../utils/Authentication";
 import CreateButton from "../components/Button/CreateButton";
 import Modal from "../components/UI/Modal";
 import NewTeamForm from "../components/Teams/NewTeamForm";
-import DeleteButton from "../components/Button/DeleteButton";
-import CancelButton from "../components/Button/CancelButton";
 import PlayerTable from "../components/Players/PlayerTable";
-import SportEventTable from "../components/SportEvents/SportEventTable";
-import PlayerForm from "../components/Players/PlayerForm";
 import RegisterSportEventForm from "../components/SportEvents/RegisterSportEventForm";
 import JoinedSportEventTable from "../components/Teams/JoinedSportEventTable";
+import CreatePlayerForm from "../components/Players/CreatePlayerForm";
+import CancelButton from "../components/Button/CancelButton";
 
 function TeamDetailsPage() {
   const role = getUserRole();
-  const navigate = useNavigate();
   const { teamId } = useParams();
   const [isFetchingTeam, setIsFetchingTeam] = useState(false);
   const [isFetchingPlayers, setIsFetchingPlayers] = useState(false);
@@ -36,19 +32,19 @@ function TeamDetailsPage() {
   const [isSubmittingNewPlayer, setIsSubmittingNewPlayer] = useState(false);
   const [isSubmittingJoinSportEvent, setIsSubmittingJoinSportEvent] =
     useState(false);
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalAddPlayerOpen, setIsModalAddPlayerOpen] = useState(false);
   const [isModalJoinSportEventsOpen, setIsModalJoinSportEventsOpen] =
     useState(false);
+  const [isModalCaptainOpen, setIsModalCaptainOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
   const [isFetchingSportEvents, setIsFetchingSportEvents] = useState(false);
+  const [isFetchingAvailPlayers, setIsFetchingAvailPlayers] = useState(false);
+  const [availPlayers, setAvailPlayers] = useState([]);
+  const [teamCaptain, setTeamCaptain] = useState("");
+  const [selectedCaptain, setSelectedCaptain] = useState("");
 
   const handleEdit = () => {
     setIsModalOpen((prevData) => !prevData);
-  };
-
-  const handleDelete = () => {
-    setIsModalDeleteOpen(true);
   };
 
   const handleAddPlayer = () => {
@@ -59,25 +55,8 @@ function TeamDetailsPage() {
     setIsModalJoinSportEventsOpen(true);
   };
 
-  const confirmDelete = async () => {
-    try {
-      const response = await fetchWithAuth(`/api/teams/teams/${teamId}/`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        toast.error(`Failed to delete team ${teamId}`);
-      }
-
-      if (response.ok) {
-        toast.success("Team deleted successfully!");
-        navigate("..");
-      }
-    } catch (error) {
-      console.error("Error deleting team:", error);
-    } finally {
-      setIsModalDeleteOpen(false);
-    }
+  const handleChangeCaptain = () => {
+    setIsModalCaptainOpen(true);
   };
 
   const handleSubmit = async (formData) => {
@@ -108,7 +87,6 @@ function TeamDetailsPage() {
     const formDataToSend = {
       ...formData,
       team: teamId,
-      is_active: formData.is_active === "active" ? true : false,
     };
 
     try {
@@ -156,29 +134,16 @@ function TeamDetailsPage() {
     };
     try {
       setIsSubmittingJoinSportEvent(true);
-      const response = await fetchWithAuth(
-        `/api/teams/teams/${formDataToSend.team}/registrations/`,
-        {
-          method: "POST",
-          body: JSON.stringify(formDataToSend),
-        }
-      );
+      const response = await fetchWithAuth(`/api/teams/registrations/`, {
+        method: "POST",
+        body: JSON.stringify(formDataToSend),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        toast.error(
-          <div>
-            <strong>Failed to submit form:</strong>
-            <ul>
-              {Object.entries(data).map(([field, messages]) => (
-                <li key={field}>
-                  <strong>{field}:</strong> {messages.join(", ")}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
+        const message = data.error[0];
+        toast.error(message);
       }
 
       if (response.ok) {
@@ -189,8 +154,32 @@ function TeamDetailsPage() {
       }
     } catch (error) {
       console.error(error);
+      toast.warning("Your team has been registered for this sport event.");
     } finally {
       setIsSubmittingJoinSportEvent(false);
+    }
+  };
+
+  const confirmTeamCaptain = async () => {
+    if (!selectedCaptain) toast.error("Please select a team captain!");
+    try {
+      const response = await fetchWithAuth(
+        `/api/teams/teams/${team.id}/set-captain/`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            player_id: selectedCaptain,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("New captain is appointed successfully!");
+        setIsModalCaptainOpen(false);
+        fetchPlayers();
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -204,7 +193,9 @@ function TeamDetailsPage() {
         return toast.error("Failed to fetch team data");
       }
 
+      console.log(data);
       setTeam(data);
+      setTeamCaptain(data.team_captain);
     } catch (error) {
       console.error(error);
     } finally {
@@ -221,11 +212,10 @@ function TeamDetailsPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        return toast.error("Failed to fetch team data");
+        return toast.error("Failed to fetch players data");
       }
 
       if (response.ok) {
-        console.log("playes", data);
         setPlayers(data);
       }
     } catch (error) {
@@ -276,7 +266,28 @@ function TeamDetailsPage() {
       }
     };
 
+    const fetchAvailPlayersList = async () => {
+      try {
+        setIsFetchingAvailPlayers(true);
+        const response = await fetchWithAuth(
+          "/api/teams/teams/available-players/?available_only=true"
+        );
+
+        if (!response.ok) {
+          toast.error("Failed to fetch avail players data");
+        }
+
+        const data = await response.json();
+        setAvailPlayers(data.players);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsFetchingAvailPlayers(false);
+      }
+    };
+
     fetchSportEvents();
+    fetchAvailPlayersList();
   }, []);
 
   useEffect(() => {
@@ -284,9 +295,6 @@ function TeamDetailsPage() {
     fetchPlayers();
     fetchSportEventsJoined();
   }, [fetchTeam, fetchPlayers, fetchSportEventsJoined]);
-
-  if (isFetchingTeam && isFetchingJoinedSportEvents && isFetchingPlayers)
-    return <LoadingScreen />;
 
   return (
     <>
@@ -335,7 +343,7 @@ function TeamDetailsPage() {
               {((role === "admin" &&
                 window.location.pathname.includes("/manage-teams/")) ||
                 (role === "team_manager" &&
-                  window.location.pathname.includes("/my-teams/"))) && (
+                  window.location.pathname.includes("/organize-teams/"))) && (
                 <section className={classes.sectionButton}>
                   <CreateButton
                     style={{ marginRight: "10px" }}
@@ -343,17 +351,20 @@ function TeamDetailsPage() {
                   >
                     Edit
                   </CreateButton>
-                  <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
                 </section>
               )}
-              <ViewTeamForm initialData={team} />
+              {isFetchingTeam ? (
+                <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+              ) : (
+                <ViewTeamForm initialData={team} />
+              )}
             </>
           )}
 
           {activeTab === "players" && (
             <>
-              {(role === "admin" || role === "team_captain") &&
-                window.location.pathname.includes("/my-teams/") && (
+              {role === "team_manager" &&
+                window.location.pathname.includes("/organize-teams/") && (
                   <section className={classes.sectionButton}>
                     <CreateButton
                       style={{ marginRight: "10px" }}
@@ -361,20 +372,25 @@ function TeamDetailsPage() {
                     >
                       Add Player
                     </CreateButton>
+                    <CancelButton onClick={() => handleChangeCaptain()}>
+                      {teamCaptain ? "Change Team Captain" : "Set Team Captain"}
+                    </CancelButton>
                   </section>
                 )}
-              {players.length === 0 && <p>No players available.</p>}
-              {players.length > 0 && (
+              {isFetchingPlayers ? (
+                <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+              ) : players.length === 0 ? (
+                <p>No players available.</p>
+              ) : (
                 <PlayerTable players={players} onRefetchData={fetchPlayers} />
               )}
             </>
           )}
 
-          {/* ONLY TEAM CAPTAIN AND ADMIN CAN VIEW */}
           {activeTab === "sport-events" && (
             <>
-              {role === "team_captain" &&
-                window.location.pathname.includes("/my-teams/") && (
+              {role === "team_manager" &&
+                window.location.pathname.includes("/organize-teams/") && (
                   <section className={classes.sectionButton}>
                     <CreateButton
                       style={{ marginRight: "10px" }}
@@ -384,9 +400,15 @@ function TeamDetailsPage() {
                     </CreateButton>
                   </section>
                 )}
-              {sportEventsJoined.length === 0 && <p>No sport events joined.</p>}
-              {sportEventsJoined.length > 0 && (
-                <JoinedSportEventTable sportEventList={sportEventsJoined} />
+              {isFetchingJoinedSportEvents ? (
+                <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+              ) : sportEventsJoined.length === 0 ? (
+                <p>No sport events joined.</p>
+              ) : (
+                <JoinedSportEventTable
+                  sportEventList={sportEventsJoined}
+                  onRefetchData={fetchSportEventsJoined}
+                />
               )}
             </>
           )}
@@ -413,31 +435,17 @@ function TeamDetailsPage() {
         />
       </Modal>
 
-      {/* DELETE MODAL */}
-      <Modal
-        open={isModalDeleteOpen}
-        onClose={() => setIsModalDeleteOpen(false)}
-        className={classes.modalContainer}
-      >
-        <p>Are you sure you want to delete this team?</p>
-        <CreateButton style={{ marginRight: "10px" }} onClick={confirmDelete}>
-          Yes
-        </CreateButton>
-        <CancelButton onClick={() => setIsModalOpen(false)} />
-      </Modal>
-
       {/* ADD PLAYER MODAL */}
       <Modal
         open={isModalAddPlayerOpen}
         onClose={() => setIsModalAddPlayerOpen(false)}
         className={classes.modalContainer}
       >
-        <PlayerForm
+        <CreatePlayerForm
           onSubmit={handleSubmitAddPlayer}
-          teamId={teamId}
           onClose={() => setIsModalAddPlayerOpen(false)}
-          allowedEdit
           loading={isSubmittingNewPlayer}
+          playerList={availPlayers}
         />
       </Modal>
 
@@ -453,6 +461,37 @@ function TeamDetailsPage() {
           onClose={() => setIsModalJoinSportEventsOpen(false)}
           sportEvents={sportEvents}
         />
+      </Modal>
+
+      {/* CHANGE CAPTAIN MODAL */}
+      <Modal
+        className={classes.modalContainer}
+        open={isModalCaptainOpen}
+        onClose={() => setIsModalCaptainOpen(false)}
+      >
+        <section style={{ display: "flex", flexDirection: "column" }}>
+          <label>Please select a player as team captain: </label>
+          <select
+            className={classes.select}
+            onChange={(e) => setSelectedCaptain(e.target.value)}
+          >
+            <option value="">-- Select a Player --</option>
+            {players.map((player) => (
+              <option key={player.id} value={player.id}>
+                {player.first_name} {player.last_name}
+              </option>
+            ))}
+          </select>
+        </section>
+        <CreateButton
+          style={{ marginRight: "10px" }}
+          onClick={confirmTeamCaptain}
+        >
+          Yes, Confirm
+        </CreateButton>
+        <CancelButton onClick={() => setIsModalCaptainOpen(false)}>
+          Cancel
+        </CancelButton>
       </Modal>
     </>
   );

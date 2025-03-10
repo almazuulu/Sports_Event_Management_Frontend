@@ -4,7 +4,7 @@ import classes from "./LoginForm.module.css";
 import AuthContext from "../context/AuthContext";
 
 function LoginForm() {
-  const { login } = useContext(AuthContext);
+  const { login, loading } = useContext(AuthContext);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -63,8 +63,8 @@ function LoginForm() {
           </p>
         )}
         <div className={classes.inputSubmit}>
-          <button type="submit" className={classes.button}>
-            Sign In
+          <button type="submit" className={classes.button} disabled={loading}>
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </div>
       </form>

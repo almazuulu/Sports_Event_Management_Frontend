@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./ManageEvents.module.css";
 import Header from "../../components/Header";
@@ -6,9 +7,7 @@ import CreateButton from "../../components/Button/CreateButton";
 import EventTable from "../../components/EventTable";
 import Modal from "../../components/UI/Modal";
 import CreateEventForm from "../../components/CreateEventForm";
-import { toast } from "react-toastify";
 import { fetchWithAuth } from "../../utils/FetchClient";
-import LoadingScreen from "../../components/UI/LoadingScreen";
 import EventFilter from "../../components/Events/EventFilter";
 
 function ManageEventsPage() {
@@ -100,21 +99,13 @@ function ManageEventsPage() {
           </section>
           <EventFilter onFilter={fetchEventsData} />
           {isFetching ? (
-            <LoadingScreen />
+            <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+          ) : eventList.length === 0 ? (
+            <p style={{ color: "#000", textAlign: "center" }}>
+              No events available at the moment.
+            </p>
           ) : (
-            <>
-              {eventList.length === 0 && (
-                <p style={{ color: "#000", textAlign: "center" }}>
-                  No events available at the moment.
-                </p>
-              )}
-              {eventList.length > 0 && (
-                <EventTable
-                  eventList={eventList}
-                  onRefetchData={fetchEventsData}
-                />
-              )}
-            </>
+            <EventTable eventList={eventList} onRefetchData={fetchEventsData} />
           )}
         </div>
       </div>

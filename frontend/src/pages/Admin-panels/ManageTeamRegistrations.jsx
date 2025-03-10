@@ -1,10 +1,9 @@
-import React, { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import classes from "./ManageTeamRegistrations.module.css";
 import Header from "../../components/Header";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import { toast } from "react-toastify";
-import LoadingScreen from "../../components/UI/LoadingScreen";
 import TeamRegistrationTable from "../../components/AdminPanel/TeamRegistrationTable";
 
 function ManageTeamRegistrationsPage() {
@@ -22,7 +21,6 @@ function ManageTeamRegistrationsPage() {
 
       if (!res.ok) return toast.error("Failed to fetch team registration!");
       if (res.ok) {
-        console.log(data.results);
         const pending = data.results.filter(
           (item) => item.status === "pending"
         );
@@ -51,7 +49,7 @@ function ManageTeamRegistrationsPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={"Manage Team Registrations"} />
+        <Header title={"Manage Registrations"} />
 
         <div className={classes.tabsContainer}>
           <button

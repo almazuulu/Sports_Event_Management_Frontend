@@ -37,7 +37,7 @@ function TeamRegistrationTable({
           method: "PUT",
           body: JSON.stringify({
             status: status,
-            // notes: "Team registration",
+            notes: "",
           }),
         }
       );
@@ -65,8 +65,8 @@ function TeamRegistrationTable({
             <th>Team Name</th>
             <th>Sport Event Name</th>
             <th>Registration Date</th>
-            <th>Notes</th>
             {!isPending && <th>Approval</th>}
+            <th>Notes</th>
             <th>Status</th>
             {isPending && <th>Action</th>}
           </tr>
@@ -78,17 +78,17 @@ function TeamRegistrationTable({
               <td>{data.team_name}</td>
               <td>{data.sport_event_name}</td>
               <td>{formatToShortDate(data.registration_date)}</td>
-              <td>{data.notes}</td>
               {!isPending && (
-                <>
+                <td>
                   <p style={{ fontSize: "14px" }}>
                     Name: {data.approved_by_name}
                   </p>
                   <p style={{ fontSize: "14px" }}>
                     Date: {formatToShortDate(data.approval_date)}
                   </p>
-                </>
+                </td>
               )}
+              <td>{data.notes}</td>
               <td style={{ width: "200px" }}>
                 <StatusChip status={data.status} />
               </td>

@@ -55,3 +55,14 @@
     background-color: #000;
     color: #fff;
 }
+
+.select {
+    width: 100%;
+    font-size: 17px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #000;
+    outline: none;
+    transition: .3s;
+}

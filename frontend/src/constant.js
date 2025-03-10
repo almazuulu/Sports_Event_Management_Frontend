@@ -34,6 +34,7 @@ export const ROLE_LABELS = {
   team_manager: "Team Manager",
   scorekeeper: "Scorekeeper",
   public: "Public User",
+  player: "Player",
 };
 
 export const TEAM_STATUS_OPTIONS = [

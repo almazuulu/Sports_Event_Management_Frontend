@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./ManageTeams.module.css";
 import Header from "../../components/Header";
 import TeamTable from "../../components/Teams/TeamTable";
-import { toast } from "react-toastify";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import TeamsFilter from "../../components/Teams/TeamsFilter";
+import LoadingScreen from "../../components/UI/LoadingScreen";
 
 function ManageTeamsPage() {
   const [teams, setTeams] = useState([]);
@@ -39,12 +40,15 @@ function ManageTeamsPage() {
         <Header title={"Manage Teams"} />
         <div className={classes.card}>
           <TeamsFilter onFilter={fetchAllTeams} />
-          {teams.length === 0 && (
+          {isFetchingTeams ? (
+            <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+          ) : teams.length === 0 ? (
             <p style={{ color: "#000", textAlign: "center" }}>
               No teams available at the moment.
             </p>
+          ) : (
+            <TeamTable teams={teams} />
           )}
-          {teams.length > 0 && <TeamTable teams={teams} />}
         </div>
       </div>
     </>

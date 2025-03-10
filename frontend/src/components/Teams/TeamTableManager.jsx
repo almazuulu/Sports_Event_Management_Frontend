@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 
 import TeamStatusChip from "./TeamStatusChip";
 import ViewButton from "../Button/ViewButton";
+import DeleteButton from "../Button/DeleteButton";
 
-function TeamTable({ teams = [] }) {
+function TeamTableManager({ teams = [] }) {
   const navigate = useNavigate();
-
   const handleView = (teamId) => {
     navigate(`${teamId}`);
   };
@@ -17,34 +17,29 @@ function TeamTable({ teams = [] }) {
           <thead>
             <tr>
               <th>No</th>
-              <th>Team Name</th>
-              {/* <th>Team Captain</th> */}
-              <th>Team Manager</th>
-              <th>Contact Info</th>
+              <th style={{ textAlign: "left" }}>Team Name</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {teams.map((team, index) => (
-              <tr key={team.id}>
-                <td>{index + 1}</td>
-                <td>{team.name}</td>
-                {/* <td>{team.team_captain ?? "N/A"}</td> */}
-                <td>
-                  {team.manager.first_name} {team.manager.last_name}
-                </td>
-                <td style={{ textAlign: "left" }}>
-                  <p>Email: {team.contact_email}</p>
-                  <p>Phone: {team.contact_phone}</p>
-                </td>
-                <td>
+              <tr key={team.team_id}>
+                <td style={{ width: "100px" }}>{index + 1}</td>
+                <td style={{ textAlign: "left" }}>{team.team_name}</td>
+                <td style={{ width: "100px" }}>
                   <TeamStatusChip status={team.status} />
                 </td>
-                <td>
-                  <ViewButton onClick={() => handleView(team.id)}>
+                <td style={{ width: "200px" }}>
+                  <ViewButton
+                    style={{ marginRight: "10px" }}
+                    onClick={() => handleView(team.team_id)}
+                  >
                     View
                   </ViewButton>
+                  <DeleteButton onClick={() => handleView(team.team_id)}>
+                    Delete
+                  </DeleteButton>
                 </td>
               </tr>
             ))}
@@ -55,4 +50,4 @@ function TeamTable({ teams = [] }) {
   );
 }
 
-export default TeamTable;
+export default TeamTableManager;
