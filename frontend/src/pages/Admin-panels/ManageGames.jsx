@@ -61,14 +61,15 @@ function ManageGamesPage() {
     }
   };
 
-  const fetchAllGames = async () => {
+  const fetchAllGames = async (filters = {}) => {
     try {
       setIsFetchingGames(true);
-      const response = await fetchWithAuth("/api/games/games/");
+      const queryParams = new URLSearchParams(filters).toString();
+      const url = `/api/games/games/${queryParams ? `?${queryParams}` : ""}`;
+      const response = await fetchWithAuth(url);
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch games");
       if (response.ok) {
-        console.log("data", data.results);
         setGames(data.results);
       }
     } catch (error) {
