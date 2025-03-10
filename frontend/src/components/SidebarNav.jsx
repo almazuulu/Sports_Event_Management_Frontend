@@ -1,8 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import classes from "./SidebarNav.module.css";
 import Option from "./Option";
-import AuthContext from "../context/AuthContext";
 
 // icons
 import { FaUsers } from "react-icons/fa";
@@ -14,7 +13,7 @@ import { TbDeviceGamepad3 } from "react-icons/tb";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 function SidebarNav() {
-  const { user } = useContext(AuthContext);
+  const existingUser = JSON.parse(localStorage.getItem("user"));
 
   const [openSection, setOpenSection] = useState("dashboard");
 
@@ -25,7 +24,8 @@ function SidebarNav() {
   return (
     <nav className={classes.sidebar}>
       {SECTIONS.filter(
-        ({ allowedRoles }) => !allowedRoles || allowedRoles.includes(user.role)
+        ({ allowedRoles }) =>
+          !allowedRoles || allowedRoles.includes(existingUser.role)
       ).map(({ label, options, key }) => (
         <section key={key} className={classes.navigationSection}>
           <div
@@ -42,7 +42,7 @@ function SidebarNav() {
               {options
                 .filter(
                   ({ allowedRoles }) =>
-                    !allowedRoles || allowedRoles.includes(user.role)
+                    !allowedRoles || allowedRoles.includes(existingUser.role)
                 )
                 .map(({ Icon, title, path }) => (
                   <Option key={title} Icon={Icon} title={title} path={path} />
@@ -59,15 +59,29 @@ export default SidebarNav;
 
 const SECTIONS = [
   {
-    label: "MY TEAMS",
-    key: "my-teams",
+    // FOR TEAM_MANAGER
+    label: "ORGANIZE TEAMS",
+    key: "organize-teams",
     allowedRoles: ["team_manager"],
     options: [
       {
         Icon: FaUsers,
         title: "My Teams",
-        path: "/settings/my-teams",
+        path: "/settings/organize-teams",
         allowedRoles: ["team_manager"],
+      },
+    ],
+  },
+  {
+    label: "MY TEAMS",
+    key: "my-team",
+    allowedRoles: ["player"],
+    options: [
+      {
+        Icon: FaUsers,
+        title: "My Teams",
+        path: "/settings/my-team",
+        allowedRoles: ["player"],
       },
     ],
   },

@@ -32,6 +32,19 @@ function CreateUserForm({
     }));
   };
 
+  const handleClose = () => {
+    setFormData({
+      username: "",
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      password_confirm: "",
+      role: "public",
+    });
+    onClose();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -64,7 +77,7 @@ function CreateUserForm({
 
   return (
     <div className={classes.formContainer}>
-      <CgCloseO className={classes.closeIcon} onClick={onClose} />
+      <CgCloseO className={classes.closeIcon} onClick={handleClose} />
       <h1 className={classes.formHeader}>
         {initialData ? "Update User" : "Create New User"}
       </h1>

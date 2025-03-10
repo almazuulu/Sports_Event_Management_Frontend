@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import classes from "./ViewTeamForm.module.css";
 
 function ViewTeamForm({ initialData = null, allowEdit = false }) {
-  // console.log("initialData", initialData);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
-    logo: null,
+    logo: "",
     description: "",
-    manager: {},
-    captain: {},
+    manager: { first_name: "", last_name: "", email: "" },
+    // captain: "",
     contact_email: "",
     contact_phone: "",
     player_count: 0,
@@ -31,6 +30,16 @@ function ViewTeamForm({ initialData = null, allowEdit = false }) {
       setFormData((prevData) => ({
         ...prevData,
         ...initialData,
+        manager: initialData.manager || {
+          first_name: "",
+          last_name: "",
+          email: "",
+        },
+        captain: initialData.captain || {
+          first_name: "",
+          last_name: "",
+          email: "",
+        },
       }));
     }
   }, [initialData]);
@@ -117,7 +126,7 @@ function ViewTeamForm({ initialData = null, allowEdit = false }) {
           />
         </div>
 
-        {/* TEAM CAPTAIN'S INFORMATION */}
+        {/* TEAM MANAGER'S INFORMATION */}
         <hr />
         <label className={classes.label}>Team Manager Information</label>
         <div>

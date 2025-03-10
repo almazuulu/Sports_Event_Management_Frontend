@@ -1,20 +1,17 @@
-import { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-import AuthContext from "./context/AuthContext";
-
 function ProtectedRoute({ allowedRoles }) {
-  const { user } = useContext(AuthContext);
+  const existingUser = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
 
   // Redirect to home if not authenticated
-  if (!user) {
+  if (!existingUser) {
     return <Navigate to="/" replace state={{ from: location }} />;
   }
 
   // If allowedRoles is set and userRole is not in the list, deny access
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/home" replace />;
+  if (allowedRoles && !allowedRoles.includes(existingUser.role)) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

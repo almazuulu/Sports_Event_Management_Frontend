@@ -2,12 +2,14 @@ import { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext({
   user: {},
+  loading: false,
   login: () => {},
   logout: () => {},
 });
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -16,6 +18,7 @@ export function AuthContextProvider({ children }) {
 
   const login = async (credentials) => {
     try {
+      setLoading(true);
       const response = await fetch("http://127.0.0.1:8000/api/token/", {
         method: "POST",
         headers: {
@@ -61,6 +64,8 @@ export function AuthContextProvider({ children }) {
     } catch (error) {
       console.error("Login error:", error);
       return { success: false };
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,6 +76,7 @@ export function AuthContextProvider({ children }) {
 
   const authCtx = {
     user,
+    loading,
     login,
     logout,
   };

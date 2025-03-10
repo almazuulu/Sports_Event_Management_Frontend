@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import classes from "./TeamDetails.module.css";
 import { fetchWithAuth } from "../utils/FetchClient";
-import LoadingScreen from "../components/UI/LoadingScreen";
 import Header from "../components/Header";
 import ViewTeamForm from "../components/Teams/ViewTeamForm";
 import { getUserRole } from "../utils/Authentication";
@@ -12,11 +11,10 @@ import CreateButton from "../components/Button/CreateButton";
 import Modal from "../components/UI/Modal";
 import NewTeamForm from "../components/Teams/NewTeamForm";
 import PlayerTable from "../components/Players/PlayerTable";
-import SportEventTable from "../components/SportEvents/SportEventTable";
-import PlayerForm from "../components/Players/PlayerForm";
 import RegisterSportEventForm from "../components/SportEvents/RegisterSportEventForm";
 import JoinedSportEventTable from "../components/Teams/JoinedSportEventTable";
 import CreatePlayerForm from "../components/Players/CreatePlayerForm";
+import CancelButton from "../components/Button/CancelButton";
 
 function TeamDetailsPage() {
   const role = getUserRole();
@@ -37,8 +35,13 @@ function TeamDetailsPage() {
   const [isModalAddPlayerOpen, setIsModalAddPlayerOpen] = useState(false);
   const [isModalJoinSportEventsOpen, setIsModalJoinSportEventsOpen] =
     useState(false);
+  const [isModalCaptainOpen, setIsModalCaptainOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
   const [isFetchingSportEvents, setIsFetchingSportEvents] = useState(false);
+  const [isFetchingAvailPlayers, setIsFetchingAvailPlayers] = useState(false);
+  const [availPlayers, setAvailPlayers] = useState([]);
+  const [teamCaptain, setTeamCaptain] = useState("");
+  const [selectedCaptain, setSelectedCaptain] = useState("");
 
   const handleEdit = () => {
     setIsModalOpen((prevData) => !prevData);
@@ -50,6 +53,10 @@ function TeamDetailsPage() {
 
   const handleJoinSportEvents = () => {
     setIsModalJoinSportEventsOpen(true);
+  };
+
+  const handleChangeCaptain = () => {
+    setIsModalCaptainOpen(true);
   };
 
   const handleSubmit = async (formData) => {
@@ -80,7 +87,6 @@ function TeamDetailsPage() {
     const formDataToSend = {
       ...formData,
       team: teamId,
-      is_active: formData.is_active === "active" ? true : false,
     };
 
     try {
@@ -154,6 +160,29 @@ function TeamDetailsPage() {
     }
   };
 
+  const confirmTeamCaptain = async () => {
+    if (!selectedCaptain) toast.error("Please select a team captain!");
+    try {
+      const response = await fetchWithAuth(
+        `/api/teams/teams/${team.id}/set-captain/`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            player_id: selectedCaptain,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("New captain is appointed successfully!");
+        setIsModalCaptainOpen(false);
+        fetchPlayers();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const fetchTeam = useCallback(async () => {
     try {
       setIsFetchingTeam(true);
@@ -164,7 +193,9 @@ function TeamDetailsPage() {
         return toast.error("Failed to fetch team data");
       }
 
+      console.log(data);
       setTeam(data);
+      setTeamCaptain(data.team_captain);
     } catch (error) {
       console.error(error);
     } finally {
@@ -181,11 +212,10 @@ function TeamDetailsPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        return toast.error("Failed to fetch team data");
+        return toast.error("Failed to fetch players data");
       }
 
       if (response.ok) {
-        console.log("playes", data);
         setPlayers(data);
       }
     } catch (error) {
@@ -236,7 +266,28 @@ function TeamDetailsPage() {
       }
     };
 
+    const fetchAvailPlayersList = async () => {
+      try {
+        setIsFetchingAvailPlayers(true);
+        const response = await fetchWithAuth(
+          "/api/teams/teams/available-players/?available_only=true"
+        );
+
+        if (!response.ok) {
+          toast.error("Failed to fetch avail players data");
+        }
+
+        const data = await response.json();
+        setAvailPlayers(data.players);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsFetchingAvailPlayers(false);
+      }
+    };
+
     fetchSportEvents();
+    fetchAvailPlayersList();
   }, []);
 
   useEffect(() => {
@@ -244,9 +295,6 @@ function TeamDetailsPage() {
     fetchPlayers();
     fetchSportEventsJoined();
   }, [fetchTeam, fetchPlayers, fetchSportEventsJoined]);
-
-  if (isFetchingTeam && isFetchingJoinedSportEvents && isFetchingPlayers)
-    return <LoadingScreen />;
 
   return (
     <>
@@ -295,7 +343,7 @@ function TeamDetailsPage() {
               {((role === "admin" &&
                 window.location.pathname.includes("/manage-teams/")) ||
                 (role === "team_manager" &&
-                  window.location.pathname.includes("/my-teams/"))) && (
+                  window.location.pathname.includes("/organize-teams/"))) && (
                 <section className={classes.sectionButton}>
                   <CreateButton
                     style={{ marginRight: "10px" }}
@@ -305,14 +353,18 @@ function TeamDetailsPage() {
                   </CreateButton>
                 </section>
               )}
-              <ViewTeamForm initialData={team} />
+              {isFetchingTeam ? (
+                <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+              ) : (
+                <ViewTeamForm initialData={team} />
+              )}
             </>
           )}
 
           {activeTab === "players" && (
             <>
               {role === "team_manager" &&
-                window.location.pathname.includes("/my-teams/") && (
+                window.location.pathname.includes("/organize-teams/") && (
                   <section className={classes.sectionButton}>
                     <CreateButton
                       style={{ marginRight: "10px" }}
@@ -320,20 +372,25 @@ function TeamDetailsPage() {
                     >
                       Add Player
                     </CreateButton>
+                    <CancelButton onClick={() => handleChangeCaptain()}>
+                      {teamCaptain ? "Change Team Captain" : "Set Team Captain"}
+                    </CancelButton>
                   </section>
                 )}
-              {players.length === 0 && <p>No players available.</p>}
-              {players.length > 0 && (
+              {isFetchingPlayers ? (
+                <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+              ) : players.length === 0 ? (
+                <p>No players available.</p>
+              ) : (
                 <PlayerTable players={players} onRefetchData={fetchPlayers} />
               )}
             </>
           )}
 
-          {/* ONLY TEAM CAPTAIN AND ADMIN CAN VIEW */}
           {activeTab === "sport-events" && (
             <>
               {role === "team_manager" &&
-                window.location.pathname.includes("/my-teams/") && (
+                window.location.pathname.includes("/organize-teams/") && (
                   <section className={classes.sectionButton}>
                     <CreateButton
                       style={{ marginRight: "10px" }}
@@ -343,9 +400,15 @@ function TeamDetailsPage() {
                     </CreateButton>
                   </section>
                 )}
-              {sportEventsJoined.length === 0 && <p>No sport events joined.</p>}
-              {sportEventsJoined.length > 0 && (
-                <JoinedSportEventTable sportEventList={sportEventsJoined} />
+              {isFetchingJoinedSportEvents ? (
+                <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+              ) : sportEventsJoined.length === 0 ? (
+                <p>No sport events joined.</p>
+              ) : (
+                <JoinedSportEventTable
+                  sportEventList={sportEventsJoined}
+                  onRefetchData={fetchSportEventsJoined}
+                />
               )}
             </>
           )}
@@ -382,6 +445,7 @@ function TeamDetailsPage() {
           onSubmit={handleSubmitAddPlayer}
           onClose={() => setIsModalAddPlayerOpen(false)}
           loading={isSubmittingNewPlayer}
+          playerList={availPlayers}
         />
       </Modal>
 
@@ -397,6 +461,37 @@ function TeamDetailsPage() {
           onClose={() => setIsModalJoinSportEventsOpen(false)}
           sportEvents={sportEvents}
         />
+      </Modal>
+
+      {/* CHANGE CAPTAIN MODAL */}
+      <Modal
+        className={classes.modalContainer}
+        open={isModalCaptainOpen}
+        onClose={() => setIsModalCaptainOpen(false)}
+      >
+        <section style={{ display: "flex", flexDirection: "column" }}>
+          <label>Please select a player as team captain: </label>
+          <select
+            className={classes.select}
+            onChange={(e) => setSelectedCaptain(e.target.value)}
+          >
+            <option value="">-- Select a Player --</option>
+            {players.map((player) => (
+              <option key={player.id} value={player.id}>
+                {player.first_name} {player.last_name}
+              </option>
+            ))}
+          </select>
+        </section>
+        <CreateButton
+          style={{ marginRight: "10px" }}
+          onClick={confirmTeamCaptain}
+        >
+          Yes, Confirm
+        </CreateButton>
+        <CancelButton onClick={() => setIsModalCaptainOpen(false)}>
+          Cancel
+        </CancelButton>
       </Modal>
     </>
   );

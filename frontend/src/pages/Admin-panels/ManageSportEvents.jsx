@@ -107,7 +107,6 @@ function ManageSportEventsPage() {
     fetchSportEvents();
   }, []);
 
-
   return (
     <>
       <div className={classes.container}>
@@ -120,12 +119,13 @@ function ManageSportEventsPage() {
             />
           </section>
           <SportEventsFilter onFilter={fetchSportEvents} />
-          {sportEventList.length === 0 && (
+          {loading ? (
+            <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+          ) : sportEventList.length === 0 ? (
             <p style={{ color: "#000", textAlign: "center" }}>
               No sport events available at the moment.
             </p>
-          )}
-          {sportEventList.length > 0 && (
+          ) : (
             <SportEventTable
               sportEventList={sportEventList}
               onRefetchData={fetchSportEvents}

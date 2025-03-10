@@ -48,6 +48,7 @@ function ManageUsersPage() {
 
       if (response.ok) {
         toast.success("New user created successfully!");
+        setIsModalOpen(false);
         fetchUsersData();
       }
     } catch (error) {
@@ -97,23 +98,25 @@ function ManageUsersPage() {
     fetchUserRoles();
   }, []);
 
-  if (isFetching) return <LoadingScreen />;
-
   return (
     <>
       <div className={classes.container}>
-        <Header title={"Mange Users"} />
+        <Header title={"Manage Users"} />
         <div className={classes.card}>
           <section className={classes.sectionButton}>
             <CreateButton onClick={handleCreateNew}>
               Create New User
             </CreateButton>
           </section>
-          <UserTable
-            userList={users}
-            onRefetchData={fetchUsersData}
-            roles={roles}
-          />
+          {isFetching ? (
+            <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+          ) : (
+            <UserTable
+              userList={users}
+              onRefetchData={fetchUsersData}
+              roles={roles}
+            />
+          )}
         </div>
       </div>
 

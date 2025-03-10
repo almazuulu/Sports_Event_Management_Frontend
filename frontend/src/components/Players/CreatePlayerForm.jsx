@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import classes from "./CreatePlayerForm.module.css";
 import { CgCloseO } from "react-icons/cg";
 
-function CreatePlayerForm({ onSubmit, loading, onClose }) {
+function CreatePlayerForm({ onSubmit, loading, onClose, playerList = [] }) {
   const [formData, setFormData] = useState({
-    userID: "",
+    user: "",
     jersey_number: "",
     position: "",
     date_of_birth: "",
@@ -27,7 +27,7 @@ function CreatePlayerForm({ onSubmit, loading, onClose }) {
 
       if (res.success) {
         setFormData({
-          userID: "",
+          user: "",
           jersey_number: "",
           position: "",
           date_of_birth: "",
@@ -43,7 +43,7 @@ function CreatePlayerForm({ onSubmit, loading, onClose }) {
 
   const handleClose = () => {
     setFormData({
-      userID: "",
+      user: "",
       jersey_number: "",
       position: "",
       date_of_birth: "",
@@ -60,11 +60,21 @@ function CreatePlayerForm({ onSubmit, loading, onClose }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label className={classes.label}>
-            User ID <span>*</span>
+            Player Name <span>*</span>
           </label>
-          {/* TODO SELECT */}
-          {/* <select>
-          </select> */}
+          <select
+            name="user"       
+            value={formData.user}
+            onChange={handleChange}
+            className={classes.select}
+            required
+          >
+            {playerList.map((player) => (
+              <option key={player.player_id} value={player.player_id}>
+                {player.first_name} {player.last_name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>

@@ -1,15 +1,22 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
+import { AuthContextProvider } from "./context/AuthContext";
+
+// PAGES LAYOUT
 import RootLayout from "./pages/RootLayout";
-import LoginPage from "./pages/LoginPage";
-import ProtectedRoute from "./ProtectedRoute";
+import PageRootLayout from "./pages/PageRoot";
 import PublicRoute from "./PublicRoute";
+import ProtectedRoute from "./ProtectedRoute";
+import SettingsRootLayout from "./pages/SettingsRoot";
+
+// PAGES
+import LoginPage from "./pages/LoginPage";
 import UsersPage from "./pages/Users";
 import EventsPage from "./pages/Events";
 import MyProfilePage from "./pages/MyProfile";
 import ChangePasswordPage from "./pages/ChangePassword";
 import SportEventsPage from "./pages/SportEvents";
-import PageRootLayout from "./pages/PageRoot";
 import LogoutPage from "./pages/Logout";
 import TeamsPage from "./pages/Teams";
 import MyTeamsPage from "./pages/MyTeams";
@@ -23,9 +30,6 @@ import DashboardPage from "./pages/PublicDashboard/Dashboard";
 import FixturesPage from "./pages/PublicDashboard/Fixtures";
 import ResultsPage from "./pages/PublicDashboard/Results";
 import StatsPage from "./pages/PublicDashboard/Stats";
-import { AuthContextProvider } from "./context/AuthContext";
-import { ToastContainer } from "react-toastify";
-import SettingsRootLayout from "./pages/SettingsRoot";
 import ManageUsersPage from "./pages/Admin-panels/ManageUsers";
 import ManageTeamsPage from "./pages/Admin-panels/ManageTeams";
 import ManageGamesPage from "./pages/Admin-panels/ManageGames";
@@ -84,6 +88,7 @@ const router = createBrowserRouter([
             element: <SettingsRootLayout />,
             children: [
               {
+                // ADMIN
                 element: <ProtectedRoute allowedRoles={["admin"]} />,
                 children: [
                   {
@@ -123,10 +128,31 @@ const router = createBrowserRouter([
                 ],
               },
               {
+                // TEAM MANAGER
                 element: <ProtectedRoute allowedRoles={["team_manager"]} />,
                 children: [
                   {
-                    path: "my-teams",
+                    path: "organize-teams",
+                    element: <PageRootLayout />,
+                    children: [
+                      {
+                        index: true,
+                        element: <MyTeamsPage />,
+                      },
+                      {
+                        path: ":teamId",
+                        element: <TeamDetailsPage />,
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                // PLAYER
+                element: <ProtectedRoute allowedRoles={["player"]} />,
+                children: [
+                  {
+                    path: "my-team",
                     element: <PageRootLayout />,
                     children: [
                       {
@@ -153,91 +179,10 @@ const router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   element: <ProtectedRoute />,
-      //   children: [
-      //     {
-      //       path: "events",
-      //       element: <PageRootLayout />,
-      //       children: [
-      //         {
-      //           index: true,
-      //           element: <EventsPage />,
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       path: "sport-events",
-      //       element: <PageRootLayout />,
-      //       children: [
-      //         {
-      //           index: true,
-      //           element: <SportEventsPage />,
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       path: "teams",
-      //       element: <PageRootLayout />,
-      //       children: [
-      //         {
-      //           index: true,
-      //           element: <TeamsPage />,
-      //         },
-      //         {
-      //           path: ":teamId",
-      //           element: <TeamDetailsPage />,
-      //         },
-      //         {
-      //           path: "players",
-      //           element: <PlayersPage />,
-      //         },
-      //         {
-      //           path: "my-teams",
-      //           element: <ProtectedRoute allowedRoles={["team_captain"]} />,
-      //           children: [
-      //             { index: true, element: <MyTeamsPage /> },
-      //             {
-      //               path: ":teamId",
-      //               element: <TeamDetailsPage />,
-      //             },
-      //           ],
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       path: "admin-panel",
-      //       element: <ProtectedRoute allowedRoles={["admin"]} />,
-      //       children: [
-      //         {
-      //           path: "manage-team-registrations",
-      //           element: <ManageTeamRegistrationsPage />,
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       path: "settings",
-      //       element: <PageRootLayout />,
-      //       children: [
-      //         {
-      //           path: "my-profile",
-      //           element: <MyProfilePage />,
-      //         },
-      //         {
-      //           path: "change-password",
-      //           element: <ChangePasswordPage />,
-      //         },
-      //         {
-      //           path: "logout",
-      //           element: <LogoutPage />,
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
     ],
   },
 ]);
+
 function App() {
   return (
     <AuthContextProvider>
