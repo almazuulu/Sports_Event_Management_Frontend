@@ -178,7 +178,7 @@ console.log("formattedEvents",formattedEvents)
           <FaCalendarAlt className={styles.icon} />
           <h2>Upcoming Matches</h2>
         </div>
-      </div>
+      </div>   
     </div>
   );
 }
