@@ -34,7 +34,7 @@ import ManageUsersPage from "./pages/Admin-panels/ManageUsers";
 import ManageTeamsPage from "./pages/Admin-panels/ManageTeams";
 import ManageGamesPage from "./pages/Admin-panels/ManageGames";
 import TeamsdetailPage from "../../frontend/src/pages/PublicDashboard/TeamDetails";
-import PublicTeamsPage from "../../frontend/src/pages/PublicDashboard/Teams";
+import PublicTeamsPage from "../../frontend/src/pages/PublicDashboard/Team";
 
 
 

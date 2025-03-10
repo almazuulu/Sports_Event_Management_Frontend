@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import styles from "./Teams.module.css";
+import styles from "./Team.module.css";
 import TeamTable from "./TeamCard";
 
 function TeamsPage() {

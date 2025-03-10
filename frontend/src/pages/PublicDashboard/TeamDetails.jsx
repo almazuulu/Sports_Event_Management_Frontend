@@ -1,6 +1,6 @@
 import styles from "../../../../frontend/src/pages/PublicDashboard/TeamDetails.module.css";
 import { useParams } from "react-router-dom";  
-import team1 from "../../../../frontend/src/assets/images/team1.jpg";
+import team1 from "../../../../frontend/src/assets/images/image1.jpg";
 import { useCallback, useEffect, useState } from "react";
 function TeamsdetailPage() {
     const { teamId } = useParams();
@@ -85,7 +85,7 @@ function TeamsdetailPage() {
                       <h3>Description : {teamdetails.description} </h3>
                       <h3>Contact Phone : {teamdetails.contact_phone} </h3>
                       <h3>Email : {teamdetails.contact_email} </h3>
-                      <h3>Manager : {teamdetails.manager.first_name} {teamdetails.manager.last_name} </h3>
+                      {/* <h3>Manager : {teamdetails.manager.first_name} {teamdetails.manager.last_name} </h3> */}
                       
                     </div>
                     
