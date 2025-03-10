@@ -12,17 +12,13 @@ import SettingsRootLayout from "./pages/SettingsRoot";
 
 // PAGES
 import LoginPage from "./pages/LoginPage";
-import UsersPage from "./pages/Users";
-import EventsPage from "./pages/Events";
 import MyProfilePage from "./pages/MyProfile";
 import ChangePasswordPage from "./pages/ChangePassword";
-import SportEventsPage from "./pages/SportEvents";
 import LogoutPage from "./pages/Logout";
 import TeamsPage from "./pages/Teams";
 import MyTeamsPage from "./pages/MyTeams";
 import TeamDetailsPage from "./pages/TeamDetails";
 import PlayersPage from "./pages/Players";
-import PlayerDetailsPage from "./pages/PlayerDetails";
 import ManageEventsPage from "./pages/Admin-panels/ManageEvents";
 import ManageSportEventsPage from "./pages/Admin-panels/ManageSportEvents";
 import ManageTeamRegistrationsPage from "./pages/Admin-panels/ManageTeamRegistrations";

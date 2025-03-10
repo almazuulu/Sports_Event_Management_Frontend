@@ -23,6 +23,19 @@ function CreateGameForm({
     scorekeeper: "",
   });
 
+  const handleClose = () => {
+    setFormData({
+      sport_event: "",
+      name: "",
+      description: "",
+      location: "",
+      start_datetime: "",
+      end_datetime: "",
+      scorekeeper: "",
+    });
+    onClose();
+  };
+
   const handleChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -54,7 +67,7 @@ function CreateGameForm({
 
   return (
     <section className={classes.formContainer}>
-      <CgCloseO className={classes.closeIcon} onClick={onClose} />
+      <CgCloseO className={classes.closeIcon} onClick={handleClose} />
       <h1 className={classes.formHeader}>
         {initialData ? "Update Game" : "Create New Game"}
       </h1>
@@ -130,8 +143,8 @@ function CreateGameForm({
             </label>
             <input
               type="datetime-local"
-              name="start_date"
-              value={formData.start_date}
+              name="start_datetime"
+              value={formData.start_datetime}
               onChange={handleChange}
               className={classes.input}
               required
@@ -143,8 +156,8 @@ function CreateGameForm({
             </label>
             <input
               type="datetime-local"
-              name="end_date"
-              value={formData.end_date}
+              name="end_datetime"
+              value={formData.end_datetime}
               onChange={handleChange}
               className={classes.input}
               required

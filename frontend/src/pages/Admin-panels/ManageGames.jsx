@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./ManageGames.module.css";
 import Header from "../../components/Header";
 import { fetchWithAuth } from "../../utils/FetchClient";
-import { toast } from "react-toastify";
 import CreateButton from "../../components/Button/CreateButton";
-import LoadingScreen from "../../components/UI/LoadingScreen";
 import Modal from "../../components/UI/Modal";
 import CreateGameForm from "../../components/Games/CreateGameForm";
+import AdminGamesTable from "./AdminGamesTable";
 
 function ManageGamesPage() {
   const [games, setGames] = useState([]);
@@ -68,6 +68,7 @@ function ManageGamesPage() {
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch games");
       if (response.ok) {
+        console.log("data", data.results);
         setGames(data.results);
       }
     } catch (error) {
@@ -98,8 +99,6 @@ function ManageGamesPage() {
     fetchSportEvents();
   }, []);
 
-  if (isFetchingGames) return <LoadingScreen />;
-
   return (
     <>
       <div className={classes.container}>
@@ -110,12 +109,15 @@ function ManageGamesPage() {
               Create New Game
             </CreateButton>
           </section>
-          {games.length === 0 && (
+          {isFetchingGames ? (
+            <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+          ) : games.length === 0 ? (
             <p style={{ color: "#000", textAlign: "center" }}>
               No games available at the moment.
             </p>
+          ) : (
+            <AdminGamesTable gamesList={games} />
           )}
-          {/* {games.length > 0 && <TeamTable teams={teams} />} */}
         </div>
       </div>
 
