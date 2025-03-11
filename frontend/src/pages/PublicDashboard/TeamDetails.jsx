@@ -4,6 +4,7 @@ import team1 from "../../../../frontend/src/assets/images/image1.jpg";
 import { useCallback, useEffect, useState } from "react";
 import PlayerCard from "./PlayerCard";
 import Fixtures from "./Fixtures";
+import Results from "./Results";
 function TeamsdetailPage() {
     const { teamId } = useParams();
     const [teamdetails, setTeamdetails] = useState([]);
@@ -147,7 +148,7 @@ function TeamsdetailPage() {
                 {activeSection === "Results" && (
                     <div className={styles.results}>
                         <h3>Recent Results</h3>
-                        <p>Results details will go here...</p>
+                       <Results/>
                     </div>
                 )}
             </div>
