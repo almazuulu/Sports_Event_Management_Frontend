@@ -161,7 +161,7 @@ function TeamsdetailPage() {
                 )}
                 {activeSection === "Results" && (
                     <div className={styles.results}>
-                        <h3>Recent Results</h3>
+                       
                        <Results/>
                     </div>
                 )}
