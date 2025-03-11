@@ -8,13 +8,11 @@ import Results from "./Results";
 function TeamsdetailPage() {
     const { teamId } = useParams();
     const [teamdetails, setTeamdetails] = useState([]);
+    const [gamedata, setGamedata] = useState([]);
     const [players, setPlayers] = useState([]);
-    const [fixtures, setFixtures] = useState([]);
     const [isFetchingPlayers, setIsFetchingPlayers] = useState(false);
-
+    const [isFetchingGames, setIsFetchingGames] = useState(false);
     const [isFetchingTeam, setIsFetchingTeam] = useState(false);
-    const [isFixtures, setIsFixtures] = useState(false);
-
     const [activeSection, setActiveSection] = useState("Overview");
 
     const fetchTeam = useCallback(async () => {
@@ -54,28 +52,35 @@ function TeamsdetailPage() {
             setIsFetchingPlayers(false);
         }
     }, [teamId]);
-    const fetchFixtures = useCallback(async () => {
-        setIsFixtures(true);
+   
+
+
+    const fetchGames = useCallback(async () => {
+        setIsFetchingGames(true);
+
         try {
-
-            const response = await fetch(`http://127.0.0.1:8000/api/teams/teams/${teamId}/registrations/?status=approved`);
+            const response = await fetch(`http://127.0.0.1:8000/api/games/game-teams/?team=${teamId}`);
             const data = await response.json();
-            console.log("fixtures data", data)
-            if (!response.ok) {
-                return toast.error("Failed to fetch team data");
-            }
 
-            setFixtures(data);
+            if (!response.ok) {
+                return toast.error("Failed to fetch Games");
+            }
+            setGamedata(Array.isArray(data.results) ? data.results : []);
+            console.log("gamedata",gamedata)
         } catch (error) {
             console.error(error);
         } finally {
-            setIsFixtures(false);
+            setIsFetchingGames(false);
         }
     }, [teamId]);
+
+
+
     useEffect(() => {
         fetchTeam();
         fetchPlayers();
-        fetchFixtures();
+        fetchGames();
+       
     }, []);
 
 
@@ -95,7 +100,7 @@ function TeamsdetailPage() {
 
                 {/* Navigation Menu */}
                 <div className={styles.navMenu}>
-                    {["Overview", "Squad", "Fixtures", "Results"].map((section) => (
+                    {["Overview", "Squad", "Games", "Results"].map((section) => (
                         <button
                             key={section}
                             className={activeSection === section ? styles.activeButton : ""}
@@ -139,10 +144,19 @@ function TeamsdetailPage() {
                         )}
                     </div>
                 )}
-                {activeSection === "Fixtures" && (
-                    <div className={styles.fixtures}>
 
-                        <Fixtures />
+                {activeSection === "Games" && (
+                    <div className={styles.teamContainer}>
+
+
+                        {isFetchingGames ? (
+                            <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+                        ) : gamedata?.length === 0 ? (
+                            <p style={{ color: "#000", textAlign: "center" }} >No Games available.</p>
+                        ) : (
+                            gamedata?.map((player) => (
+                                <Fixtures player={player} />))
+                        )}
                     </div>
                 )}
                 {activeSection === "Results" && (
