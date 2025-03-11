@@ -73,7 +73,7 @@
     padding: 20px;
     background: #f5f5f5;
     border-radius: 10px;
-    min-height: 200px;
+    min-height: 450px;
 }
 
 /* Different Sections */
@@ -88,3 +88,13 @@
 .overview h2, .squad h2, .fixtures h2, .results h2 {
     color: red;
 }
+
+
+.teamContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+  }
+  

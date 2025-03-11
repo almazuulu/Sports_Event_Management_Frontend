@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./TeamCard.module.css";
- import logo1 from "../../../../frontend/src/assets/images/image1.jpg"
+ import logo1 from "../../../../frontend/src/assets/images/logo1.jpg"
 
 const TeamTable = ({ team }) => {
   return (
