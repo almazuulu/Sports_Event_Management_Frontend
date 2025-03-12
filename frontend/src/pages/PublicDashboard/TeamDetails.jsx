@@ -18,7 +18,6 @@ function TeamsdetailPage() {
     const fetchTeam = useCallback(async () => {
         setIsFetchingTeam(true);
 
-        console.log(teamId)
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/teams/teams/${teamId}/`);
             const data = await response.json();
@@ -66,7 +65,6 @@ function TeamsdetailPage() {
                 return toast.error("Failed to fetch Games");
             }
             setGamedata(Array.isArray(data.results) ? data.results : []);
-            console.log("gamedata",gamedata)
         } catch (error) {
             console.error(error);
         } finally {

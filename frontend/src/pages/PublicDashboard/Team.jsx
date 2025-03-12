@@ -35,7 +35,7 @@ function TeamsPage() {
    <div className={styles.container}>
       {/* Banner Section */}
       <header className={styles.banner}>
-        <h1>Teams</h1>
+        <h1>🏆 Teams</h1>
       </header>
 
       {/* Team Cards Grid */}

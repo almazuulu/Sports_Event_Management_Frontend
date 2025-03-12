@@ -3,7 +3,7 @@ import styles from "./PlayerCard.module.css";
 import player1 from "../../../../frontend/src/assets/images/player1.jpg";
 
 const PlayerCard = ({ player }) => {
-    console.log("player?",player)
+
     
   return (
     <div className={styles.playerCard}>

@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./Fixtures.module.css";
 
 const Fixtures = ({ player }) => {
-console.log("game",player)
   return (
     <div className={styles.resultsContainer}>
     <h2 className={styles.title}>Games</h2>
