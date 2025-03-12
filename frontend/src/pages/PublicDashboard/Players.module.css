@@ -84,7 +84,7 @@
   /* 🌟 Table Header */
   .table thead {
     background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: white;
+    color:black;
     font-size: 18px;
   }
   
@@ -109,16 +109,34 @@
     text-align: center; /* Center align table data */
   }
   
-  /* 🏆 Player Image */
- /* 🏆 Player Image - Small Circle */
+/* 🏆 Player Container - Fixed Image Position */
+.playerContainer {
+ 
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px; /* Adds spacing between image & name */
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
+/* 🏆 Player Image - Fixed Position */
 .playerImage {
-  width: 35px; /* Reduced size */
-  height: 35px; /* Ensures perfect circle */
+  flex-shrink: 0; /* Prevents shrinking */
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   object-fit: cover;
-  vertical-align: middle;
-  border: 2px solid #ddd; /* Optional subtle border */
+  border: 2px solid #ddd;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* 🎖 Player Name - Ensures Proper Spacing */
+.playerName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  overflow: hidden; /* Prevents long names from breaking layout */
+  text-overflow: ellipsis; /* Adds "..." for very long names */
+  flex-grow: 1; /* Takes remaining space */
 }
 
   
@@ -155,14 +173,13 @@
       width: 80%;
     }
   
-    .table thead th {
-      font-size: 16px;
-      padding: 12px;
-    }
   
-    .table tbody td {
-      font-size: 14px;
-      padding: 12px;
-    }
   }
-  
+  .clickableRow {
+    cursor: pointer;
+   
+}
+
+.clickableRow:hover {
+    background: #d6d7f7;
+}
