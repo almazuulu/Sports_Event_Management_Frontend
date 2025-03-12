@@ -18,7 +18,6 @@ function TeamsPage() {
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch teams");
       if (response.ok) {
-        console.log(data);
         setTeams(data);
       }
     } catch (error) {

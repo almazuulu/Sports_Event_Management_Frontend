@@ -36,7 +36,7 @@ import ManageGamesPage from "./pages/Admin-panels/ManageGames";
 import TeamsdetailPage from "../../frontend/src/pages/PublicDashboard/TeamDetails";
 import PublicTeamsPage from "../../frontend/src/pages/PublicDashboard/Team";
 
-
+import PlayerList from "../../frontend/src/pages/PublicDashboard/Players";
 
 const router = createBrowserRouter([
   {
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
           },
           {
             path: "players",
-            element: <PlayersPage />,
+            element: <PlayerList />,
           },
         ],
       },

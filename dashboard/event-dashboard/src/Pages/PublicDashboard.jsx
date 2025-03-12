@@ -32,7 +32,7 @@ function PublicDashboard() {
       }
 
       const data = await response.json();
-      console.log(data);
+     
 
       // Format the dates in the event list
       const formattedEvents = data.results.map(event => ({
@@ -41,7 +41,6 @@ function PublicDashboard() {
         end_date: formatDate(event.end_date),
         year: getYear(event.start_date), 
       }));
-console.log("formattedEvents",formattedEvents)
       setEvents(formattedEvents);
     } catch (error) {
       console.error("Error:", error);
