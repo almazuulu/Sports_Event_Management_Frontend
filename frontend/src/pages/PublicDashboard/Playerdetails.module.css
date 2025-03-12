@@ -1,34 +1,28 @@
 /* General Styles */
-
-
 .playerProfile {
     font-family: "Poppins", sans-serif;
     max-width: 900px;
-    max-height: 100vh;
     margin: auto;
     background-color: #f9fafb;
-    
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-    min-height: 90vh; /* Makes it take full viewport height */
-    padding-bottom: 50px; /* Adds space at the bottom */
+    min-height: 90vh;
+    padding-bottom: 50px;
     padding: 20px;
 }
-
-
 
 /* Banner Section */
 .banner {
     position: relative;
     background: linear-gradient(135deg, #d60000, #ff4d4d);
-    height: 220px;
+    height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
-    padding-top: 50px;
+    flex-direction: column;
 }
 
 .bannerOverlay {
@@ -47,29 +41,32 @@
     border: 4px solid white;
     object-fit: cover;
     position: absolute;
-    top: 140px;
+    top: 160px;
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Player Name in Large Letters */
 .playerName {
-    margin-top: 80px;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 36px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 20px;
+ 
 }
 
 .highlight {
-    color: #FFD700;
+    color: #efce18;
 }
 
-/* Personal Details */
+/* Simple Personal Details Section */
 .detailsContainer {
-    margin: 20px;
+    margin: 30px 20px;
     padding: 20px;
     border-radius: 8px;
-    background: #F8F8F8;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .sectionTitle {
@@ -77,31 +74,28 @@
     font-weight: bold;
     color: #333;
     margin-bottom: 15px;
-}
-
-.detailsGrid {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.detailCard {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    flex: 1;
-    min-width: 120px;
     text-align: center;
+    border-bottom: 2px solid #d60000;
+    padding-bottom: 10px;
+}
+
+/* Simple List Style for Personal Details */
+.detailsList {
+    list-style: none;
+    padding: 50px;
+    margin: 0;
+    
+}
+
+.detailsList li {
     font-size: 16px;
-    font-weight: 500;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease-in-out;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
 }
-.detailCard p {
- color: #d9534f;   
-}
-.detailCard:hover {
-    transform: scale(1.05);
+
+.detailsList li strong {
+    color: black
 }
 
 /* Playing Career Table */
