@@ -46,7 +46,7 @@ const PlayerProfile = () => {
                     <li><i className="fas fa-user"></i> <strong>Name: &nbsp; &nbsp; {player.first_name} {player.last_name}</strong></li>
                     <li><i className="fas fa-calendar"></i> <strong>Date of Birth: &nbsp; &nbsp; {player.date_of_birth}</strong></li>
                     <li><i className="fas fa-tshirt"></i> <strong>Jersey Number: &nbsp; &nbsp;{player.jersey_number}</strong></li>
-                    
+                    <li><i className="fas fa-flag"></i> <strong>Email:&nbsp; &nbsp; {player.user_email}</strong></li>
                 </ul>
             </div>
 
@@ -59,7 +59,7 @@ const PlayerProfile = () => {
                             <th>Team</th>
                             <th>Position</th>
                             <th>Joined Date</th>
-                            <th>Email</th>
+                           
                         </tr>
                     </thead>
                     <tbody>
@@ -67,7 +67,7 @@ const PlayerProfile = () => {
                             <td>{player.team_name}</td>
                             <td>{player.position}</td>
                             <td>{player.joined_date}</td>
-                            <td>{player.user_email}</td>
+                           
                         </tr>
                     </tbody>
                 </table>
