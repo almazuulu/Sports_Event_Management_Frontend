@@ -25,6 +25,9 @@ const HeaderNavBar = () => {
         <section className={classes.navbar}>
           <img src={logo} alt="UST Logo" />
         </section>
+        {/* <section>
+          <p>SPORT EVENTS MANAGEMENT</p>
+        </section> */}
         {!user && (
           <NavLink to={"/login"} className={classes.loginContainer}>
             <BiLogInCircle className={classes.icon} />

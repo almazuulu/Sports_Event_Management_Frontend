@@ -21,7 +21,7 @@ export function formatToShortDateTime(dateString) {
     day: "numeric", // "1"
     hour: "2-digit",
     minute: "2-digit",
-    hour12: false, // Use 12-hour format with AM/PM
+    hour12: true, // Use 12-hour format with AM/PM
   });
 }
 

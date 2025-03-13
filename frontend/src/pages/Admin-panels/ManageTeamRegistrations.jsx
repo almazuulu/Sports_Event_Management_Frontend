@@ -13,6 +13,8 @@ function ManageTeamRegistrationsPage() {
   const [isFetchingTeamReg, setIsFetchingTeamReg] = useState(false);
   const [activeTab, setActiveTab] = useState("pending");
 
+  const tabs = ["pending", "approved", "rejected"];
+
   const fetchRegistration = async () => {
     try {
       setIsFetchingTeamReg(true);
@@ -52,48 +54,30 @@ function ManageTeamRegistrationsPage() {
         <Header title={"Manage Registrations"} />
 
         <div className={classes.tabsContainer}>
-          <button
-            type="button"
-            className={
-              activeTab === "pending"
-                ? `${classes.tabsButton} ${classes.active}`
-                : classes.tabsButton
-            }
-            onClick={() => setActiveTab("pending")}
-          >
-            Pending
-          </button>
-          <button
-            type="button"
-            className={
-              activeTab === "approved"
-                ? `${classes.tabsButton} ${classes.active}`
-                : classes.tabsButton
-            }
-            onClick={() => setActiveTab("approved")}
-          >
-            Approved
-          </button>
-          <button
-            type="button"
-            className={
-              activeTab === "rejected"
-                ? `${classes.tabsButton} ${classes.active}`
-                : classes.tabsButton
-            }
-            onClick={() => setActiveTab("rejected")}
-          >
-            Rejected
-          </button>
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              className={`${classes.tabsButton} ${
+                activeTab === tab ? classes.active : ""
+              }`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </div>
 
         <div className={classes.card}>
           {activeTab === "pending" && (
             <>
-              {teamRegPending.length === 0 && (
-                <p>No pending registration at the moment.</p>
-              )}
-              {teamRegPending.length > 0 && (
+              {isFetchingTeamReg ? (
+                <p className="loadingText">Loading...</p>
+              ) : teamRegPending.length === 0 ? (
+                <p className="loadingText">
+                  No pending registration at the moment.
+                </p>
+              ) : (
                 <TeamRegistrationTable
                   teamRegList={teamRegPending}
                   onRefetchData={fetchRegistration}
@@ -104,20 +88,18 @@ function ManageTeamRegistrationsPage() {
           )}
           {activeTab === "approved" && (
             <>
-              {teamRegApproved.length === 0 && (
+              {teamRegApproved.length === 0 ? (
                 <p>No approved registration at the moment.</p>
-              )}
-              {teamRegApproved.length > 0 && (
+              ) : (
                 <TeamRegistrationTable teamRegList={teamRegApproved} />
               )}
             </>
           )}
           {activeTab === "rejected" && (
             <>
-              {teamRegRejected.length === 0 && (
+              {teamRegRejected.length === 0 ? (
                 <p>No rejected registration at the moment.</p>
-              )}
-              {teamRegRejected.length > 0 && (
+              ) : (
                 <TeamRegistrationTable teamRegList={teamRegRejected} />
               )}
             </>
