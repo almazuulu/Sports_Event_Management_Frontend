@@ -157,9 +157,10 @@ function TeamsdetailPage() {
           </div>
         )}
         {activeSection === "Results" && (
-          <div className={styles.results}>
-            <Results />
-          </div>
+          <p className="loadingText">No results at the moment</p>
+          // <div className={styles.results}>
+          //   <Results />
+          // </div>
         )}
       </div>
     </div>

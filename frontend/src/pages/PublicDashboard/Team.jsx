@@ -3,25 +3,27 @@ import { useNavigate } from "react-router-dom";
 
 import styles from "./Team.module.css";
 import TeamTable from "./TeamCard";
-import LoadingScreen from "../../components/UI/LoadingScreen";
+import Hero from "../../components/Teams/Hero";
+import TeamsFilter from "../../components/Teams/TeamsFilter";
+import { fetchWithoutAuth } from "../../utils/FetchClient";
+import { toast } from "react-toastify";
 
 function TeamsPage() {
   const [isFetchingTeams, setIsFetchingTeams] = useState(false);
   const [data, setTeamdata] = useState([]);
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
 
-  const fetchAllTeams = async () => {
+  const fetchAllTeams = async (filters = {}) => {
     try {
       setIsFetchingTeams(true);
-      const response = await fetch("http://127.0.0.1:8000/api/teams/teams/");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const jsonData = await response.json();
-      setTeamdata(jsonData.results);
+      const queryParams = new URLSearchParams(filters).toString();
+      const url = `/api/teams/teams/${queryParams ? `?${queryParams}` : ""}`;
+      const response = await fetchWithoutAuth(url);
+      const data = await response.json();
+      if (!response.ok) return toast.error("Failed to fetch teams");
+      setTeamdata(data.results);
     } catch (error) {
-      setError(error.message);
+      console.error(error);
     } finally {
       setIsFetchingTeams(false);
     }
@@ -31,28 +33,24 @@ function TeamsPage() {
     fetchAllTeams();
   }, []);
 
-  if (isFetchingTeams) return <LoadingScreen />;
-
   return (
-    <div className={styles.container}>
-      {/* Banner Section */}
-      <header className={styles.banner}>
-        <h1>🏆 Teams</h1>
-      </header>
-
-      {/* Team Cards Grid */}
-      <section className={styles.teamGrid}>
-        {data.map((team) => (
-          <div
-            key={team.id}
-            onClick={() => navigate(`${team.id}`)}
-            style={{ cursor: "pointer" }}
-          >
-            <TeamTable team={team} />
-          </div>
-        ))}
-      </section>
-    </div>
+    <>
+      <Hero />
+      <div className={styles.container}>
+        <TeamsFilter onFilter={fetchAllTeams} />
+        <section className={styles.teamGrid}>
+          {data.map((team) => (
+            <div
+              key={team.id}
+              onClick={() => navigate(`${team.id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              <TeamTable team={team} />
+            </div>
+          ))}
+        </section>
+      </div>
+    </>
   );
 }
 

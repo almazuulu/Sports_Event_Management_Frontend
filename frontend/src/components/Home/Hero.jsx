@@ -8,7 +8,7 @@ function Hero() {
       <div className={classes.overlay}>
         <h1 className={classes.title}>Welcome to the Sport Events Management</h1>
         <p className={classes.subtitle}>
-          Stay updated with the latest matches & rankings
+          Stay updated with the latest matches & rankings!
         </p>
       </div>
     </div>
