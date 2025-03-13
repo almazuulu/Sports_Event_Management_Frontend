@@ -41,7 +41,7 @@ function AllGames({ loading, games = [] }) {
                 alt={match.team2}
                 className={classes.logo}
               /> */}
-                <span>{match.teams[1].team_name}</span>
+                <span>{match.teams[0].team_name}</span>
               </div>
             </div>
             <p className={classes.venue}>📍 {match.location}</p>
