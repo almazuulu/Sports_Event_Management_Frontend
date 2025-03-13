@@ -1,69 +1,102 @@
+import { useState } from "react";
+import Hero from "../../components/Results/Hero";
 import styles from "./Results.module.css";
 
+const resultsData = [
+  {
+    id: 1,
+    date: "2025-03-12",
+    team1: "Lions",
+    logo1: "https://placehold.co/400",
+    score1: 3,
+    team2: "Tigers",
+    logo2: "https://placehold.co/400",
+    score2: 1,
+    venue: "Arena Park",
+  },
+  {
+    id: 2,
+    date: "2025-03-11",
+    team1: "Eagles",
+    logo1: "https://placehold.co/400",
+    score1: 2,
+    team2: "Wolves",
+    logo2: "https://placehold.co/400",
+    score2: 2,
+    venue: "City Stadium",
+  },
+  {
+    id: 3,
+    date: "2025-03-10",
+    team1: "Panthers",
+    logo1: "https://placehold.co/400",
+    score1: 0,
+    team2: "Sharks",
+    logo2: "https://placehold.co/400",
+    score2: 1,
+    venue: "National Stadium",
+  },
+];
+
 const MatchResults = () => {
-  const results = [
-    {
-      date: "March 10, 2025",
-      time: "19:00",
-      team1: { name: "Manchester United", score: 2 },
-      team2: { name: "Chelsea", score: 1 },
-      status: "Finished",
-    },
-    {
-      date: "March 12, 2025",
-      time: "21:00",
-      team1: { name: "Liverpool", score: 1 },
-      team2: { name: "Manchester City", score: 3 },
-      status: "Finished",
-    },
-  ];
+  const [selectedDate, setSelectedDate] = useState("");
 
+  const filteredResults = selectedDate
+    ? resultsData.filter((match) => match.date === selectedDate)
+    : resultsData;
   return (
-    <div className={styles.resultsContainer}>
-      <h2 className={styles.title}>Match Results</h2>
-      {results.map((match, index) => (
-        <div key={index} className={styles.matchCard}>
-          <div className={styles.matchHeader}>
-            <span>
-              {match.date} | {match.time}
-            </span>
-            <span className={styles.matchStatus}>{match.status}</span>
-          </div>
-          <div className={styles.matchDetails}>
-            {/* Team 1 */}
-            <div
-              className={`${styles.team} ${
-                match.team1.score > match.team2.score
-                  ? styles.winner
-                  : styles.loser
-              }`}
-            >
-              {/* <img src={match.team1.logo} alt={match.team1.name} /> */}
-              <span className={styles.teamName}>{match.team1.name}</span>
-            </div>
-
-            {/* Match Score */}
-            <div className={styles.matchScore}>
-              <span>{match.team1.score}</span>
-              <span>-</span>
-              <span>{match.team2.score}</span>
-            </div>
-
-            {/* Team 2 */}
-            <div
-              className={`${styles.team} ${
-                match.team2.score > match.team1.score
-                  ? styles.winner
-                  : styles.loser
-              }`}
-            >
-              {/* <img src={match.team2.logo} alt={match.team2.name} /> */}
-              <span className={styles.teamName}>{match.team2.name}</span>
-            </div>
-          </div>
+    <>
+      <Hero />
+      <div className={styles.container}>
+        <div className={styles.resultsList}>
+          {filteredResults.length > 0 ? (
+            filteredResults.map((match) => (
+              <div key={match.id} className={styles.matchCard}>
+                <p className={styles.date}>{match.date}</p>
+                <div className={styles.match}>
+                  <div className={styles.team}>
+                    <img
+                      src={match.logo1}
+                      alt={match.team1}
+                      className={styles.logo}
+                    />
+                    <span
+                      className={
+                        match.score1 > match.score2 ? styles.winner : ""
+                      }
+                    >
+                      {match.team1}
+                    </span>
+                  </div>
+                  <span className={styles.score}>
+                    {match.score1} - {match.score2}
+                  </span>
+                  <div className={styles.team}>
+                    <img
+                      src={match.logo2}
+                      alt={match.team2}
+                      className={styles.logo}
+                    />
+                    <span
+                      className={
+                        match.score2 > match.score1 ? styles.winner : ""
+                      }
+                    >
+                      {match.team2}
+                    </span>
+                  </div>
+                </div>
+                <p className={styles.venue}>📍 {match.venue}</p>
+              </div>
+            ))
+          ) : (
+            <p className={styles.noResults}>
+              No results found for the selected date.
+            </p>
+          )}
         </div>
-      ))}
-    </div>
+      </div>
+    </>
   );
 };
 
