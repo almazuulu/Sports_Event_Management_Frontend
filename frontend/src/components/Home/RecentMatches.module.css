@@ -1,0 +1,64 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+    background-color: #000;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .matchList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .matchCard {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .date {
+    font-size: 1rem;
+    color: #555;
+    font-weight: bold;
+  }
+  
+  .teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #222;
+    margin: 10px 0;
+  }
+  
+  .team {
+    flex: 1;
+  }
+  
+  .score {
+    background: #ff6b00;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+  }
+  
+  .venue {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  

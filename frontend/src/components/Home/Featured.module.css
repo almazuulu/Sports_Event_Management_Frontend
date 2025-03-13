@@ -1,0 +1,67 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+    background-color: #000;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 15px;
+  }
+  
+  .card {
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 200px;
+    display: flex;
+  }
+  
+  .image {
+    border-radius: 5px;
+    max-width: 180px;
+    object-fit: fill;
+  }
+  
+  .name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .team {
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+  }
+  
+  .stats {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+  }
+  
