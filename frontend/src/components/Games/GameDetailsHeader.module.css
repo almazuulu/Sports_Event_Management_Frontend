@@ -1,0 +1,29 @@
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.content p {
+    margin: 0;
+}
+
+.content p span{
+   color: #000;
+}
+
+.content .label {
+    font-size: small;
+    font-weight: 500;
+    color: gray;
+}

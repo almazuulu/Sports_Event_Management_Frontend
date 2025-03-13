@@ -6,7 +6,6 @@ import Header from "../../components/Header";
 import TeamTable from "../../components/Teams/TeamTable";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import TeamsFilter from "../../components/Teams/TeamsFilter";
-import LoadingScreen from "../../components/UI/LoadingScreen";
 
 function ManageTeamsPage() {
   const [teams, setTeams] = useState([]);
@@ -39,7 +38,6 @@ function ManageTeamsPage() {
       <div className={classes.container}>
         <Header title={"Manage Teams"} />
         <div className={classes.card}>
-          <TeamsFilter onFilter={fetchAllTeams} />
           {isFetchingTeams ? (
             <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
           ) : teams.length === 0 ? (
@@ -47,7 +45,10 @@ function ManageTeamsPage() {
               No teams available at the moment.
             </p>
           ) : (
-            <TeamTable teams={teams} />
+            <>
+              <TeamsFilter onFilter={fetchAllTeams} />
+              <TeamTable teams={teams} />
+            </>
           )}
         </div>
       </div>

@@ -1,0 +1,26 @@
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    color: #000;
+    /* display: flex;
+    justify-content: space-between; */
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.content p {
+    margin-top: 0;
+}
+
+.actionButton {
+    margin-top: 1.5rem;
+    text-align: right;
+}
+
+.modalContainer {
+    border-radius: 20px;
+}
+
+.modalContainer::-webkit-scrollbar {
+    display: none;
+}

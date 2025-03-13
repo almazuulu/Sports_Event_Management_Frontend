@@ -42,3 +42,10 @@ export const TEAM_STATUS_OPTIONS = [
   { id: "inactive", name: "Inactive" },
   { id: "suspended", name: "Suspended" },
 ];
+
+export const GAMES_STATUS_OPTIONS = [
+  { id: "scheduled", name: "Scheduled" },
+  { id: "ongoing", name: "Ongoing" },
+  { id: "completed", name: "Completed" },
+  { id: "cancelled", name: "Cancelled" },
+];

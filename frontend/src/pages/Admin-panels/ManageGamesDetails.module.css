@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+    gap: 1.5rem;
+}
+
+.actions {
+    text-align: right;
+}
+
+.card p {
+    color: #000;
+    text-align: center;
+}
+
+.teamsGameSection {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.modalContainer {
+    border-radius: 20px;
+}
+
+.modalContainer::-webkit-scrollbar {
+    display: none;
+}
