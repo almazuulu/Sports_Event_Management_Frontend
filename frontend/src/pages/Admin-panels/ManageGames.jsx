@@ -7,22 +7,22 @@ import { fetchWithAuth } from "../../utils/FetchClient";
 import CreateButton from "../../components/Button/CreateButton";
 import Modal from "../../components/UI/Modal";
 import CreateGameForm from "../../components/Games/CreateGameForm";
-import AdminGamesTable from "./AdminGamesTable";
+import AdminGamesTable from "../../components/AdminPanel/AdminGamesTable";
+import GamesFilter from "../../components/Games/GamesFilter";
 
 function ManageGamesPage() {
   const [games, setGames] = useState([]);
   const [sportEvents, setSportEvents] = useState([]);
-  const [scorekeeper, setScorekeeper] = useState([]);
   const [isFetchingGames, setIsFetchingGames] = useState(false);
   const [isFetchingSportEvents, setIsFetchingSportEvents] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCreateNew = () => {
+  const handleCreateNewGame = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmitNewEvent = async (formData) => {
+  const handleSubmitNewGame = async (formData) => {
     setIsSubmitting(true);
     try {
       const response = await fetchWithAuth("/api/games/games/", {
@@ -106,7 +106,7 @@ function ManageGamesPage() {
         <Header title={"Manage Games"} />
         <div className={classes.card}>
           <section className={classes.sectionButton}>
-            <CreateButton onClick={handleCreateNew}>
+            <CreateButton onClick={handleCreateNewGame}>
               Create New Game
             </CreateButton>
           </section>
@@ -117,7 +117,10 @@ function ManageGamesPage() {
               No games available at the moment.
             </p>
           ) : (
-            <AdminGamesTable gamesList={games} />
+            <>
+              <GamesFilter onFilter={fetchAllGames} />
+              <AdminGamesTable gamesList={games} onRefetch={fetchAllGames} />
+            </>
           )}
         </div>
       </div>
@@ -128,7 +131,7 @@ function ManageGamesPage() {
         className={classes.modalContainer}
       >
         <CreateGameForm
-          onSubmit={handleSubmitNewEvent}
+          onSubmit={handleSubmitNewGame}
           loading={isSubmitting}
           onClose={() => setIsModalOpen(false)}
           sportEventList={sportEvents}

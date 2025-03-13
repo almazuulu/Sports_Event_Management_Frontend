@@ -7,7 +7,6 @@ import CreateButton from "../../components/Button/CreateButton";
 import SportEventTable from "../../components/SportEvents/SportEventTable";
 import Modal from "../../components/UI/Modal";
 import SportEventForm from "../../components/SportEvents/SportEventForm";
-import LoadingScreen from "../../components/UI/LoadingScreen";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import SportEventsFilter from "../../components/SportEvents/SportEventsFilter";
 
@@ -118,7 +117,6 @@ function ManageSportEventsPage() {
               onClick={handleCreateNew}
             />
           </section>
-          <SportEventsFilter onFilter={fetchSportEvents} />
           {loading ? (
             <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
           ) : sportEventList.length === 0 ? (
@@ -126,10 +124,13 @@ function ManageSportEventsPage() {
               No sport events available at the moment.
             </p>
           ) : (
-            <SportEventTable
-              sportEventList={sportEventList}
-              onRefetchData={fetchSportEvents}
-            />
+            <>
+              <SportEventsFilter onFilter={fetchSportEvents} />
+              <SportEventTable
+                sportEventList={sportEventList}
+                onRefetchData={fetchSportEvents}
+              />
+            </>
           )}
         </div>
       </div>

@@ -15,6 +15,7 @@ import RegisterSportEventForm from "../components/SportEvents/RegisterSportEvent
 import JoinedSportEventTable from "../components/Teams/JoinedSportEventTable";
 import CreatePlayerForm from "../components/Players/CreatePlayerForm";
 import CancelButton from "../components/Button/CancelButton";
+import GameTable from "../components/TeamManager/GameTable";
 
 function TeamDetailsPage() {
   const role = getUserRole();
@@ -42,6 +43,8 @@ function TeamDetailsPage() {
   const [availPlayers, setAvailPlayers] = useState([]);
   const [teamCaptain, setTeamCaptain] = useState("");
   const [selectedCaptain, setSelectedCaptain] = useState("");
+  const [gamesJoined, setGamesJoined] = useState([]);
+  const [isFetchingGames, setIsFetchingGames] = useState(false);
 
   const handleEdit = () => {
     setIsModalOpen((prevData) => !prevData);
@@ -193,7 +196,6 @@ function TeamDetailsPage() {
         return toast.error("Failed to fetch team data");
       }
 
-      console.log(data);
       setTeam(data);
       setTeamCaptain(data.team_captain);
     } catch (error) {
@@ -247,6 +249,29 @@ function TeamDetailsPage() {
     }
   }, [teamId]);
 
+  const fetchGamesJoined = useCallback(async () => {
+    try {
+      setIsFetchingGames(true);
+      const response = await fetchWithAuth(
+        `/api/games/game-teams/?team=${teamId}`
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        return toast.error("Failed to fetch joined games data");
+      }
+
+      if (response.ok) {
+        console.log(data.results);
+        setGamesJoined(data.results);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsFetchingGames(false);
+    }
+  }, [teamId]);
+
   useEffect(() => {
     const fetchSportEvents = async () => {
       try {
@@ -294,7 +319,8 @@ function TeamDetailsPage() {
     fetchTeam();
     fetchPlayers();
     fetchSportEventsJoined();
-  }, [fetchTeam, fetchPlayers, fetchSportEventsJoined]);
+    fetchGamesJoined();
+  }, [fetchTeam, fetchPlayers, fetchSportEventsJoined, fetchGamesJoined]);
 
   return (
     <>
@@ -334,6 +360,17 @@ function TeamDetailsPage() {
             onClick={() => setActiveTab("sport-events")}
           >
             Sport Events
+          </button>
+          <button
+            type="button"
+            className={
+              activeTab === "games"
+                ? `${classes.tabsButton} ${classes.active}`
+                : classes.tabsButton
+            }
+            onClick={() => setActiveTab("games")}
+          >
+            Games
           </button>
         </div>
 
@@ -409,6 +446,18 @@ function TeamDetailsPage() {
                   sportEventList={sportEventsJoined}
                   onRefetchData={fetchSportEventsJoined}
                 />
+              )}
+            </>
+          )}
+
+          {activeTab === "games" && (
+            <>
+              {isFetchingGames ? (
+                <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+              ) : gamesJoined.length === 0 ? (
+                <p>No games joined at the moment.</p>
+              ) : (
+                <GameTable games={gamesJoined} />
               )}
             </>
           )}

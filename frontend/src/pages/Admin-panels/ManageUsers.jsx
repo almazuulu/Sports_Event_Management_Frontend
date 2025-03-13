@@ -7,7 +7,6 @@ import UserTable from "../../components/UserTable";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import Modal from "../../components/UI/Modal";
 import CreateUserForm from "../../components/CreateUserForm";
-import LoadingScreen from "../../components/UI/LoadingScreen";
 import CreateButton from "../../components/Button/CreateButton";
 
 function ManageUsersPage() {

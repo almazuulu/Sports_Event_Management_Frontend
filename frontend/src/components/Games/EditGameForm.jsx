@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-import classes from "./CreateGameForm.module.css";
+import classes from "./EditGameForm.module.css";
 
 // icons
 import { CgCloseO } from "react-icons/cg";
+import { formatDateTimeForInput } from "../../utils/helpers";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import { toast } from "react-toastify";
 
-function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
+function EditGameForm({ initialData = null, onClose, onSubmit, loading }) {
   const [formData, setFormData] = useState({
-    sport_event: "",
     name: "",
     description: "",
     location: "",
@@ -17,12 +17,10 @@ function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
     end_datetime: "",
     scorekeeper: "",
   });
-
   const [scorekeeperList, setScorekeeperList] = useState([]);
 
   const handleClose = () => {
     setFormData({
-      sport_event: "",
       name: "",
       description: "",
       location: "",
@@ -48,7 +46,6 @@ function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
 
       if (res.success) {
         setFormData({
-          sport_event: "",
           name: "",
           description: "",
           location: "",
@@ -90,32 +87,20 @@ function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
     fetchScorekeepers();
   }, [formData.start_datetime, formData.end_datetime]);
 
+  useEffect(() => {
+    if (initialData) {
+      setFormData((prevData) => ({
+        ...prevData,
+        ...initialData,
+      }));
+    }
+  }, [initialData]);
+
   return (
     <section className={classes.formContainer}>
       <CgCloseO className={classes.closeIcon} onClick={handleClose} />
-      <h1 className={classes.formHeader}>Create New Game</h1>
+      <h1 className={classes.formHeader}>Update Game</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label className={classes.label}>
-            Sport Event <span>*</span>
-          </label>
-          <select
-            name="sport_event"
-            value={formData.sport_event}
-            onChange={handleChange}
-            className={classes.select}
-          >
-            <option value={""} disabled>
-              Please select an sport event
-            </option>
-            {sportEventList.map((se) => (
-              <option key={se.id} value={se.id}>
-                {se.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
         <div>
           <label className={classes.label}>
             Name <span>*</span>
@@ -167,7 +152,7 @@ function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
             <input
               type="datetime-local"
               name="start_datetime"
-              value={formData.start_datetime}
+              value={formatDateTimeForInput(formData.start_datetime)}
               onChange={handleChange}
               className={classes.input}
               required
@@ -180,7 +165,7 @@ function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
             <input
               type="datetime-local"
               name="end_datetime"
-              value={formData.end_datetime}
+              value={formatDateTimeForInput(formData.end_datetime)}
               onChange={handleChange}
               className={classes.input}
               required
@@ -191,8 +176,8 @@ function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
         <div>
           <label className={classes.label}>Scorekeeper</label>
           <select
-            name="sport_event"
-            value={formData.sport_event}
+            name="scorekeeper"
+            value={formData.scorekeeper}
             onChange={handleChange}
             className={classes.select}
           >
@@ -215,4 +200,4 @@ function CreateGameForm({ onSubmit, onClose, loading, sportEventList = [] }) {
   );
 }
 
-export default CreateGameForm;
+export default EditGameForm;

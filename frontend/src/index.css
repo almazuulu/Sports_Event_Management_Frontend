@@ -89,7 +89,7 @@ table thead th {
   font-size: 14px;
   font-weight: 600;
   text-transform: capitalize;
-  text-align: center;
+  text-align: left;
 }
 
 table tbody tr {
@@ -105,11 +105,16 @@ table td {
   font-size: 14px;
   color: #000;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  text-align: center;
+  text-align: left;
 }
 
 table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.loadingText {
+  text-align: center;
+  color: #000;
 }
 
 @media (max-width: 768px) {
