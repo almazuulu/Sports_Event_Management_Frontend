@@ -1,0 +1,56 @@
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+    background-color: #000;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .statCard {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  
+  .statCard:hover {
+    transform: scale(1.02);
+  }
+  
+  .logo {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  
+  .statCard h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .statCard p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
