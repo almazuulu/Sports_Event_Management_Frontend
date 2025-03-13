@@ -195,7 +195,6 @@ function TeamDetailsPage() {
       if (!response.ok) {
         return toast.error("Failed to fetch team data");
       }
-
       setTeam(data);
       setTeamCaptain(data.team_captain);
     } catch (error) {

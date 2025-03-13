@@ -1,0 +1,84 @@
+.playerCard {
+  width: 250px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+
+  background:white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.playerCard:hover {
+  transform: scale(1.05);
+}
+
+.playerImage {
+  width: 100%;
+  height: 80%; /* Half of the card height */
+  background: linear-gradient(to bottom, rgb(244, 99, 99), white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playerImage img {
+  width: 80%;
+  height:50%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.playerInfo {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+  background: white;
+}
+
+.playerName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #330d6f;
+  margin-bottom: 4px;
+}
+
+.playerPosition {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+.playerCountry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.playerCountry img {
+  width: 18px;
+  height: 12px;
+}
+
+.viewProfile {
+  padding: 8px 12px;
+  background: #330d6f;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.viewProfile:hover {
+  background: #b50f16;
+}

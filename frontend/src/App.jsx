@@ -29,6 +29,10 @@ import StatsPage from "./pages/PublicDashboard/Stats";
 import ManageUsersPage from "./pages/Admin-panels/ManageUsers";
 import ManageTeamsPage from "./pages/Admin-panels/ManageTeams";
 import ManageGamesPage from "./pages/Admin-panels/ManageGames";
+import TeamsdetailPage from "../../frontend/src/pages/PublicDashboard/TeamDetails";
+import PublicTeamsPage from "../../frontend/src/pages/PublicDashboard/Team";
+
+import PlayerList from "../../frontend/src/pages/PublicDashboard/Players";
 import ManageGamesDetailsPage from "./pages/Admin-panels/ManageGamesDetails";
 import GameDetailsPage from "./pages/team-manager/GameDetails";
 
@@ -65,16 +69,16 @@ const router = createBrowserRouter([
             path: "teams",
             element: <PageRootLayout />,
             children: [
-              { index: true, element: <TeamsPage /> },
+              { index: true, element: <PublicTeamsPage /> },
               {
                 path: ":teamId",
-                //element: team details page
+                element: <TeamsdetailPage/>
               },
             ],
           },
           {
             path: "players",
-            element: <PlayersPage />,
+            element: <PlayerList />,
           },
         ],
       },
