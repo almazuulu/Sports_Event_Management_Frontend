@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./ManageGames.module.css";
 import Header from "../../components/Header";
 import { fetchWithAuth } from "../../utils/FetchClient";
-import { toast } from "react-toastify";
 import CreateButton from "../../components/Button/CreateButton";
-import LoadingScreen from "../../components/UI/LoadingScreen";
 import Modal from "../../components/UI/Modal";
 import CreateGameForm from "../../components/Games/CreateGameForm";
+import AdminGamesTable from "../../components/AdminPanel/AdminGamesTable";
+import GamesFilter from "../../components/Games/GamesFilter";
 
 function ManageGamesPage() {
   const [games, setGames] = useState([]);
   const [sportEvents, setSportEvents] = useState([]);
-  const [scorekeeper, setScorekeeper] = useState([]);
   const [isFetchingGames, setIsFetchingGames] = useState(false);
   const [isFetchingSportEvents, setIsFetchingSportEvents] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCreateNew = () => {
+  const handleCreateNewGame = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmitNewEvent = async (formData) => {
+  const handleSubmitNewGame = async (formData) => {
     setIsSubmitting(true);
     try {
       const response = await fetchWithAuth("/api/games/games/", {
@@ -61,10 +61,12 @@ function ManageGamesPage() {
     }
   };
 
-  const fetchAllGames = async () => {
+  const fetchAllGames = async (filters = {}) => {
     try {
       setIsFetchingGames(true);
-      const response = await fetchWithAuth("/api/games/games/");
+      const queryParams = new URLSearchParams(filters).toString();
+      const url = `/api/games/games/${queryParams ? `?${queryParams}` : ""}`;
+      const response = await fetchWithAuth(url);
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch games");
       if (response.ok) {
@@ -98,24 +100,28 @@ function ManageGamesPage() {
     fetchSportEvents();
   }, []);
 
-  if (isFetchingGames) return <LoadingScreen />;
-
   return (
     <>
       <div className={classes.container}>
         <Header title={"Manage Games"} />
         <div className={classes.card}>
           <section className={classes.sectionButton}>
-            <CreateButton onClick={handleCreateNew}>
+            <CreateButton onClick={handleCreateNewGame}>
               Create New Game
             </CreateButton>
           </section>
-          {games.length === 0 && (
+          {isFetchingGames ? (
+            <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
+          ) : games.length === 0 ? (
             <p style={{ color: "#000", textAlign: "center" }}>
               No games available at the moment.
             </p>
+          ) : (
+            <>
+              <GamesFilter onFilter={fetchAllGames} />
+              <AdminGamesTable gamesList={games} onRefetch={fetchAllGames} />
+            </>
           )}
-          {/* {games.length > 0 && <TeamTable teams={teams} />} */}
         </div>
       </div>
 
@@ -125,7 +131,7 @@ function ManageGamesPage() {
         className={classes.modalContainer}
       >
         <CreateGameForm
-          onSubmit={handleSubmitNewEvent}
+          onSubmit={handleSubmitNewGame}
           loading={isSubmitting}
           onClose={() => setIsModalOpen(false)}
           sportEventList={sportEvents}

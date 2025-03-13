@@ -97,7 +97,6 @@ function ManageEventsPage() {
               Create New Event
             </CreateButton>
           </section>
-          <EventFilter onFilter={fetchEventsData} />
           {isFetching ? (
             <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
           ) : eventList.length === 0 ? (
@@ -105,7 +104,13 @@ function ManageEventsPage() {
               No events available at the moment.
             </p>
           ) : (
-            <EventTable eventList={eventList} onRefetchData={fetchEventsData} />
+            <>
+              <EventFilter onFilter={fetchEventsData} />
+              <EventTable
+                eventList={eventList}
+                onRefetchData={fetchEventsData}
+              />
+            </>
           )}
         </div>
       </div>
