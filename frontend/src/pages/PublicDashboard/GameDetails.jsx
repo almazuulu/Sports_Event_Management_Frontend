@@ -51,7 +51,7 @@ const GameDetails = () => {
                     </span>
                 </div>
 
-                {/* 🏆 Game Details */}
+                {/* 🏆 Game Details */}   
                 <div className={styles.gameInfo}>
                     <h2>{gameDetails.name}</h2>
                     <p className={styles.sportEvent}>🏅 Sport Event: <strong>{gameDetails.sport_event_name}</strong></p>
