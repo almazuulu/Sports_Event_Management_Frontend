@@ -33,6 +33,7 @@ import TeamsdetailPage from "../../frontend/src/pages/PublicDashboard/TeamDetail
 import PublicTeamsPage from "../../frontend/src/pages/PublicDashboard/Team";
 
 import PlayerList from "../../frontend/src/pages/PublicDashboard/Players";
+import PlayerProfile from "../../frontend/src/pages/PublicDashboard/PlayerDetails"
 import ManageGamesDetailsPage from "./pages/Admin-panels/ManageGamesDetails";
 import GameDetailsPage from "./pages/team-manager/GameDetails";
 
