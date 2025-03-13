@@ -16,6 +16,11 @@ function AllGames({ loading, games = [] }) {
               match.status === "ongoing" ? classes.liveMatch : ""
             }`}
           >
+            <div className={classes.match}>
+              <div className={classes.team}>
+                <span>{match.name}</span>
+              </div>
+            </div>
             <p className={classes.dateTime}>
               {formatToShortDate(match.start_datetime)} -{" "}
               {formatToTimeOnly(match.start_datetime)}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import classes from "./UpcomingFixtures.module.css";
 import { fetchWithoutAuth } from "../../utils/FetchClient";
-import { formatToShortDateTime } from "../../utils/helpers";
+import { formatToShortDate, formatToTimeOnly } from "../../utils/helpers";
 
 function UpcomingFixtures() {
   const [upcomingFixtures, setUpcomingFixtures] = useState([]);
@@ -37,8 +37,11 @@ function UpcomingFixtures() {
         ) : (
           upcomingFixtures.map((match) => (
             <div key={match.id} className={classes.fixtureCard}>
+              <h3 className={classes.teams}>{match.name}</h3>
+
               <p className={classes.date}>
-                {formatToShortDateTime(match.start_datetime)}
+                {formatToShortDate(match.start_datetime)} -{" "}
+                {formatToTimeOnly(match.start_datetime)}
               </p>
               <h3 className={classes.teams}>{match.teams[0]}</h3>
               <p className={classes.venue}>📍 {match.location}</p>
