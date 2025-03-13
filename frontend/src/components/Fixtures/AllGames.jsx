@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 function AllGames({ loading, games = [] }) {
   const navigate = useNavigate(); // Initialize navigation
   const handleRowClick = (fixtureId) => {
-    console.log("?>>",fixtureId)
     navigate(`/fixtures/${fixtureId}`); // Navigate to player details page
 };
 
