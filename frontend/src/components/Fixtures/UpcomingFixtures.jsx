@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { fetchWithoutAuth } from "../../utils/FetchClient";
 
 import classes from "./UpcomingFixtures.module.css";
-import { fetchWithoutAuth } from "../../utils/FetchClient";
 import { formatToShortDateTime } from "../../utils/helpers";
 
 function UpcomingFixtures() {
@@ -27,26 +27,22 @@ function UpcomingFixtures() {
   useEffect(() => {
     fetchUpcomingFixtures();
   }, []);
-
   return (
-    <div className={classes.container}>
-      <h2 className={classes.heading}>📅 Upcoming Fixtures</h2>
-      <div className={classes.fixturesList}>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          upcomingFixtures.map((match) => (
-            <div key={match.id} className={classes.fixtureCard}>
-              <p className={classes.date}>
-                {formatToShortDateTime(match.start_datetime)}
-              </p>
-              <h3 className={classes.teams}>{match.teams[0]}</h3>
-              <p className={classes.venue}>📍 {match.location}</p>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
+    <>
+      {loading ? (
+        <p className="loadingText">Loading...</p>
+      ) : (
+        upcomingFixtures.map((match) => (
+          <div key={match.id} className={`${classes.matchCard}`}>
+            <p className={classes.dateTime}>
+              {formatToShortDateTime(match.start_datetime)}
+            </p>
+            <h3 className={classes.teams}>{match.teams[0]}</h3>
+            <p className={classes.venue}>📍 {match.location}</p>
+          </div>
+        ))
+      )}
+    </>
   );
 }
 
