@@ -15,10 +15,8 @@ import LoginPage from "./pages/LoginPage";
 import MyProfilePage from "./pages/MyProfile";
 import ChangePasswordPage from "./pages/ChangePassword";
 import LogoutPage from "./pages/Logout";
-import TeamsPage from "./pages/Teams";
 import MyTeamsPage from "./pages/MyTeams";
 import TeamDetailsPage from "./pages/TeamDetails";
-import PlayersPage from "./pages/Players";
 import ManageEventsPage from "./pages/Admin-panels/ManageEvents";
 import ManageSportEventsPage from "./pages/Admin-panels/ManageSportEvents";
 import ManageTeamRegistrationsPage from "./pages/Admin-panels/ManageTeamRegistrations";
@@ -31,7 +29,6 @@ import ManageTeamsPage from "./pages/Admin-panels/ManageTeams";
 import ManageGamesPage from "./pages/Admin-panels/ManageGames";
 import TeamsdetailPage from "../../frontend/src/pages/PublicDashboard/TeamDetails";
 import PublicTeamsPage from "../../frontend/src/pages/PublicDashboard/Team";
-
 import PlayerList from "../../frontend/src/pages/PublicDashboard/Players";
 import ManageGamesDetailsPage from "./pages/Admin-panels/ManageGamesDetails";
 import GameDetailsPage from "./pages/team-manager/GameDetails";
@@ -72,7 +69,7 @@ const router = createBrowserRouter([
               { index: true, element: <PublicTeamsPage /> },
               {
                 path: ":teamId",
-                element: <TeamsdetailPage/>
+                element: <TeamsdetailPage />,
               },
             ],
           },
