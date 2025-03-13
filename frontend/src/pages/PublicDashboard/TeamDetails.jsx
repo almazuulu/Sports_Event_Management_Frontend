@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import styles from "../../../../frontend/src/pages/PublicDashboard/TeamDetails.module.css";
 import team1 from "../../../../frontend/src/assets/images/image1.jpg";
 import PlayerCard from "./PlayerCard";
-import Fixtures from "./Fixtures";
+import TeamsGame from "./TeamsGame";
 import Results from "./Results";
 
 function TeamsdetailPage() {
@@ -152,14 +152,15 @@ function TeamsdetailPage() {
                 No Games available.
               </p>
             ) : (
-              gamedata?.map((player) => <Fixtures player={player} />)
+              gamedata?.map((player) => <TeamsGame player={player} />)
             )}
           </div>
         )}
         {activeSection === "Results" && (
-          <div className={styles.results}>
-            <Results />
-          </div>
+          <p className="loadingText">No results at the moment</p>
+          // <div className={styles.results}>
+          //   <Results />
+          // </div>
         )}
       </div>
     </div>

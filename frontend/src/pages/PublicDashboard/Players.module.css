@@ -1,76 +1,20 @@
 /* Global Styles */
 .container {
-    min-height: 100vh;
-    background-color: #f9fafb;
-    font-family: "Poppins", sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-   
-  }
-  
-  /* 🌟 Modern Banner */
-  .banner {
-       background: linear-gradient(135deg, #0073e6, #4b0082);
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  text-align: center;
+}
 
-    color: white;
-    text-align: center;
-    padding: 30px;
-    width: 100%;
-    height:30%;
-    
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  .banner h1 {
-    font-size: 42px;
-    font-weight: bold;
-    margin: 0;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* 🔍 Search Box */
-  .searchBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 12px;
-    border-radius: 8px;
-    width: 50%;
-    margin: auto;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .searchBox input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: white;
-    padding: 8px;
-    width: 100%;
-    font-size: 16px;
-  }
-  
-  /* 📊 Table Section */
-  .tableWrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px; /* Pulled down slightly */
-    width: 100%;
-  }
-  
-  .tableContainer {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 60%;
-    padding: 20px;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 1.5rem;
+  transition: transform 0.3s ease-in-out;
+}
   
   /* 🎨 Table Styling */
   .table {

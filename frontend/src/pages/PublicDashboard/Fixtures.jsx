@@ -20,7 +20,10 @@ const Fixtures = () => {
       const data = await response.json();
       if (!response.ok) return toast.error("Failed to fetch games");
       if (response.ok) {
-        setGames(data.results);
+        const sortedGames = data.results.sort(
+          (a, b) => new Date(a.start_datetime) - new Date(b.start_datetime)
+        );
+        setGames(sortedGames);
       }
     } catch (error) {
       console.error(error);
