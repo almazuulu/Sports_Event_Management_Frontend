@@ -60,6 +60,7 @@
     font-weight: bold;
     color: #333;
     margin-top: 5px;
+    text-transform: capitalize;
   }
   
   .liveMatch {
