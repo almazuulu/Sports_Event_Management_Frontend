@@ -1,7 +1,7 @@
 import styles from "./GameDetails.module.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { formatToShortDateTime } from "../../utils/helpers";
 const GameDetails = () => {
     const { fixtureId } = useParams();
     const [gameDetails, setGamedetails] = useState(null);
@@ -24,11 +24,6 @@ const GameDetails = () => {
         fetchGameDetails();
     }, [fixtureId]);
 
-    const formatDate = (isoString) => {
-        if (!isoString) return "N/A";
-        return new Date(isoString).toISOString().split("T")[0]; // Extract YYYY-MM-DD
-    };
-
     if (error) return <div className={styles.error}>Error: {error}</div>;
     if (!gameDetails) return <div className={styles.loading}>Loading...</div>;
 
@@ -44,7 +39,7 @@ const GameDetails = () => {
                 {/* 🕒 Match Date & Status */}
                 <div className={styles.matchHeader}>
                     <span className={styles.matchDate}>
-                        📅 {formatDate(gameDetails.start_datetime)} - {formatDate(gameDetails.end_datetime)}
+                        📅 {formatToShortDateTime(gameDetails.start_datetime)} - {formatToShortDateTime(gameDetails.end_datetime)}
                     </span>
                     <span className={styles.matchStatus}>
                         🔴 {gameDetails.status}
