@@ -30,9 +30,10 @@ import ManageGamesPage from "./pages/Admin-panels/ManageGames";
 import TeamsdetailPage from "../../frontend/src/pages/PublicDashboard/TeamDetails";
 import PublicTeamsPage from "../../frontend/src/pages/PublicDashboard/Team";
 import PlayerList from "../../frontend/src/pages/PublicDashboard/Players";
-import PlayerProfile from "../../frontend/src/pages/PublicDashboard/PlayerDetails"
+import PlayerProfile from "../../frontend/src/pages/PublicDashboard/PlayerDetails";
 import ManageGamesDetailsPage from "./pages/Admin-panels/ManageGamesDetails";
 import GameDetailsPage from "./pages/team-manager/GameDetails";
+import MyAssignmentsPage from "./pages/Scorekeeper/MyAssignments";
 
 const router = createBrowserRouter([
   {
@@ -81,7 +82,7 @@ const router = createBrowserRouter([
               { index: true, element: <PlayerList /> },
               {
                 path: ":playerId",
-                element: <PlayerProfile/>
+                element: <PlayerProfile />,
               },
             ],
           },
@@ -120,7 +121,17 @@ const router = createBrowserRouter([
                       },
                       {
                         path: ":teamId",
-                        element: <TeamDetailsPage />,
+                        element: <PageRootLayout />,
+                        children: [
+                          {
+                            index: true,
+                            element: <TeamDetailsPage />,
+                          },
+                          {
+                            path: "games/:gameId",
+                            element: <GameDetailsPage />,
+                          },
+                        ],
                       },
                     ],
                   },
@@ -171,6 +182,17 @@ const router = createBrowserRouter([
                         ],
                       },
                     ],
+                  },
+                ],
+              },
+              {
+                // SCOREKEEPER
+                element: <ProtectedRoute allowedRoles={["scorekeeper"]} />,
+                children: [
+                  {
+                    path: "my-assignments",
+                    element: <PageRootLayout />,
+                    children: [{ index: true, element: <MyAssignmentsPage /> }],
                   },
                 ],
               },

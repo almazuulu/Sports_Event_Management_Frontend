@@ -18,32 +18,36 @@ function AllGames({ loading, games = [] }) {
           >
             <div className={classes.match}>
               <div className={classes.team}>
-                <span>{match.name}</span>
+                <span>{match?.name}</span>
               </div>
             </div>
             <p className={classes.dateTime}>
               {formatToShortDate(match.start_datetime)} -{" "}
               {formatToTimeOnly(match.start_datetime)}
             </p>
-            <div className={classes.match}>
-              <div className={classes.team}>
-                {/* <img
+            {match?.teams?.length >= 2 ? (
+              <div className={classes.match}>
+                <div className={classes.team}>
+                  {/* <img
                 src={match.logo1}
                 alt={match.team1}
                 className={classes.logo}
               /> */}
-                <span>{match.teams[0].team_name}</span>
-              </div>
-              <span className={classes.vs}>VS</span>
-              <div className={classes.team}>
-                {/* <img
+                  <span>{match?.teams[0].team_name}</span>
+                </div>
+                <span className={classes.vs}>VS</span>
+                <div className={classes.team}>
+                  {/* <img
                 src={match.logo2}
                 alt={match.team2}
                 className={classes.logo}
               /> */}
-                <span>{match.teams[0].team_name}</span>
+                  <span>{match?.teams[1].team_name}</span>
+                </div>
               </div>
-            </div>
+            ) : (
+              <p>Teams data unavailable.</p>
+            )}
             <p className={classes.venue}>📍 {match.location}</p>
             <p
               className={`${classes.status} ${
