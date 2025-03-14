@@ -48,7 +48,7 @@ function TeamsGameCard({ team = {}, onRefetchData }) {
       <div className={classes.container}>
         <div>
           <p className={classes.teamLabel}>
-            {team.designation}: {team.team_name}
+            {team?.designation}: {team?.team_name}
           </p>
         </div>
         {team?.players.length === 0 ? (
