@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { fetchWithAuth } from "../../utils/FetchClient";
 
 function TeamsGameCard({ team = {}, onRefetchData }) {
-  const { players } = team;
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState("");
 
@@ -52,7 +51,7 @@ function TeamsGameCard({ team = {}, onRefetchData }) {
             {team.designation}: {team.team_name}
           </p>
         </div>
-        {players.length === 0 ? (
+        {team?.players.length === 0 ? (
           <p>No players added to this team yet.</p>
         ) : (
           <div className="tableContainer">
@@ -67,7 +66,7 @@ function TeamsGameCard({ team = {}, onRefetchData }) {
                 </tr>
               </thead>
               <tbody>
-                {players.map((player) => (
+                {team?.players.map((player) => (
                   <tr key={player.player}>
                     <td>{player.name}</td>
                     <td>{player.jersey_number}</td>
