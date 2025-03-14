@@ -35,6 +35,7 @@ const Fixtures = () => {
   useEffect(() => {
     fetchAllGames();
   }, []);
+  
 
   return (
     <>
