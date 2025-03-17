@@ -1,12 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 import classes from "./AllGames.module.css";
 import { formatToShortDate, formatToTimeOnly } from "../../utils/helpers";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function AllGames({ loading, games = [] }) {
-  const navigate = useNavigate(); // Initialize navigation
-  const handleRowClick = (fixtureId) => {
-    navigate(`/fixtures/${fixtureId}`); // Navigate to player details page
-};
+  const navigate = useNavigate();
+  const handleClickGame = (fixtureId) => {
+    navigate(`/fixtures/${fixtureId}`);
+  };
 
   return (
     <>
@@ -17,7 +18,8 @@ function AllGames({ loading, games = [] }) {
       ) : (
         games.map((match) => (
           <div
-            key={match.id}  onClick={() => handleRowClick(match.id)}
+            key={match.id}
+            onClick={() => handleClickGame(match.id)}
             className={`${classes.matchCard} ${
               match.status === "ongoing" ? classes.liveMatch : ""
             }`}

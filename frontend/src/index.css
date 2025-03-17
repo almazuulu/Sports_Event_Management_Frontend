@@ -117,6 +117,10 @@ table tbody tr:last-child td {
   color: #000;
 }
 
+.horizontalLine {
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   table th,
   table td {

@@ -4,11 +4,13 @@ import classes from "./MyAssignments.module.css";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import Header from "../../components/Header";
 import ViewButton from "../../components/Button/ViewButton";
-import LoadingScreen from "../../components/UI/LoadingScreen";
+import { formatToShortDateTime } from "../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 function MyAssignmentsPage() {
+  const navigate = useNavigate();
   const [assignments, setAssignments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -17,11 +19,12 @@ function MyAssignmentsPage() {
         const response = await fetchWithAuth(
           "/api/scores/scores/my-assignments/"
         );
+
         if (!response.ok) {
           throw new Error("Failed to fetch assignments");
         }
         const data = await response.json();
-        setAssignments(data.results);
+        setAssignments(data);
       } catch (error) {
         setError(error);
       } finally {
@@ -52,22 +55,28 @@ function MyAssignmentsPage() {
               <tr>
                 <th>GAME</th>
                 <th>TEAMS</th>
+                <th>DATE & TIME</th>
+                <th>LOCATION</th>
                 <th>ACTION</th>
               </tr>
-              <tbody>
-                {assignments.map((game) => (
-                  <tr key={game.id}>
-                    <td>{game.game_name}</td>
-                    <td>
-                      {game.team1_name} vs {game.team2_name}
-                    </td>
-                    <td>
-                      <ViewButton>View</ViewButton>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
             </thead>
+            <tbody>
+              {assignments.map((game) => (
+                <tr key={game.id}>
+                  <td>{game.name}</td>
+                  <td>
+                    {game.teams[0].team_name} vs {game.teams[1].team_name}
+                  </td>
+                  <td>{formatToShortDateTime(game.start_datetime)}</td>
+                  <td>{game.location}</td>
+                  <td>
+                    <ViewButton onClick={() => navigate(`${game.id}`)}>
+                      View
+                    </ViewButton>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       )}

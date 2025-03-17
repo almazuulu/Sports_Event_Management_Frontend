@@ -35,6 +35,7 @@ import ManageGamesDetailsPage from "./pages/Admin-panels/ManageGamesDetails";
 import GameDetailsPage from "./pages/team-manager/GameDetails";
 import GameDetails from "./pages/PublicDashboard/GameDetails";
 import MyAssignmentsPage from "./pages/Scorekeeper/MyAssignments";
+import AssignmentDetailsPage from "./pages/Scorekeeper/AssignmentDetails";
 
 const router = createBrowserRouter([
   {
@@ -57,10 +58,10 @@ const router = createBrowserRouter([
             path: "fixtures",
             element: <PageRootLayout />,
             children: [
-              { index: true, element: <FixturesPage/> },
+              { index: true, element: <FixturesPage /> },
               {
                 path: ":fixtureId",
-                element: <GameDetails/>
+                element: <GameDetails />,
               },
             ],
           },
@@ -200,7 +201,13 @@ const router = createBrowserRouter([
                   {
                     path: "my-assignments",
                     element: <PageRootLayout />,
-                    children: [{ index: true, element: <MyAssignmentsPage /> }],
+                    children: [
+                      { index: true, element: <MyAssignmentsPage /> },
+                      {
+                        path: ":assignmentId",
+                        element: <AssignmentDetailsPage />,
+                      },
+                    ],
                   },
                 ],
               },
