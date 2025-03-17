@@ -3,10 +3,16 @@ import { useEffect, useState } from "react";
 import classes from "./UpcomingFixtures.module.css";
 import { fetchWithoutAuth } from "../../utils/FetchClient";
 import { formatToShortDate, formatToTimeOnly } from "../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 function UpcomingFixtures() {
+  const navigate = useNavigate();
   const [upcomingFixtures, setUpcomingFixtures] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const handleClickGame = (matchId) => {
+    navigate(`/fixtures/${matchId}`);
+  };
 
   const fetchUpcomingFixtures = async () => {
     try {
@@ -36,7 +42,13 @@ function UpcomingFixtures() {
           <p>Loading...</p>
         ) : (
           upcomingFixtures.map((match) => (
-            <div key={match.id} className={classes.fixtureCard}>
+            <div
+              key={match.id}
+              className={classes.fixtureCard}
+              onClick={() => {
+                handleClickGame(match.id);
+              }}
+            >
               <h3 className={classes.teams}>{match.name}</h3>
 
               <p className={classes.date}>

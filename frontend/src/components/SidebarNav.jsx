@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import classes from "./SidebarNav.module.css";
 import Option from "./Option";
@@ -10,47 +10,34 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { MdEvent, MdOutlineSportsSoccer } from "react-icons/md";
 import { HiOutlineRectangleGroup } from "react-icons/hi2";
 import { TbDeviceGamepad3 } from "react-icons/tb";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 function SidebarNav() {
   const existingUser = JSON.parse(localStorage.getItem("user"));
 
-  const [openSection, setOpenSection] = useState("dashboard");
+  const navigate = useNavigate();
 
-  const toggleSection = (section) => {
-    setOpenSection(openSection === section ? null : section);
-  };
+  const firstAvailableOption = SECTIONS.filter(
+    ({ allowedRoles }) =>
+      !allowedRoles || allowedRoles.includes(existingUser.role)
+  ).flatMap(({ options }) => options)[0];
+
+  useEffect(() => {
+    if (firstAvailableOption) {
+      navigate(firstAvailableOption.path);
+    }
+  }, [firstAvailableOption, navigate]);
 
   return (
     <nav className={classes.sidebar}>
       {SECTIONS.filter(
         ({ allowedRoles }) =>
           !allowedRoles || allowedRoles.includes(existingUser.role)
-      ).map(({ label, options, key }) => (
-        <section key={key} className={classes.navigationSection}>
-          <div
-            className={classes.labelContainer}
-            onClick={() => toggleSection(key)}
-          >
-            <label className={classes.label}>{label}</label>
-            <span>
-              <IoMdArrowDropdown />
-            </span>
-          </div>
-          {openSection === key && (
-            <div className={classes.optionsContainer}>
-              {options
-                .filter(
-                  ({ allowedRoles }) =>
-                    !allowedRoles || allowedRoles.includes(existingUser.role)
-                )
-                .map(({ Icon, title, path }) => (
-                  <Option key={title} Icon={Icon} title={title} path={path} />
-                ))}
-            </div>
-          )}
-        </section>
-      ))}
+      )
+        .flatMap(({ options }) => options)
+        .map(({ Icon, title, path }) => (
+          <Option key={title} Icon={Icon} title={title} path={path} />
+        ))}
     </nav>
   );
 }
@@ -59,78 +46,76 @@ export default SidebarNav;
 
 const SECTIONS = [
   {
-    // FOR TEAM_MANAGER
-    label: "ORGANIZE TEAMS",
-    key: "organize-teams",
+    label: "TEAM MANAGER",
     allowedRoles: ["team_manager"],
     options: [
       {
         Icon: FaUsers,
         title: "My Teams",
         path: "/settings/organize-teams",
-        allowedRoles: ["team_manager"],
       },
     ],
   },
   {
-    label: "MY TEAMS",
-    key: "my-team",
+    label: "PLAYER",
     allowedRoles: ["player"],
     options: [
       {
         Icon: FaUsers,
         title: "My Teams",
         path: "/settings/my-team",
-        allowedRoles: ["player"],
       },
     ],
   },
   {
-    label: "ADMIN PANEL",
-    key: "admin-panel",
+    label: "SCOREKEEPER",
+    allowedRoles: ["scorekeeper"],
+    options: [
+      {
+        Icon: FaUsers,
+        title: "My Assignments",
+        path: "/settings/my-assignments",
+      },
+    ],
+  },
+  {
+    label: "ADMIN",
     allowedRoles: ["admin"],
     options: [
       {
         Icon: FaUsers,
         title: "Manage Users",
         path: "/settings/manage-users",
-        allowedRoles: ["admin"],
       },
       {
         Icon: MdEvent,
         title: "Manage Events",
         path: "/settings/manage-events",
-        allowedRoles: ["admin"],
       },
       {
         Icon: MdOutlineSportsSoccer,
         title: "Manage Sport Events",
         path: "/settings/manage-sport-events",
-        allowedRoles: ["admin"],
       },
       {
         Icon: HiOutlineRectangleGroup,
         title: "Manage Teams",
         path: "/settings/manage-teams",
-        allowedRoles: ["admin"],
       },
       {
         Icon: HiOutlineRectangleGroup,
         title: "Manage Registrations",
         path: "/settings/manage-registrations",
-        allowedRoles: ["admin"],
       },
       {
         Icon: TbDeviceGamepad3,
         title: "Manage Games",
         path: "/settings/manage-games",
-        allowedRoles: ["admin"],
       },
     ],
   },
   {
     label: "MY PROFILE",
-    key: "my-profile",
     options: [
       { Icon: CgProfile, title: "My Profile", path: "/settings/my-profile" },
       {
