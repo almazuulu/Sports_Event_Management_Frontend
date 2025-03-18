@@ -7,23 +7,7 @@ const GameDetails = () => {
     const { fixtureId } = useParams();
     const [gameDetails, setGamedetails] = useState(null);
     const [error, setError] = useState(null);
-    const teamA = [
-        { name: "John Smith", jersey: 23, position: "Forward", captain: true },
-        { name: "Robert Johnson", jersey: 10, position: "Guard", captain: false },
-        { name: "David Williams", jersey: 15, position: "Center", captain: false }
-    ];
-
-    const teamB = [
-        { name: "Michael Johnson", jersey: 12, position: "Guard", captain: true },
-        { name: "Alex Thompson", jersey: 24, position: "Forward", captain: false },
-        { name: "Steven Parker", jersey: 8, position: "Center", captain: false }
-    ];
-
-    const scoringEvents = [
-        { time: "7:15", quarter: "3rd", team: "Thunderbolts", player: "John Smith", points: 3, description: "Three-pointer from left wing" },
-        { time: "8:30", quarter: "3rd", team: "Phoenix Flames", player: "Michael Johnson", points: 2, description: "Lay-up after fast break" },
-        { time: "9:45", quarter: "3rd", team: "Thunderbolts", player: "David Williams", points: 2, description: "Jump shot from the free throw line" }
-    ];
+   
     useEffect(() => {
         const fetchGameDetails = async () => {
             try {
