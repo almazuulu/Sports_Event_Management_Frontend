@@ -7,8 +7,10 @@ import { CgCloseO } from "react-icons/cg";
 import { formatDateTimeForInput } from "../../utils/helpers";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import { toast } from "react-toastify";
+import { getUserRole } from "../../utils/Authentication";
 
 function EditGameForm({ initialData = null, onClose, onSubmit, loading }) {
+  const role = getUserRole();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -84,8 +86,10 @@ function EditGameForm({ initialData = null, onClose, onSubmit, loading }) {
       }
     };
 
-    fetchScorekeepers();
-  }, [formData.start_datetime, formData.end_datetime]);
+    if (role === "admin") {
+      fetchScorekeepers();
+    }
+  }, [formData.start_datetime, formData.end_datetime, role]);
 
   useEffect(() => {
     if (initialData) {

@@ -6,7 +6,7 @@ function Hero() {
     <div className={classes.heroContainer}>
       <img className={classes.heroImage} src={hero} alt="Calendar" />
       <div className={classes.overlay}>
-        <h1 className={classes.title}>Upcoming Fixtures & Match Schedule</h1>
+        <h1 className={classes.title}>Fixtures</h1>
         <p className={classes.subtitle}>
           Stay updated with the latest match schedules. Don’t miss out on the
           action!

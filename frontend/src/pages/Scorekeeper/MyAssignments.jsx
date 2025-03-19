@@ -62,7 +62,7 @@ function MyAssignmentsPage() {
             </thead>
             <tbody>
               {assignments.map((game) => (
-                <tr key={game.id}>
+                <tr key={game.game_id}>
                   <td>{game.name}</td>
                   <td>
                     {game.teams[0].team_name} vs {game.teams[1].team_name}
@@ -70,7 +70,9 @@ function MyAssignmentsPage() {
                   <td>{formatToShortDateTime(game.start_datetime)}</td>
                   <td>{game.location}</td>
                   <td>
-                    <ViewButton onClick={() => navigate(`${game.id}`)}>
+                    <ViewButton
+                      onClick={() => navigate(`games/${game.game_id}`)}
+                    >
                       View
                     </ViewButton>
                   </td>

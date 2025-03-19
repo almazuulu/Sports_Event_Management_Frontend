@@ -153,6 +153,12 @@
     color: #e74c3c;
 }
 
+.timerControls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
 .addEventSection {
     border: 1px solid #ddd;
     border-radius: 8px;

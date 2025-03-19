@@ -11,8 +11,11 @@ import Modal from "../../components/UI/Modal";
 import EditGameForm from "../../components/Games/EditGameForm";
 import TeamsGameCard from "../../components/Games/TeamsGameCard";
 import AssignTeamForm from "../../components/Games/AssignTeamForm";
+import { getUserRole } from "../../utils/Authentication";
+import GameScore from "../../components/Games/GameScore";
 
 function ManageGamesDetailsPage() {
+  const role = getUserRole();
   const { gameId } = useParams();
   const [game, setGame] = useState({});
   const [availTeams, setAvailTeams] = useState([]);
@@ -22,6 +25,7 @@ function ManageGamesDetailsPage() {
   const [isSubmitEdit, setIsSubmitEdit] = useState(false);
   const [teamAway, setTeamAway] = useState({});
   const [teamHome, setTeamHome] = useState({});
+  const [gameScore, setGameScore] = useState({});
 
   const editGameHandler = () => {
     setIsEditModalOpen(true);
@@ -124,10 +128,21 @@ function ManageGamesDetailsPage() {
     }
   }, [game.sport_event]);
 
+  const fetchGameScore = useCallback(async () => {
+    try {
+      const res = await fetchWithAuth(`/api/scores/scores?game=${gameId}`);
+      const data = await res.json();
+      setGameScore(data.results[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [gameId]);
+
   useEffect(() => {
     fetchAvailTeams();
     fetchGameDetails();
-  }, [fetchGameDetails, fetchAvailTeams]);
+    fetchGameScore();
+  }, [fetchGameDetails, fetchAvailTeams, fetchGameScore]);
 
   return (
     <>
@@ -137,11 +152,14 @@ function ManageGamesDetailsPage() {
           <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
         ) : (
           <div className={classes.content}>
-            <section className={classes.actions}>
-              <ViewButton onClick={editGameHandler}>Edit Game</ViewButton>
-            </section>
+            {role === "admin" && (
+              <section className={classes.actions}>
+                <ViewButton onClick={editGameHandler}>Edit Game</ViewButton>
+              </section>
+            )}
             {/* GAME INFO CARD */}
             <GameInforCard game={game} onRefetchData={fetchGameDetails} />
+
             {/* TEAMS SECTION */}
             {game?.teams?.length < 2 && (
               <section className={classes.actions}>
@@ -162,6 +180,9 @@ function ManageGamesDetailsPage() {
                 />
               </div>
             )}
+
+            {/* SCORE SECTION */}
+            <GameScore gameScore={gameScore} onRefetchData={fetchGameScore}/>
           </div>
         )}
       </div>

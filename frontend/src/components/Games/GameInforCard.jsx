@@ -4,20 +4,22 @@ import { toast } from "react-toastify";
 import classes from "./GameInforCard.module.css";
 import StatusChip from "../StatusChip";
 import { formatToShortDateTime, formatToTimeOnly } from "../../utils/helpers";
-import ViewButton from "../Button/ViewButton";
 import Modal from "../UI/Modal";
-import UpdateGameStatusForm from "./UpdateGameStatusForm";
 import { fetchWithAuth } from "../../utils/FetchClient";
+import CreateButton from "../Button/CreateButton";
+import { getUserRole } from "../../utils/Authentication";
+import NormalButton from "../Button/NormalButton";
 
 function GameInforCard({ game = {}, onRefetchData }) {
+  const role = getUserRole();
   const [isUpdateStatus, setIsUpdateStatus] = useState(false);
   const [isSubmittingStatus, setIsSubmittingStatus] = useState(false);
 
-  const gameStatusHandler = () => {
+  const startGameHandler = () => {
     setIsUpdateStatus(true);
   };
 
-  const submitUpdateStatus = async (status) => {
+  const confirmStart = async () => {
     try {
       setIsSubmittingStatus(true);
       const response = await fetchWithAuth(
@@ -25,7 +27,7 @@ function GameInforCard({ game = {}, onRefetchData }) {
         {
           method: "PATCH",
           body: JSON.stringify({
-            status,
+            status: "ongoing",
           }),
         }
       );
@@ -37,10 +39,9 @@ function GameInforCard({ game = {}, onRefetchData }) {
       }
 
       if (response.ok) {
-        toast.success("Game status updated successfully!");
         setIsUpdateStatus(false);
+        toast.success("This game is started!");
         onRefetchData();
-        return;
       }
     } catch (error) {
       console.error(error);
@@ -87,14 +88,19 @@ function GameInforCard({ game = {}, onRefetchData }) {
             <p className={classes.label}>Description</p>
             <p>{game.description}</p>
           </div>
-          <div>
-            <p className={classes.label}>Actions</p>
+          {role === "scorekeeper" && (
             <div>
-              <ViewButton onClick={gameStatusHandler}>
-                Update Game Status
-              </ViewButton>
+              <p className={classes.label}>Actions</p>
+              <div>
+                <CreateButton
+                  onClick={startGameHandler}
+                  disabled={game?.status === "ongoing"}
+                >
+                  Start Game
+                </CreateButton>
+              </div>
             </div>
-          </div>
+          )}
         </section>
       </div>
 
@@ -104,11 +110,13 @@ function GameInforCard({ game = {}, onRefetchData }) {
         onClose={() => setIsUpdateStatus(false)}
         className={classes.modalContainer}
       >
-        <UpdateGameStatusForm
-          onSubmit={submitUpdateStatus}
-          onClose={() => setIsUpdateStatus(false)}
-          loading={isSubmittingStatus}
-        />
+        <p>Are you sure you want to start this game?</p>
+        <CreateButton style={{ marginRight: "10px" }} onClick={confirmStart}>
+          Yes, Start
+        </CreateButton>
+        <NormalButton onClick={() => setIsUpdateStatus(false)}>
+          Cancel
+        </NormalButton>
       </Modal>
     </>
   );
