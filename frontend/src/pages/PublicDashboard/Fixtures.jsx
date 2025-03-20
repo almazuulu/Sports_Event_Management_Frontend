@@ -28,9 +28,12 @@ const Fixtures = () => {
           return toast.error("Failed to fetch games");
         }
 
-        const sortedGames = data.results.sort(
-          (a, b) => new Date(a.start_datetime) - new Date(b.start_datetime)
-        );
+        const sortedGames = data.results
+          .filter((game) => game.status !== "completed")
+          .sort(
+            (a, b) => new Date(a.start_datetime) - new Date(b.start_datetime)
+          );
+
         setGames(sortedGames);
       } catch (error) {
         console.error(error);
@@ -59,9 +62,9 @@ const Fixtures = () => {
             <p className="loadingText">No matches at the moment.</p>
           </div>
         ) : (
-          <>
+          <div className={styles.grid}>
             <AllGames games={games} />
-          </>
+          </div>
         )}
       </div>
     </>

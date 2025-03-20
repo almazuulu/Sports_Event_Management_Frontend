@@ -5,6 +5,16 @@
     gap: 15px;
 }
 
+.dashboard .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header h2 {
+    margin: 0;
+    color: #000;
+}
+
 .teamsGameSection {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -16,7 +26,6 @@
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
 }
 
 .scoringEvents h2 {

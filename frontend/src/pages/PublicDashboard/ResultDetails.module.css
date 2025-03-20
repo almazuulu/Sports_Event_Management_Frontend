@@ -1,0 +1,187 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    color: #000;
+}
+
+.featuredGame {
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.featuredHeader {
+    background: linear-gradient(to right, #2c3e50, #3498db);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.featuredTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.featuredBody {
+    padding: 20px;
+}
+
+.featuredGameInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.gameMeta {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.gameTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.gameSubtitle {
+    font-size: 1rem;
+    color: #666;
+}
+
+.gameTime {
+    display: flex;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.teamsDisplay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.teamDisplay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+}
+
+.teamLogo {
+    width: 80px;
+    height: 80px;
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.teamName {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.teamInfo {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.scoreDisplay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.scoreRow {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.score {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.scoreDivider {
+    font-size: 2.5rem;
+    color: #999;
+}
+
+.recentEvents {
+    margin-bottom: 20px;
+}
+
+.sectionTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.eventList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.eventItem {
+    padding: 8px 12px;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.eventMinute {
+    font-weight: 600;
+    min-width: 40px;
+}
+
+.eventTeam {
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.eventInfo {
+    flex: 1;
+}
+
+.eventPlayer {
+    font-weight: 500;
+}
+
+.eventDetail {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.eventType {
+    font-size: 0.85rem;
+    color: #666;
+    text-transform: capitalize;
+}

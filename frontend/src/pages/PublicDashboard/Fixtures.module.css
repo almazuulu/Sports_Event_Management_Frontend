@@ -29,3 +29,9 @@
   transition: transform 0.2s;
 }
 
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+

@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import styles from "./GameDetails.module.css";
 import GameInforCard from "../../components/Games/GameInforCard";
 import TeamsGameCard from "../../components/Games/TeamsGameCard";
 import GameScore from "../../components/Games/GameScore";
 import { fetchWithAuth, fetchWithoutAuth } from "../../utils/FetchClient";
+import ViewButton from "../../components/Button/ViewButton";
+import NormalButton from "../../components/Button/NormalButton";
 
 const GameDetails = () => {
+  const navigate = useNavigate()
   const { fixtureId } = useParams();
   const [gameDetails, setGamedetails] = useState(null);
   const [gameScore, setGameScore] = useState({});
@@ -66,6 +69,10 @@ const GameDetails = () => {
 
   return (
     <div className={styles.dashboard}>
+      <div className={styles.header}>
+        <h2>{gameDetails.name}</h2>
+        <NormalButton onClick={() => navigate('..')}>Back to Fixtures</NormalButton>
+      </div>
       <GameInforCard game={gameDetails} />
 
       {gameDetails.teams && (
@@ -75,10 +82,10 @@ const GameDetails = () => {
         </div>
       )}
 
-      <GameScore gameScore={gameScore} />
+      {/* <GameScore gameScore={gameScore} /> */}
 
       {/* Scoring Events */}
-      <div className={styles.scoringEvents}>
+      {/* <div className={styles.scoringEvents}>
         <h2>Scoring Events</h2>
         {!scoringEvents && (
           <p className="loadingText">No scoring events at the moment.</p>
@@ -110,7 +117,7 @@ const GameDetails = () => {
             </tbody>
           </table>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

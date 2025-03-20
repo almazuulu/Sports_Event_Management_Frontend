@@ -36,6 +36,7 @@ import GameDetailsPage from "./pages/team-manager/GameDetails";
 import GameDetails from "./pages/PublicDashboard/GameDetails";
 import MyAssignmentsPage from "./pages/Scorekeeper/MyAssignments";
 import AssignmentDetailsPage from "./pages/Scorekeeper/AssignmentDetails";
+import ResultDetailsPage from "./pages/PublicDashboard/ResultDetails";
 
 const router = createBrowserRouter([
   {
@@ -67,7 +68,17 @@ const router = createBrowserRouter([
           },
           {
             path: "results",
-            element: <ResultsPage />,
+            element: <PageRootLayout />,
+            children: [
+              {
+                index: true,
+                element: <ResultsPage />,
+              },
+              {
+                path: ":resultId",
+                element: <ResultDetailsPage />,
+              },
+            ],
           },
           {
             path: "stats",
