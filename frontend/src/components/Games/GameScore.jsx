@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import classes from "./GameScore.module.css";
 import CreateButton from "../Button/CreateButton";
 import { fetchWithAuth } from "../../utils/FetchClient";
-import { getUserInfo } from "../../utils/Authentication";
+import { getUserInfo, getUserRole } from "../../utils/Authentication";
 import { toast } from "react-toastify";
 import ViewButton from "../Button/ViewButton";
 
@@ -20,6 +20,7 @@ const getStatusName = (status) => {
 
 function GameScore({ gameScore, onRefetchData }) {
   const userInfo = getUserInfo();
+  const role = getUserRole();
   const { gameId } = useParams();
   const navigate = useNavigate();
 
@@ -48,11 +49,13 @@ function GameScore({ gameScore, onRefetchData }) {
       <div className={classes.container}>
         <div className={classes.header}>
           <p className={classes.title}>Game Score</p>
-          <div>
-            <CreateButton onClick={createNewScoreHandler}>
-              Create a game score
-            </CreateButton>
-          </div>
+          {role === "scorekeeper" && gameScore?.status === "in_progress" && (
+            <div>
+              <CreateButton onClick={createNewScoreHandler}>
+                Create a game score
+              </CreateButton>
+            </div>
+          )}
         </div>
         <p className="loadingText">No game score created for this match yet.</p>
       </div>
@@ -63,11 +66,15 @@ function GameScore({ gameScore, onRefetchData }) {
     <div className={classes.container}>
       <div className={classes.header}>
         <p className={classes.title}>Game Score</p>
-        <div>
-          <ViewButton onClick={() => navigate(`game-scores/${gameScore?.id}`)}>
-            Update Score
-          </ViewButton>
-        </div>
+        {role === "scorekeeper" && gameScore?.status === "in_progress" && (
+          <div>
+            <ViewButton
+              onClick={() => navigate(`game-scores/${gameScore?.id}`)}
+            >
+              Update Score
+            </ViewButton>
+          </div>
+        )}
       </div>
 
       <div className={classes.grid}>

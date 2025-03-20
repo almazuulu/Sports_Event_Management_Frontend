@@ -88,13 +88,13 @@ function GameInforCard({ game = {}, onRefetchData }) {
             <p className={classes.label}>Description</p>
             <p>{game.description}</p>
           </div>
-          {role === "scorekeeper" && (
+          {role === "scorekeeper" && game?.status === "ongoing" && (
             <div>
               <p className={classes.label}>Actions</p>
               <div>
                 <CreateButton
                   onClick={startGameHandler}
-                  disabled={game?.status === "ongoing"}
+                  disabled={game?.status !== "ongoing"}
                 >
                   Start Game
                 </CreateButton>
