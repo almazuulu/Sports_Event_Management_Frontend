@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./TeamsGameCard.module.css";
 import CancelButton from "../Button/CancelButton";
 import DeleteButton from "../Button/DeleteButton";
 import ViewButton from "../Button/ViewButton";
 import Modal from "../UI/Modal";
-import { toast } from "react-toastify";
 import { fetchWithAuth } from "../../utils/FetchClient";
 
 function TeamsGameCard({ team = {}, onRefetchData }) {
@@ -46,11 +46,9 @@ function TeamsGameCard({ team = {}, onRefetchData }) {
   return (
     <>
       <div className={classes.container}>
-        <div>
-          <p className={classes.teamLabel}>
-            {team?.designation}: {team?.team_name}
-          </p>
-        </div>
+        <p className={classes.teamLabel}>
+          {team?.designation}: {team?.team_name}
+        </p>
         {team?.players.length === 0 ? (
           <p>No players added to this team yet.</p>
         ) : (
@@ -62,7 +60,7 @@ function TeamsGameCard({ team = {}, onRefetchData }) {
                   <th>JERSEY</th>
                   <th>POSITION</th>
                   <th>CAPTAIN</th>
-                  <th>ACTIONS</th>
+                  {/* <th>ACTIONS</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -74,7 +72,7 @@ function TeamsGameCard({ team = {}, onRefetchData }) {
                     <td>
                       {player.is_captain_for_game === true ? "Yes" : "No"}
                     </td>
-                    <td>
+                    {/* <td>
                       <ViewButton style={{ marginRight: "10px" }}>
                         View
                       </ViewButton>
@@ -83,7 +81,7 @@ function TeamsGameCard({ team = {}, onRefetchData }) {
                       >
                         Remove
                       </DeleteButton>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

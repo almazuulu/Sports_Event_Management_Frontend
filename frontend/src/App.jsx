@@ -204,8 +204,18 @@ const router = createBrowserRouter([
                     children: [
                       { index: true, element: <MyAssignmentsPage /> },
                       {
-                        path: ":assignmentId",
-                        element: <AssignmentDetailsPage />,
+                        path: "games/:gameId",
+                        element: <PageRootLayout />,
+                        children: [
+                          {
+                            index: true,
+                            element: <ManageGamesDetailsPage />,
+                          },
+                          {
+                            path: "game-scores/:scoreId",
+                            element: <AssignmentDetailsPage />,
+                          },
+                        ],
                       },
                     ],
                   },

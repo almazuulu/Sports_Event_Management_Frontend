@@ -17,3 +17,8 @@ export const getUserRole = () => {
   let userData = JSON.parse(localStorage.getItem("user"));
   return userData.role;
 };
+
+export const getUserInfo = () => {
+  let userData = JSON.parse(localStorage.getItem("user"));
+  return userData;
+};

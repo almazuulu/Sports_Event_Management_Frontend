@@ -86,7 +86,6 @@ const HeaderNavBar = () => {
               key={nav.title}
               to={nav.path}
               className={({ isActive }) => `${isActive ? classes.active : ""}`}
-              end
             >
               <span className={classes.optionText}>{nav.title}</span>
             </NavLink>
