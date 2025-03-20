@@ -65,7 +65,7 @@ function MyAssignmentsPage() {
                 <tr key={game.game_id}>
                   <td>{game.name}</td>
                   <td>
-                    {game.teams[0].team_name} vs {game.teams[1].team_name}
+                    {game?.teams[0]?.team_name} vs {game?.teams[1]?.team_name}
                   </td>
                   <td>{formatToShortDateTime(game.start_datetime)}</td>
                   <td>{game.location}</td>

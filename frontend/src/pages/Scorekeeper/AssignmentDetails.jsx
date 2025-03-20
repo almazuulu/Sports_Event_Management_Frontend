@@ -7,6 +7,7 @@ import NormalButton from "../../components/Button/NormalButton";
 import CreateButton from "../../components/Button/CreateButton";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import { formatToShortDate, formatToTimeOnly } from "../../utils/helpers";
+import { toast } from "react-toastify";
 
 function AssignmentDetailsPage() {
   const { gameId } = useParams();
@@ -14,15 +15,17 @@ function AssignmentDetailsPage() {
   const [gameScore, setGameScore] = useState({});
   const [time, setTime] = useState(0);
   const [isTimeRunning, setIsTimeRunning] = useState(false);
+  const [teamPlayers, setTeamPlayers] = useState([]);
 
   const [formState, setFormState] = useState({
     team: "",
-    eventType: "",
-    eventMinute: 0,
-    eventPlayer: "",
-    eventAssist: "",
-    eventPoints: 1,
-    eventDescription: "",
+    event_type: "",
+    minute: 0,
+    player: "",
+    assisted_by: "",
+    points: 1,
+    period: "",
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -36,24 +39,56 @@ function AssignmentDetailsPage() {
   const handleClear = () => {
     setFormState({
       team: "",
-      eventType: "",
-      eventMinute: 0,
-      eventPlayer: "",
-      eventAssist: "",
-      eventPoints: 1,
-      eventDescription: "",
+      event_type: "",
+      minute: 0,
+      player: "",
+      assisted_by: "",
+      points: 1,
+      period: "",
+      description: "",
     });
   };
 
-  const handleSubmit = () => {
-    console.log("Submitting Form Data:", formState);
-    // Add logic to send formState data to API
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formatTime = (seconds) => {
+      const hrs = Math.floor(seconds / 3600)
+        .toString()
+        .padStart(2, "0");
+      const mins = Math.floor((seconds % 3600) / 60)
+        .toString()
+        .padStart(2, "0");
+      const secs = (seconds % 60).toString().padStart(2, "0");
+      return `${hrs}:${mins}:${secs}`;
+    };
+
+    const formToSubmit = {
+      ...formState,
+      time_occurred: formatTime(time),
+    };
+    console.log("Submitting Form Data:", formToSubmit);
+
+    try {
+      const res = await fetchWithAuth("/api/scores/score-details/", {
+        method: "POST",
+        body: JSON.stringify(formToSubmit),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) return toast.error("Failed to submit scoring event!");
+
+      toast.success("New scoring event added!");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const fetchGameDetails = useCallback(async () => {
     try {
       const res = await fetchWithAuth(`/api/games/games/${gameId}/`);
       const data = await res.json();
+      // console.log("data", data);
       setGameInfo(data);
     } catch (error) {
       console.error(error);
@@ -111,6 +146,17 @@ function AssignmentDetailsPage() {
     fetchGameScore();
     fetchGameDetails();
   }, [fetchGameScore, fetchGameDetails]);
+
+  useEffect(() => {
+    if (formState.team) {
+      const gameTeam = gameInfo.teams.find(
+        (team) => team.team === formState.team
+      );
+      if (gameTeam) {
+        setTeamPlayers(gameTeam.players);
+      }
+    }
+  }, [formState.team, gameInfo.teams]);
 
   return (
     <>
@@ -199,9 +245,9 @@ function AssignmentDetailsPage() {
                 <div className={classes.formGroup}>
                   <label>Event Type</label>
                   <select
-                    id="eventType"
+                    id="event_type"
                     className={classes.formControl}
-                    value={formState.eventType}
+                    value={formState.event_type}
                     onChange={handleChange}
                   >
                     <option value="">-- Select Event Type --</option>
@@ -219,9 +265,9 @@ function AssignmentDetailsPage() {
                   <label>Minute</label>
                   <input
                     type="number"
-                    id="eventMinute"
+                    id="minute"
                     className={classes.formControl}
-                    value={formState.eventMinute}
+                    value={formState.minute}
                     onChange={handleChange}
                   />
                 </div>
@@ -230,42 +276,55 @@ function AssignmentDetailsPage() {
                 <div className={classes.formGroup}>
                   <label>Player</label>
                   <select
-                    id="eventPlayer"
+                    id="player"
                     className={classes.formControl}
-                    value={formState.eventPlayer}
+                    value={formState.player}
                     onChange={handleChange}
                   >
                     <option value="">-- Select Player --</option>
-                    <option value="1">Michael Johnson (#10)</option>
-                    <option value="2">David Smith (#7)</option>
-                    <option value="3">Robert Davis (#9)</option>
-                    <option value="4">John Wilson (#4)</option>
-                    <option value="5">Mark Taylor (#1)</option>
+                    {teamPlayers.map((player) => (
+                      <option key={player.player} value={player.player}>
+                        {player.name} (#{player.jersey_number})
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className={classes.formGroup}>
                   <label>Assisted By (Optional)</label>
                   <select
-                    id="eventAssist"
+                    id="assisted_by"
                     className={classes.formControl}
-                    value={formState.eventAssist}
+                    value={formState.assisted_by}
                     onChange={handleChange}
                   >
                     <option value="">-- None --</option>
-                    <option value="1">Michael Johnson (#10)</option>
-                    <option value="2">David Smith (#7)</option>
-                    <option value="3">Robert Davis (#9)</option>
-                    <option value="4">John Wilson (#4)</option>
-                    <option value="5">Mark Taylor (#1)</option>
+                    {teamPlayers.map((player) => (
+                      <option key={player.player} value={player.player}>
+                        {player.name} (#{player.jersey_number})
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className={classes.formGroup}>
                   <label>Points</label>
                   <input
                     type="number"
-                    id="eventPoints"
+                    id="points"
                     className={classes.formControl}
-                    value={formState.eventPoints}
+                    value={formState.points}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className={classes.formRow}>
+                <div className={classes.formGroup}>
+                  <label>Period</label>
+                  <input
+                    type="text"
+                    id="period"
+                    placeholder="First half"
+                    className={classes.formControl}
+                    value={formState.period}
                     onChange={handleChange}
                   />
                 </div>
@@ -273,10 +332,10 @@ function AssignmentDetailsPage() {
               <div className={classes.formGroup}>
                 <label>Description (Optional)</label>
                 <textarea
-                  id="eventDescription"
+                  id="description"
                   className={classes.formControl}
                   placeholder="Add details about this scoring event..."
-                  value={formState.eventDescription}
+                  value={formState.description}
                   onChange={handleChange}
                 ></textarea>
               </div>
