@@ -2,10 +2,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 import classes from "./ChangePassword.module.css";
-import Header from "../components/Header";
 import { fetchWithAuth } from "../utils/FetchClient";
 import NormalButton from "../components/Button/NormalButton";
-import CreateButton from "../components/Button/CreateButton";
+import ViewButton from "../components/Button/ViewButton";
 
 function ChangePasswordPage() {
   const [formData, setFormData] = useState({
@@ -72,70 +71,78 @@ function ChangePasswordPage() {
 
   return (
     <div className={classes.container}>
-      <Header title={"Change Password"} />
+      <div className={classes.topBar}>
+        <div className={classes.pageTitle}>
+          <h1>Change Password</h1>
+        </div>
+      </div>
       <div className={classes.card}>
-        <section className={classes.sectionButton}>
-          {isEdit ? (
-            <NormalButton onClick={handleEdit}>Cancel</NormalButton>
-          ) : (
-            <CreateButton onClick={handleEdit}>Edit</CreateButton>
-          )}
-        </section>
-
-        <div className={classes.formContainer}>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label className={classes.label}>
-                Old Password <span>*</span>
-              </label>
-              <input
-                type="password"
-                name="old_password"
-                value={formData.old_password}
-                onChange={handleChange}
-                className={classes.input}
-                disabled={!isEdit}
-              />
-            </div>
-
-            <div>
-              <label className={classes.label}>
-                New Password <span>*</span>
-              </label>
-              <input
-                type="password"
-                name="new_password"
-                value={formData.new_password}
-                onChange={handleChange}
-                className={classes.input}
-                disabled={!isEdit}
-              />
-            </div>
-
-            <div>
-              <label className={classes.label}>
-                New Password Confirm <span>*</span>
-              </label>
-              <input
-                type="password"
-                name="new_password_confirm"
-                value={formData.new_password_confirm}
-                onChange={handleChange}
-                className={classes.input}
-                disabled={!isEdit}
-              />
-            </div>
-
-            {isEdit && (
-              <button
-                type="submit"
-                className={classes.button}
-                disabled={loading}
-              >
-                {loading ? "Saving..." : "Change Password"}
-              </button>
+        <div className={classes.cardHeader}>
+          <h3>Change My Password</h3>
+          <div>
+            {isEdit ? (
+              <NormalButton onClick={handleEdit}>Cancel</NormalButton>
+            ) : (
+              <ViewButton onClick={handleEdit}>Change Password</ViewButton>
             )}
-          </form>
+          </div>
+        </div>
+        <div className={classes.cardBody}>
+          <div className={classes.formContainer}>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label className={classes.label}>
+                  Old Password <span>*</span>
+                </label>
+                <input
+                  type="password"
+                  name="old_password"
+                  value={formData.old_password}
+                  onChange={handleChange}
+                  className={classes.input}
+                  disabled={!isEdit}
+                />
+              </div>
+
+              <div>
+                <label className={classes.label}>
+                  New Password <span>*</span>
+                </label>
+                <input
+                  type="password"
+                  name="new_password"
+                  value={formData.new_password}
+                  onChange={handleChange}
+                  className={classes.input}
+                  disabled={!isEdit}
+                />
+              </div>
+
+              <div>
+                <label className={classes.label}>
+                  New Password Confirm <span>*</span>
+                </label>
+                <input
+                  type="password"
+                  name="new_password_confirm"
+                  value={formData.new_password_confirm}
+                  onChange={handleChange}
+                  className={classes.input}
+                  disabled={!isEdit}
+                />
+              </div>
+
+              {isEdit && (
+                <button
+                  type="submit"
+                  className={classes.button}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Change Password"}
+                </button>
+              )}
+            </form>
+          </div>
         </div>
       </div>
     </div>

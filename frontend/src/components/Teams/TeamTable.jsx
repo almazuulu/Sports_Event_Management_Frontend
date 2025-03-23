@@ -4,6 +4,7 @@ import TeamStatusChip from "./TeamStatusChip";
 import ViewButton from "../Button/ViewButton";
 
 function TeamTable({ teams = [] }) {
+  console.log(teams);
   const navigate = useNavigate();
 
   const handleView = (teamId) => {
@@ -16,28 +17,30 @@ function TeamTable({ teams = [] }) {
         <table>
           <thead>
             <tr>
-              <th>No</th>
+              {/* <th>No</th> */}
               <th>Team Name</th>
               {/* <th>Team Captain</th> */}
-              <th>Team Manager</th>
-              <th>Contact Info</th>
+              <th>Manager</th>
+              <th>Total Players</th>
+              {/* <th>Contact Info</th> */}
               <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {teams.map((team, index) => (
+            {teams.map((team) => (
               <tr key={team.id}>
-                <td>{index + 1}</td>
+                {/* <td>{index + 1}</td> */}
                 <td>{team.name}</td>
                 {/* <td>{team.team_captain ?? "N/A"}</td> */}
                 <td>
                   {team.manager.first_name} {team.manager.last_name}
                 </td>
-                <td style={{ textAlign: "left" }}>
+                <td>{team.player_count}</td>
+                {/* <td style={{ textAlign: "left" }}>
                   <p>Email: {team.contact_email}</p>
                   <p>Phone: {team.contact_phone}</p>
-                </td>
+                </td> */}
                 <td>
                   <TeamStatusChip status={team.status} />
                 </td>

@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 import classes from "./TeamDetails.module.css";
 import { fetchWithAuth } from "../utils/FetchClient";
-import Header from "../components/Header";
 import ViewTeamForm from "../components/Teams/ViewTeamForm";
 import { getUserRole } from "../utils/Authentication";
 import CreateButton from "../components/Button/CreateButton";
@@ -16,6 +15,7 @@ import JoinedSportEventTable from "../components/Teams/JoinedSportEventTable";
 import CreatePlayerForm from "../components/Players/CreatePlayerForm";
 import CancelButton from "../components/Button/CancelButton";
 import GameTable from "../components/TeamManager/GameTable";
+import ViewButton from "../components/Button/ViewButton";
 
 function TeamDetailsPage() {
   const role = getUserRole();
@@ -324,7 +324,11 @@ function TeamDetailsPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={team.name} enableBack />
+        <div className={classes.topBar}>
+          <div className={classes.pageTitle}>
+            <h1>{team.name}</h1>
+          </div>
+        </div>
 
         <div className={classes.tabsContainer}>
           <button
@@ -363,56 +367,57 @@ function TeamDetailsPage() {
           <button
             type="button"
             className={
-              activeTab === "games"
+              activeTab === "matches"
                 ? `${classes.tabsButton} ${classes.active}`
                 : classes.tabsButton
             }
-            onClick={() => setActiveTab("games")}
+            onClick={() => setActiveTab("matches")}
           >
-            Games
+            Matches
           </button>
         </div>
 
-        <div className={classes.card}>
-          {activeTab === "details" && (
-            <>
-              {((role === "admin" &&
-                window.location.pathname.includes("/manage-teams/")) ||
-                (role === "team_manager" &&
-                  window.location.pathname.includes("/organize-teams/"))) && (
-                <section className={classes.sectionButton}>
-                  <CreateButton
-                    style={{ marginRight: "10px" }}
-                    onClick={handleEdit}
-                  >
-                    Edit
-                  </CreateButton>
-                </section>
-              )}
+        {activeTab === "details" && (
+          <div className={classes.card}>
+            <div className={classes.cardHeader}>
+              <h3>Team Details</h3>
+              <div>
+                {role === "team_manager" && (
+                  <ViewButton onClick={handleEdit}>Edit</ViewButton>
+                )}
+              </div>
+            </div>
+            <div className={classes.cardBody}>
               {isFetchingTeam ? (
                 <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
               ) : (
                 <ViewTeamForm initialData={team} />
               )}
-            </>
-          )}
+            </div>
+          </div>
+        )}
 
-          {activeTab === "players" && (
-            <>
-              {role === "team_manager" &&
-                window.location.pathname.includes("/organize-teams/") && (
-                  <section className={classes.sectionButton}>
+        {activeTab === "players" && (
+          <div className={classes.card}>
+            <div className={classes.cardHeader}>
+              <h3>List of Players</h3>
+              <div>
+                {role === "team_manager" && (
+                  <>
                     <CreateButton
                       style={{ marginRight: "10px" }}
                       onClick={handleAddPlayer}
                     >
-                      Add Player
+                      Add New Player
                     </CreateButton>
                     <CancelButton onClick={() => handleChangeCaptain()}>
                       {teamCaptain ? "Change Team Captain" : "Set Team Captain"}
                     </CancelButton>
-                  </section>
+                  </>
                 )}
+              </div>
+            </div>
+            <div className={classes.cardBody}>
               {isFetchingPlayers ? (
                 <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
               ) : players.length === 0 ? (
@@ -420,22 +425,26 @@ function TeamDetailsPage() {
               ) : (
                 <PlayerTable players={players} onRefetchData={fetchPlayers} />
               )}
-            </>
-          )}
+            </div>
+          </div>
+        )}
 
-          {activeTab === "sport-events" && (
-            <>
-              {role === "team_manager" &&
-                window.location.pathname.includes("/organize-teams/") && (
-                  <section className={classes.sectionButton}>
-                    <CreateButton
-                      style={{ marginRight: "10px" }}
-                      onClick={handleJoinSportEvents}
-                    >
-                      Join Sport Events
-                    </CreateButton>
-                  </section>
+        {activeTab === "sport-events" && (
+          <div className={classes.card}>
+            <div className={classes.cardHeader}>
+              <h3>Joined Sport Events</h3>
+              <div>
+                {role === "team_manager" && (
+                  <CreateButton
+                    style={{ marginRight: "10px" }}
+                    onClick={handleJoinSportEvents}
+                  >
+                    Join Sport Events
+                  </CreateButton>
                 )}
+              </div>
+            </div>
+            <div className={classes.cardBody}>
               {isFetchingJoinedSportEvents ? (
                 <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
               ) : sportEventsJoined.length === 0 ? (
@@ -446,11 +455,16 @@ function TeamDetailsPage() {
                   onRefetchData={fetchSportEventsJoined}
                 />
               )}
-            </>
-          )}
+            </div>
+          </div>
+        )}
 
-          {activeTab === "games" && (
-            <>
+        {activeTab === "matches" && (
+          <div className={classes.card}>
+            <div className={classes.cardHeader}>
+              <h3>Upcoming Matches</h3>
+            </div>
+            <div className={classes.cardBody}>
               {isFetchingGames ? (
                 <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
               ) : gamesJoined.length === 0 ? (
@@ -458,9 +472,9 @@ function TeamDetailsPage() {
               ) : (
                 <GameTable games={gamesJoined} />
               )}
-            </>
-          )}
-        </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* EDIT MODAL */}

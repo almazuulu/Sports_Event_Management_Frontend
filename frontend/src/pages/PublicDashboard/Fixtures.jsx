@@ -52,7 +52,7 @@ const Fixtures = () => {
     <>
       <Hero />
       <div className={styles.container}>
-        {games.length > 0 && <FixturesFilter onFilter={fetchAllGames} />}
+        <FixturesFilter onFilter={fetchAllGames} />
         {isFetchingGames ? (
           <div className={styles.card}>
             <p className="loadingText">Loading...</p>

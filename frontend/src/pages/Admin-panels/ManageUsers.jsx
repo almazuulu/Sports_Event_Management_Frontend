@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import classes from "./ManageUsers.module.css";
-import Header from "../../components/Header";
 import UserTable from "../../components/UserTable";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import Modal from "../../components/UI/Modal";
 import CreateUserForm from "../../components/CreateUserForm";
 import CreateButton from "../../components/Button/CreateButton";
+import UsersFilter from "../../components/AdminPanel/UsersFilter";
+import CountCard from "../../components/AdminPanel/CountCard";
 
 function ManageUsersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [users, setUsers] = useState([]);
+  const [usersCount, setUsersCount] = useState([]);
   const [roles, setRoles] = useState([]);
 
   const handleCreateNew = () => {
@@ -57,19 +59,24 @@ function ManageUsersPage() {
     }
   };
 
-  const fetchUsersData = async () => {
+  const fetchUsersData = async (filters = {}) => {
     try {
       setIsFetching(true);
-      const response = await fetchWithAuth("/api/users/?page=1");
-      const data = await response.json();
+      const queryParams = new URLSearchParams(filters).toString();
+      const url = `/api/users/${queryParams ? `?${queryParams}` : ""}`;
+      const response = await fetchWithAuth(url);
+
+      const res = await fetchWithAuth('/api/users/')
 
       if (!response.ok) {
-        toast.error("Failed to fetch users data");
+        throw new Error("Netwrk error!");
       }
 
-      if (response.ok) {
-        setUsers(data.results);
-      }
+      const data = await response.json();
+      setUsers(data.results);
+
+      const dataCount = await res.json();
+      setUsersCount(dataCount.results)
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
@@ -80,13 +87,13 @@ function ManageUsersPage() {
   const fetchUserRoles = async () => {
     try {
       const response = await fetchWithAuth("/api/users/roles");
-      const data = await response.json();
 
-      if (!response.ok) toast.error("Failed to fetch roles!");
-
-      if (response.ok) {
-        setRoles(data);
+      if (!response.ok) {
+        throw new Error("Failed to fetch roles!");
       }
+
+      const data = await response.json();
+      setRoles(data);
     } catch (err) {
       console.error(err);
     }
@@ -100,13 +107,25 @@ function ManageUsersPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={"Manage Users"} />
-        <div className={classes.card}>
-          <section className={classes.sectionButton}>
+        <div className={classes.topBar}>
+          <div className={classes.pageTitle}>
+            <h1>User Management</h1>
+          </div>
+          <div>
             <CreateButton onClick={handleCreateNew}>
               Create New User
             </CreateButton>
-          </section>
+          </div>
+        </div>
+        <div className={classes.statsCards}>
+          <CountCard label={"Admins"} count={usersCount.filter(user => user.role === 'admin').length}/>
+          <CountCard label={"Team Managers"} count={usersCount.filter(user => user.role === 'team_manager').length}/>
+          <CountCard label={"Players"} count={usersCount.filter(user => user.role === 'player').length}/>
+          <CountCard label={"Scorekeepers"} count={usersCount.filter(user => user.role === 'scorekeeper').length}/>
+          <CountCard label={"Public Users"} count={usersCount.filter(user => user.role === 'public').length}/>
+        </div>
+        <UsersFilter onFilter={fetchUsersData} />
+        <div className={classes.card}>
           {isFetching ? (
             <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
           ) : (

@@ -72,6 +72,7 @@ const PlayerList = () => {
     <>
       <Hero />
       <div className={styles.container}>
+        <PlayersFilter onFilter={fetchAllPlayers} teams={teams} />
         {isFetchingPlayers ? (
           <p className="loadingText">Loading...</p>
         ) : players.length === 0 ? (
@@ -79,48 +80,45 @@ const PlayerList = () => {
             <p className="loadingText">No players available at the moment.</p>
           </div>
         ) : (
-          <>
-            <PlayersFilter onFilter={fetchAllPlayers} teams={teams} />
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Player</th>
-                    <th>Team</th>
-                    <th>Jersey #</th>
-                    <th>Position</th>
+          <div className={styles.tableContainer}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Player</th>
+                  <th>Team</th>
+                  <th>Jersey #</th>
+                  <th>Position</th>
+                </tr>
+              </thead>
+              <tbody>
+                {players.map((player) => (
+                  <tr
+                    key={player.id}
+                    onClick={() => handleRowClick(player.id)}
+                    className={styles.clickableRow}
+                  >
+                    <td>
+                      <img
+                        src={player1}
+                        className={styles.playerImage}
+                        alt="Player"
+                      />
+                    </td>
+                    <td className={styles.playerContainer}>
+                      &nbsp; &nbsp;
+                      <span className={styles.playerName}>
+                        {player.first_name} {player.last_name}
+                      </span>
+                    </td>
+                    <td>{player.team_name}</td>
+                    <td>{player.jersey_number}</td>
+                    <td>{player.position}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {players.map((player) => (
-                    <tr
-                      key={player.id}
-                      onClick={() => handleRowClick(player.id)}
-                      className={styles.clickableRow}
-                    >
-                      <td>
-                        <img
-                          src={player1}
-                          className={styles.playerImage}
-                          alt="Player"
-                        />
-                      </td>
-                      <td className={styles.playerContainer}>
-                        &nbsp; &nbsp;
-                        <span className={styles.playerName}>
-                          {player.first_name} {player.last_name}
-                        </span>
-                      </td>
-                      <td>{player.team_name}</td>
-                      <td>{player.jersey_number}</td>
-                      <td>{player.position}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </>

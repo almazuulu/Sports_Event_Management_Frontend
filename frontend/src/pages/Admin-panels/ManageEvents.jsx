@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import classes from "./ManageEvents.module.css";
-import Header from "../../components/Header";
 import CreateButton from "../../components/Button/CreateButton";
 import EventTable from "../../components/EventTable";
 import Modal from "../../components/UI/Modal";
 import CreateEventForm from "../../components/CreateEventForm";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import EventFilter from "../../components/Events/EventFilter";
+import CountCard from "../../components/AdminPanel/CountCard";
 
 function ManageEventsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [eventList, setEventList] = useState([]);
+  const [eventCount, setEventCount] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
   const handleCreateNew = () => {
@@ -64,18 +65,18 @@ function ManageEventsPage() {
       setIsFetching(true);
       const queryParams = new URLSearchParams(filters).toString();
       const url = `/api/events/events/${queryParams ? `?${queryParams}` : ""}`;
-
       const response = await fetchWithAuth(url);
 
-      const data = await response.json();
-
       if (!response.ok) {
-        toast.error("Failed to fetch events data");
+        throw new Error("Network error");
       }
 
-      if (response.ok) {
-        setEventList(data.results);
-      }
+      const data = await response.json();
+      setEventList(data.results);
+
+      const res = await fetchWithAuth("/api/events/events/");
+      const resData = await res.json();
+      setEventCount(resData.results);
     } catch (error) {
       console.error("Error fetching events data:", error);
     } finally {
@@ -90,13 +91,46 @@ function ManageEventsPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={"Manage Events"} />
-        <div className={classes.card}>
-          <section className={classes.sectionButton}>
+        <div className={classes.topBar}>
+          <div className={classes.pageTitle}>
+            <h1>Event Management</h1>
+          </div>
+          <div>
             <CreateButton onClick={handleCreateNew}>
               Create New Event
             </CreateButton>
-          </section>
+          </div>
+        </div>
+
+        <div className={classes.statsCards}>
+          {/* <CountCard label={"Total Events"} count={eventCount.length} /> */}
+          <CountCard
+            label={"Ongoing"}
+            count={eventCount.filter((ev) => ev.status === "active").length}
+          />
+          <CountCard
+            label={"Finished"}
+            count={eventCount.filter((ev) => ev.status === "completed").length}
+          />
+          <CountCard
+            label={"Cancelled"}
+            count={eventCount.filter((ev) => ev.status === "cancelled").length}
+          />
+          <CountCard
+            label={"Drafted"}
+            count={eventCount.filter((ev) => ev.status === "draft").length}
+          />
+          <CountCard
+            label={"Open for Registration"}
+            count={
+              eventCount.filter((ev) => ev.status === "registration").length
+            }
+          />
+        </div>
+
+        <EventFilter onFilter={fetchEventsData} />
+
+        <div className={classes.card}>
           {isFetching ? (
             <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
           ) : eventList.length === 0 ? (
@@ -104,13 +138,7 @@ function ManageEventsPage() {
               No events available at the moment.
             </p>
           ) : (
-            <>
-              <EventFilter onFilter={fetchEventsData} />
-              <EventTable
-                eventList={eventList}
-                onRefetchData={fetchEventsData}
-              />
-            </>
+            <EventTable eventList={eventList} onRefetchData={fetchEventsData} />
           )}
         </div>
       </div>

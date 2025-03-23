@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+
 import { formatToShortDateTime } from "../../utils/helpers";
 import ViewButton from "../Button/ViewButton";
+import { getUserRole } from "../../utils/Authentication";
 
 function GameTable({ games = [] }) {
+  const role = getUserRole();
   const navigate = useNavigate();
 
   return (
@@ -15,7 +18,7 @@ function GameTable({ games = [] }) {
             <th>SPORT EVENT NAME</th>
             <th>DATE & TIME</th>
             <th>LOCATION</th>
-            <th>ACTION</th>
+            {role === "team_manager" && <th>ACTION</th>}
           </tr>
         </thead>
         <tbody>
@@ -26,11 +29,13 @@ function GameTable({ games = [] }) {
               <td>{game.sport_event_name}</td>
               <td>{formatToShortDateTime(game.game_start_datetime)}</td>
               <td>{game.game_location}</td>
-              <td>
-                <ViewButton onClick={() => navigate(`games/${game.game}`)}>
-                  View
-                </ViewButton>
-              </td>
+              {role === "team_manager" && (
+                <td>
+                  <ViewButton onClick={() => navigate(`games/${game.game}`)}>
+                    View
+                  </ViewButton>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

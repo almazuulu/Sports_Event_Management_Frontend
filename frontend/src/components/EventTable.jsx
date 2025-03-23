@@ -113,7 +113,7 @@ function EventTable({ eventList = [], onRefetchData }) {
         <table className={classes.modernTable}>
           <thead>
             <tr>
-              <th>No</th>
+              {/* <th>No</th> */}
               <th>Name</th>
               {/* <th>Description</th> */}
               <th>Location</th>
@@ -129,7 +129,7 @@ function EventTable({ eventList = [], onRefetchData }) {
           <tbody>
             {eventList.map((event, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
+                {/* <td>{index + 1}</td> */}
                 <td>
                   <span>{event.name}</span>
                 </td>

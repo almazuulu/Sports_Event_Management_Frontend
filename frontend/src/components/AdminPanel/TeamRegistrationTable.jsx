@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./TeamRegistrationTable.module.css";
 import { formatToShortDate } from "../../utils/helpers";
@@ -8,7 +9,6 @@ import DeleteButton from "../Button/DeleteButton";
 import Modal from "../UI/Modal";
 import CancelButton from "../Button/CancelButton";
 import { fetchWithAuth } from "../../utils/FetchClient";
-import { toast } from "react-toastify";
 
 function TeamRegistrationTable({
   teamRegList = [],
@@ -58,12 +58,11 @@ function TeamRegistrationTable({
 
   return (
     <>
-      <table>
+      <table className="tableContainer">
         <thead>
           <tr>
-            <th>No</th>
-            <th>Team Name</th>
-            <th>Sport Event Name</th>
+            <th>Team</th>
+            <th>Sport Event</th>
             <th>Registration Date</th>
             {!isPending && <th>Approval</th>}
             <th>Notes</th>
@@ -72,9 +71,8 @@ function TeamRegistrationTable({
           </tr>
         </thead>
         <tbody>
-          {teamRegList.map((data, index) => (
+          {teamRegList.map((data) => (
             <tr key={data.id}>
-              <td>{index + 1}</td>
               <td>{data.team_name}</td>
               <td>{data.sport_event_name}</td>
               <td>{formatToShortDate(data.registration_date)}</td>
@@ -93,7 +91,7 @@ function TeamRegistrationTable({
                 <StatusChip status={data.status} />
               </td>
               {isPending && (
-                <th>
+                <td>
                   <CreateButton
                     style={{ marginRight: "10px" }}
                     onClick={() => approveButtonHandler(data.id)}
@@ -103,7 +101,7 @@ function TeamRegistrationTable({
                   <DeleteButton onClick={() => rejectButtonHandler(data.id)}>
                     Reject
                   </DeleteButton>
-                </th>
+                </td>
               )}
             </tr>
           ))}

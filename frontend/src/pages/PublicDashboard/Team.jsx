@@ -44,6 +44,7 @@ function TeamsPage() {
     <>
       <Hero />
       <div className={styles.container}>
+        <TeamsFilter onFilter={fetchAllTeams} />
         {isFetchingTeams ? (
           <div className={styles.card}>
             <p className="loadingText">Loading...</p>
@@ -53,20 +54,13 @@ function TeamsPage() {
             <p className="loadingText">No teams available at the moment.</p>
           </div>
         ) : (
-          <>
-            <TeamsFilter onFilter={fetchAllTeams} />
-            <section className={styles.teamGrid}>
-              {data.map((team) => (
-                <div
-                  key={team.id}
-                  onClick={() => navigate(`${team.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TeamTable team={team} />
-                </div>
-              ))}
-            </section>
-          </>
+          <ul className={styles.teamGrid}>
+            {data.map((team) => (
+              <li key={team.id} onClick={() => navigate(`${team.id}`)}>
+                <TeamTable team={team} />
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </>

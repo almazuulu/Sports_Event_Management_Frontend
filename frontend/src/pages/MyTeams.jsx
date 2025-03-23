@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./MyTeams.module.css";
 import Header from "../components/Header";
-import TeamTable from "../components/Teams/TeamTable";
 import CreateButton from "../components/Button/CreateButton";
 import { fetchWithAuth } from "../utils/FetchClient";
-import { toast } from "react-toastify";
 import LoadingScreen from "../components/UI/LoadingScreen";
 import Modal from "../components/UI/Modal";
 import NewTeamForm from "../components/Teams/NewTeamForm";
 import TeamTableManager from "../components/Teams/TeamTableManager";
+import CountCard from "../components/AdminPanel/CountCard";
 
 function MyTeamsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,19 +74,32 @@ function MyTeamsPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={"My Teams"} />
+        <div className={classes.topBar}>
+          <div className={classes.pageTitle}>
+            <h1>Team Management Dashboard</h1>
+          </div>
+        </div>
+
+        <div className={classes.statsCards}>
+          <CountCard label={"Total Teams"} count={teams.length} />
+        </div>
 
         <div className={classes.card}>
-          <section className={classes.sectionButton}>
-            <CreateButton onClick={handleCreateNew}>
-              Create New Team
-            </CreateButton>
-          </section>
-          {teams.length === 0 && (
-            <p>No teams found. Please create a new team to begin managing.</p>
-          )}
-
-          {teams.length > 0 && <TeamTableManager teams={teams} />}
+          <div className={classes.cardHeader}>
+            <h3>My Teams</h3>
+            <div>
+              <CreateButton onClick={handleCreateNew}>
+                Create New Team
+              </CreateButton>
+            </div>
+          </div>
+          <div className={classes.cardBody}>
+            {teams.length === 0 ? (
+              <p className="loadingText">No teams found. Please create a new team to begin managing.</p>
+            ) : (
+              <TeamTableManager teams={teams} />
+            )}
+          </div>
         </div>
       </div>
 

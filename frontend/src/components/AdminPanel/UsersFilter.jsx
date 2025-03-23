@@ -1,23 +1,22 @@
 import { useState } from "react";
 
-import classes from "./TeamsFilter.module.css";
-import { TEAM_STATUS_OPTIONS } from "../../constant";
+import classes from "./UsersFilter.module.css";
 
-function TeamsFilter({ onFilter }) {
+function UsersFilter({ onFilter }) {
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("");
+  const [role, setRole] = useState("");
 
   const handleApplyFilter = () => {
     const filters = {};
     if (search) filters.search = search;
-    if (status) filters.status = status;
+    if (role) filters.role = role;
 
     onFilter(filters);
   };
 
   const handleClearFilter = () => {
     setSearch("");
-    setStatus("");
+    setRole("");
     onFilter({});
   };
 
@@ -25,26 +24,21 @@ function TeamsFilter({ onFilter }) {
     <div className={classes.container}>
       <div className={classes.filters}>
         <div className={classes.filter}>
-          <label>Status</label>
-          <select
-            className={classes.select}
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option value="">All Status</option>
-            {TEAM_STATUS_OPTIONS.map((status) => (
-              <option key={status.id} value={status.id}>
-                {status.name}
-              </option>
-            ))}
+          <label>Role</label>
+          <select value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="">All Roles</option>
+            <option value="admin">Administrator</option>
+            <option value="team_manager">Team Manager</option>
+            <option value="player">Player</option>
+            <option value="scorekeeper">Scorekeeper</option>
+            <option value="public">Public User</option>
           </select>
         </div>
         <div className={classes.filter}>
           <label>Search</label>
           <input
-            className={classes.input}
             type="text"
-            placeholder="Search team name..."
+            placeholder="Search user..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -60,4 +54,4 @@ function TeamsFilter({ onFilter }) {
   );
 }
 
-export default TeamsFilter;
+export default UsersFilter;

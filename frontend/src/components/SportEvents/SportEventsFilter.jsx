@@ -25,47 +25,58 @@ function SportEventsFilter({ onFilter }) {
   };
 
   return (
-    <div className={classes.filterContainer}>
-      <input
-        className={classes.input}
-        type="text"
-        placeholder="Search sport events"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <div className={classes.container}>
+      <div className={classes.filters}>
+        <div className={classes.filter}>
+          <label>Search</label>
+          <input
+            className={classes.input}
+            type="text"
+            placeholder="Search by name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-      <select
-        className={classes.select}
-        value={sportType}
-        onChange={(e) => setSportType(e.target.value)}
-      >
-        <option value="">All Sport Type</option>
-        {SPORTS_TYPE_OPTIONS.map((status) => (
-          <option key={status.id} value={status.id}>
-            {status.name}
-          </option>
-        ))}
-      </select>
+        <div className={classes.filter}>
+          <label>Sport Type</label>
+          <select
+            className={classes.select}
+            value={sportType}
+            onChange={(e) => setSportType(e.target.value)}
+          >
+            <option value="">All Sport Type</option>
+            {SPORTS_TYPE_OPTIONS.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <select
-        className={classes.select}
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option value="">All Status</option>
-        {SPORT_EVENTS_STATUS.map((status) => (
-          <option key={status.id} value={status.id}>
-            {status.name}
-          </option>
-        ))}
-      </select>
+        <div className={classes.filter}>
+          <label>Status</label>
+          <select
+            className={classes.select}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="">All Status</option>
+            {SPORT_EVENTS_STATUS.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <button className={classes.button} onClick={handleApplyFilter}>
-        Apply Filter
-      </button>
-      <button className={classes.button} onClick={handleClearFilter}>
-        Clear Filter
-      </button>
+        <button className={classes.button} onClick={handleApplyFilter}>
+          Apply Filter
+        </button>
+        <button className={classes.button} onClick={handleClearFilter}>
+          Clear Filter
+        </button>
+      </div>
     </div>
   );
 }

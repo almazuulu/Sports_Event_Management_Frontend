@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import classes from "./ManageGames.module.css";
-import Header from "../../components/Header";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import CreateButton from "../../components/Button/CreateButton";
 import Modal from "../../components/UI/Modal";
 import CreateGameForm from "../../components/Games/CreateGameForm";
 import AdminGamesTable from "../../components/AdminPanel/AdminGamesTable";
 import GamesFilter from "../../components/Games/GamesFilter";
+import CountCard from "../../components/AdminPanel/CountCard";
 
 function ManageGamesPage() {
   const [games, setGames] = useState([]);
+  const [gamesCount, setGamesCount] = useState([]);
   const [sportEvents, setSportEvents] = useState([]);
   const [isFetchingGames, setIsFetchingGames] = useState(false);
   const [isFetchingSportEvents, setIsFetchingSportEvents] = useState(false);
@@ -67,11 +68,15 @@ function ManageGamesPage() {
       const queryParams = new URLSearchParams(filters).toString();
       const url = `/api/games/games/${queryParams ? `?${queryParams}` : ""}`;
       const response = await fetchWithAuth(url);
-      const data = await response.json();
-      if (!response.ok) return toast.error("Failed to fetch games");
-      if (response.ok) {
-        setGames(data.results);
+      if (!response.ok) {
+        throw new Error("Failed to fetch games");
       }
+      const data = await response.json();
+      setGames(data.results);
+
+      const res = await fetchWithAuth("/api/games/games/");
+      const resData = await res.json();
+      setGamesCount(resData.results);
     } catch (error) {
       console.error(error);
     } finally {
@@ -83,11 +88,12 @@ function ManageGamesPage() {
     try {
       setIsFetchingSportEvents(true);
       const response = await fetchWithAuth("/api/events/sport-events/");
-      const data = await response.json();
-      if (!response.ok) return toast.error("Failed to fetch sport events");
-      if (response.ok) {
-        setSportEvents(data.results);
+      if (!response.ok) {
+        throw new Error("Failed to fetch sport events");
       }
+
+      const data = await response.json();
+      setSportEvents(data.results);
     } catch (error) {
       console.error(error);
     } finally {
@@ -103,13 +109,47 @@ function ManageGamesPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={"Manage Games"} />
-        <div className={classes.card}>
-          <section className={classes.sectionButton}>
+        <div className={classes.topBar}>
+          <div className={classes.pageTitle}>
+            <h1>Match Management</h1>
+          </div>
+          <div>
             <CreateButton onClick={handleCreateNewGame}>
-              Create New Game
+              Create New Match
             </CreateButton>
-          </section>
+          </div>
+        </div>
+
+        <div className={classes.statsCards}>
+          <CountCard
+            label={"Ongoing"}
+            count={
+              gamesCount.filter((game) => game.status === "ongoing").length
+            }
+          />
+          <CountCard
+            label={"Scheduled"}
+            count={
+              gamesCount.filter((game) => game.status === "scheduled").length
+            }
+          />
+          <CountCard
+            label={"Completed"}
+            count={
+              gamesCount.filter((game) => game.status === "completed").length
+            }
+          />
+          <CountCard
+            label={"Cancelled"}
+            count={
+              gamesCount.filter((game) => game.status === "cancelled").length
+            }
+          />
+        </div>
+
+        <GamesFilter onFilter={fetchAllGames} />
+        
+        <div className={classes.card}>
           {isFetchingGames ? (
             <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
           ) : games.length === 0 ? (
@@ -118,7 +158,6 @@ function ManageGamesPage() {
             </p>
           ) : (
             <>
-              <GamesFilter onFilter={fetchAllGames} />
               <AdminGamesTable gamesList={games} onRefetch={fetchAllGames} />
             </>
           )}

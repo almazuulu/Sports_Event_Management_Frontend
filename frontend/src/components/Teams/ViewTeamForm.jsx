@@ -47,7 +47,7 @@ function ViewTeamForm({ initialData = null, allowEdit = false }) {
   return (
     <div className={classes.formContainer}>
       <form>
-        <div>
+        {/* <div>
           <label className={classes.label}>Team Logo</label>
           <img
             src={"https://placehold.co/100"}
@@ -55,7 +55,7 @@ function ViewTeamForm({ initialData = null, allowEdit = false }) {
             width="100"
             height="100"
           />
-        </div>
+        </div> */}
         <div>
           <label className={classes.label}>Team ID</label>
           <input

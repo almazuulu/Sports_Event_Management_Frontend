@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import classes from "./ResultDetails.module.css";
-import { fetchWithAuth } from "../../utils/FetchClient";
+import { fetchWithoutAuth } from "../../utils/FetchClient";
 import NormalButton from "../../components/Button/NormalButton";
+import { formatToShortDate, formatToTimeOnly } from "../../utils/helpers";
 
 function ResultDetailsPage() {
-  const { resultId } = useParams();
+  const { scoreId } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState({});
+  const [scoreData, setScoreData] = useState({});
+  const [gameData, setGameData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,14 +18,25 @@ function ResultDetailsPage() {
     const fetchResults = async () => {
       try {
         setLoading(true);
-        const res = await fetchWithAuth(`/api/scores/scores/${resultId}/`);
+        const res = await fetchWithoutAuth(`/api/scores/scores/${scoreId}/`);
 
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }
 
-        const dataa = await res.json();
-        setData(dataa);
+        const score = await res.json();
+        setScoreData(score);
+
+        const gameId = score.game;
+        if (!gameId) return;
+
+        const gameRes = await fetchWithoutAuth(`/api/games/games/${gameId}`);
+        if (!gameRes.ok) {
+          throw new Error(`Failed to fetch game`);
+        }
+
+        const game = await gameRes.json();
+        setGameData(game);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -32,7 +45,7 @@ function ResultDetailsPage() {
     };
 
     fetchResults();
-  }, [resultId]);
+  }, [scoreId]);
 
   if (loading) return <p className="loadingText">Loading...</p>;
   if (error) return <div>Error: {error}</div>;
@@ -49,22 +62,25 @@ function ResultDetailsPage() {
         <div className={classes.featuredBody}>
           <div className={classes.featuredGameInfo}>
             <div className={classes.gameMeta}>
-              <div className={classes.gameTitle}>{data.game_name}</div>
-              {/* <div className={classes.gameSubtitle}>
-                Annual Sports Tournament 2025
-              </div> */}
+              <div className={classes.gameTitle}>{scoreData.game_name}</div>
+              <div className={classes.gameSubtitle}>
+                {gameData.sport_event_name}
+              </div>
             </div>
-            {/* <div className={classes.gameTime}>
-              <div>March 10, 2025 |&nbsp;</div>
-              <div>14:00 - 16:00 |&nbsp;</div>
-              <div>Main Stadium</div>
-            </div> */}
+            <div className={classes.gameTime}>
+              <div>{formatToShortDate(gameData.start_datetime)} |&nbsp;</div>
+              <div>
+                {formatToTimeOnly(gameData.start_datetime)} -{" "}
+                {formatToTimeOnly(gameData.end_datetime)} |&nbsp;
+              </div>
+              <div>{gameData.location}</div>
+            </div>
             <div className={classes.teamsDisplay}>
               <div className={classes.teamDisplay}>
                 <div className={classes.teamLogo}>
-                  {data.team1_name?.charAt(0)}
+                  {scoreData.team1_name?.charAt(0)}
                 </div>
-                <div className={classes.teamName}>{data.team1_name}</div>
+                <div className={classes.teamName}>{scoreData.team1_name}</div>
                 {/* <div className={classes.teamInfo}>Home • 4W 1L 0D</div> */}
               </div>
               <div className={classes.scoreDisplay}>
@@ -76,9 +92,9 @@ function ResultDetailsPage() {
               </div>
               <div className={classes.teamDisplay}>
                 <div className={classes.teamLogo}>
-                  {data.team2_name?.charAt(0)}
+                  {scoreData.team2_name?.charAt(0)}
                 </div>
-                <div className={classes.teamName}>{data.team2_name}</div>
+                <div className={classes.teamName}>{scoreData.team2_name}</div>
                 {/* <div className={classes.teamInfo}>Home • 4W 1L 0D</div> */}
               </div>
             </div>
@@ -86,7 +102,7 @@ function ResultDetailsPage() {
           <div className={classes.recentEvents}>
             <div className={classes.sectionTitle}>Scoring Events</div>
             <ul className={classes.eventList}>
-              {data?.score_details?.map((score) => (
+              {scoreData?.score_details?.map((score) => (
                 <li key={score.id} className={classes.eventItem}>
                   <span className={classes.eventMinute}>{score.minute}'</span>
                   <span className={classes.eventTeam}>{score.team_name}</span>
