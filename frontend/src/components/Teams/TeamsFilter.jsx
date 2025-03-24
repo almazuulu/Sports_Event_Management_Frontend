@@ -22,34 +22,40 @@ function TeamsFilter({ onFilter }) {
   };
 
   return (
-    <div className={classes.filterContainer}>
-      <input
-        className={classes.input}
-        type="text"
-        placeholder="Search team name"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <select
-        className={classes.select}
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option value="">All Status</option>
-        {TEAM_STATUS_OPTIONS.map((status) => (
-          <option key={status.id} value={status.id}>
-            {status.name}
-          </option>
-        ))}
-      </select>
-
-      <button className={classes.button} onClick={handleApplyFilter}>
-        Apply Filter
-      </button>
-      <button className={classes.button} onClick={handleClearFilter}>
-        Clear Filter
-      </button>
+    <div className={classes.container}>
+      <div className={classes.filters}>
+        <div className={classes.filter}>
+          <label>Status</label>
+          <select
+            className={classes.select}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="">All Status</option>
+            {TEAM_STATUS_OPTIONS.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className={classes.filter}>
+          <label>Search</label>
+          <input
+            className={classes.input}
+            type="text"
+            placeholder="Search team name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <button className={classes.button} onClick={handleApplyFilter}>
+          Apply Filter
+        </button>
+        <button className={classes.button} onClick={handleClearFilter}>
+          Clear Filter
+        </button>
+      </div>
     </div>
   );
 }

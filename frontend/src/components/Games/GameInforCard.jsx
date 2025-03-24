@@ -7,11 +7,11 @@ import { formatToShortDateTime, formatToTimeOnly } from "../../utils/helpers";
 import Modal from "../UI/Modal";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import CreateButton from "../Button/CreateButton";
-import { getUserRole } from "../../utils/Authentication";
+import { getUserInfo, getUserRole, isAuthenticated } from "../../utils/Authentication";
 import NormalButton from "../Button/NormalButton";
 
 function GameInforCard({ game = {}, onRefetchData }) {
-  const role = getUserRole();
+  const userInfo = getUserInfo()
   const [isUpdateStatus, setIsUpdateStatus] = useState(false);
   const [isSubmittingStatus, setIsSubmittingStatus] = useState(false);
 
@@ -88,7 +88,7 @@ function GameInforCard({ game = {}, onRefetchData }) {
             <p className={classes.label}>Description</p>
             <p>{game.description}</p>
           </div>
-          {role === "scorekeeper" && game?.status === "ongoing" && (
+          {userInfo && userInfo.role === "scorekeeper" && game?.status === "ongoing" && (
             <div>
               <p className={classes.label}>Actions</p>
               <div>

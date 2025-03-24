@@ -36,6 +36,9 @@ import GameDetailsPage from "./pages/team-manager/GameDetails";
 import GameDetails from "./pages/PublicDashboard/GameDetails";
 import MyAssignmentsPage from "./pages/Scorekeeper/MyAssignments";
 import AssignmentDetailsPage from "./pages/Scorekeeper/AssignmentDetails";
+import ResultDetailsPage from "./pages/PublicDashboard/ResultDetails";
+import AdminDashboardPage from "./pages/Admin-panels/AdminDashboard";
+import ManageScoresPage from "./pages/Admin-panels/ManageScores";
 
 const router = createBrowserRouter([
   {
@@ -60,14 +63,24 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <FixturesPage /> },
               {
-                path: ":fixtureId",
+                path: ":gameId",
                 element: <GameDetails />,
               },
             ],
           },
           {
             path: "results",
-            element: <ResultsPage />,
+            element: <PageRootLayout />,
+            children: [
+              {
+                index: true,
+                element: <ResultsPage />,
+              },
+              {
+                path: ":scoreId",
+                element: <ResultDetailsPage />,
+              },
+            ],
           },
           {
             path: "stats",
@@ -109,16 +122,12 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute allowedRoles={["admin"]} />,
                 children: [
                   {
+                    path: "dashboard",
+                    element: <AdminDashboardPage />,
+                  },
+                  {
                     path: "manage-users",
                     element: <ManageUsersPage />,
-                  },
-                  {
-                    path: "manage-events",
-                    element: <ManageEventsPage />,
-                  },
-                  {
-                    path: "manage-sport-events",
-                    element: <ManageSportEventsPage />,
                   },
                   {
                     path: "manage-teams",
@@ -145,6 +154,15 @@ const router = createBrowserRouter([
                     ],
                   },
                   {
+                    path: "manage-events",
+                    element: <ManageEventsPage />,
+                  },
+                  {
+                    path: "manage-sport-events",
+                    element: <ManageSportEventsPage />,
+                  },
+
+                  {
                     path: "manage-registrations",
                     element: <ManageTeamRegistrationsPage />,
                   },
@@ -161,6 +179,10 @@ const router = createBrowserRouter([
                         element: <ManageGamesDetailsPage />,
                       },
                     ],
+                  },
+                  {
+                    path: "manage-scores",
+                    element: <ManageScoresPage />,
                   },
                 ],
               },

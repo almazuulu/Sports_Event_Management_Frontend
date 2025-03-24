@@ -114,9 +114,9 @@ function UserTable({ userList = [], onRefetchData, roles = [] }) {
         <table>
           <thead>
             <tr>
-              <th>No</th>
-              <th>Full Name</th>
-              <th>Username</th>
+              {/* <th>No</th> */}
+              <th>Name</th>
+              {/* <th>Username</th> */}
               <th>Email</th>
               <th>Role</th>
               <th>Action</th>
@@ -125,9 +125,9 @@ function UserTable({ userList = [], onRefetchData, roles = [] }) {
           <tbody>
             {userList.map((user, index) => (
               <tr key={user.id}>
-                <td>{index + 1}</td>
+                {/* <td>{index + 1}</td> */}
                 <td>{`${user.first_name} ${user.last_name}`}</td>
-                <td>{user.username}</td>
+                {/* <td>{user.username}</td> */}
                 <td>{user.email}</td>
                 <td>{getRoleLabel(user.role)}</td>
                 <td style={{ width: "200px" }}>

@@ -57,7 +57,7 @@ function GameScore({ gameScore, onRefetchData }) {
             </div>
           )}
         </div>
-        <p className="loadingText">No game score created for this match yet.</p>
+        <p className="loadingText">No game score for this match yet.</p>
       </div>
     );
   }

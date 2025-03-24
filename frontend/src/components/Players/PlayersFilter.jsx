@@ -1,9 +1,6 @@
 import { useState } from "react";
 
 import classes from "./PlayersFilter.module.css";
-import { fetchWithAuth, fetchWithoutAuth } from "../../utils/FetchClient";
-import { toast } from "react-toastify";
-import { isAuthenticated } from "../../utils/Authentication";
 
 function PlayersFilter({ onFilter, teams = [] }) {
   const [search, setSearch] = useState("");
@@ -24,34 +21,42 @@ function PlayersFilter({ onFilter, teams = [] }) {
   };
 
   return (
-    <div className={classes.filterContainer}>
-      <input
-        className={classes.input}
-        type="text"
-        placeholder="Search player..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <div className={classes.container}>
+      <div className={classes.filters}>
+        <div className={classes.filter}>
+          <label>Search</label>
+          <input
+            className={classes.input}
+            type="text"
+            placeholder="Search by player name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-      <select
-        className={classes.select}
-        value={team}
-        onChange={(e) => setTeam(e.target.value)}
-      >
-        <option value="">All Teams</option>
-        {teams.map((status) => (
-          <option key={status.id} value={status.id}>
-            {status.name}
-          </option>
-        ))}
-      </select>
+        <div className={classes.filter}>
+          <label>Team</label>
+          <select
+            className={classes.select}
+            value={team}
+            onChange={(e) => setTeam(e.target.value)}
+          >
+            <option value="">All Teams</option>
+            {teams.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <button className={classes.button} onClick={handleApplyFilter}>
-        Apply Filter
-      </button>
-      <button className={classes.button} onClick={handleClearFilter}>
-        Clear Filter
-      </button>
+        <button className={classes.button} onClick={handleApplyFilter}>
+          Apply Filter
+        </button>
+        <button className={classes.button} onClick={handleClearFilter}>
+          Clear Filter
+        </button>
+      </div>
     </div>
   );
 }

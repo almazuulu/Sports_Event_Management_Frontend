@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import classes from "./MyProfile.module.css";
-import Header from "../components/Header";
 import { fetchWithAuth } from "../utils/FetchClient";
 import UserForm from "../components/UserForm";
-import CreateButton from "../components/Button/CreateButton";
 import NormalButton from "../components/Button/NormalButton";
 import { getUserRole } from "../utils/Authentication";
+import ViewButton from "../components/Button/ViewButton";
 
 function MyProfilePage() {
   const role = getUserRole();
@@ -85,22 +84,32 @@ function MyProfilePage() {
 
   return (
     <div className={classes.container}>
-      <Header title={"My Profile"} />
+      <div className={classes.topBar}>
+        <div className={classes.pageTitle}>
+          <h1>My Profile</h1>
+        </div>
+      </div>
+
       <div className={classes.card}>
-        <section className={classes.sectionButton}>
-          {isEdit ? (
-            <NormalButton onClick={handleEdit}>Cancel</NormalButton>
-          ) : (
-            <CreateButton onClick={handleEdit}>Edit</CreateButton>
-          )}
-        </section>
-        <UserForm
-          initialData={userData}
-          onSubmit={handleUpdateUser}
-          loading={loading}
-          allowEdit={isEdit}
-          roles={roles}
-        />
+        <div className={classes.cardHeader}>
+          <h3>Profile Information</h3>
+          <div>
+            {isEdit ? (
+              <NormalButton onClick={handleEdit}>Cancel</NormalButton>
+            ) : (
+              <ViewButton onClick={handleEdit}>Edit</ViewButton>
+            )}
+          </div>
+        </div>
+        <div className={classes.cardBody}>
+          <UserForm
+            initialData={userData}
+            onSubmit={handleUpdateUser}
+            loading={loading}
+            allowEdit={isEdit}
+            roles={roles}
+          />
+        </div>
       </div>
     </div>
   );

@@ -11,15 +11,17 @@ const DashboardPage = () => {
   return (
     <>
       <Hero />
-      <UpcomingFixtures />
-      <div className={classes.mainContainer}>
-        <div className={classes.leftContainer}>
-          <RecentMatches />
-          <Leaderboard />
-          <Featured />
-        </div>
-        <div className={classes.rightContainer}>
-          <NewsHighlights />
+      <div className={classes.content}>
+        <UpcomingFixtures />
+        <div className={classes.mainContainer}>
+          <div className={classes.leftContainer}>
+            <RecentMatches />
+            <Leaderboard />
+            <Featured />
+          </div>
+          <div className={classes.rightContainer}>
+            <NewsHighlights />
+          </div>
         </div>
       </div>
     </>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 import classes from "./JoinedSportEventTable.module.css";
 import { formatToShortDate } from "../../utils/helpers";
@@ -7,9 +8,10 @@ import StatusChip from "../StatusChip";
 import Modal from "../UI/Modal";
 import CancelButton from "../Button/CancelButton";
 import { fetchWithAuth } from "../../utils/FetchClient";
-import { toast } from "react-toastify";
+import { getUserRole } from "../../utils/Authentication";
 
 function JoinedSportEventTable({ sportEventList = [], onRefetchData }) {
+  const role = getUserRole();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [regId, setRegId] = useState("");
@@ -53,7 +55,7 @@ function JoinedSportEventTable({ sportEventList = [], onRefetchData }) {
             <th>Approval</th>
             <th>Notes</th>
             <th>Status</th>
-            <th>Action</th>
+            {role === "team_manager" && <th>Action</th>}
           </tr>
         </thead>
         <tbody>
@@ -79,13 +81,15 @@ function JoinedSportEventTable({ sportEventList = [], onRefetchData }) {
               <td style={{ width: "200px" }}>
                 <StatusChip status={data.status} />
               </td>
-              <td>
-                {data.status === "pending" && (
-                  <DeleteButton onClick={() => handleDelete(data.id)}>
-                    Delete
-                  </DeleteButton>
-                )}
-              </td>
+              {role === "team_manager" && (
+                <td>
+                  {data.status === "pending" && (
+                    <DeleteButton onClick={() => handleDelete(data.id)}>
+                      Delete
+                    </DeleteButton>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-
-import classes from "./GameDetails.module.css";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import classes from "./GameDetails.module.css";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import GameDetailsHeader from "../../components/Games/GameDetailsHeader";
-import Header from "../../components/Header";
 import SelectPlayers from "../../components/Games/SelectPlayers";
+
 function GameDetailsPage() {
   const { teamId, gameId } = useParams();
   const [isFetchingDetails, setIsFetchingDetails] = useState(false);
@@ -19,15 +19,13 @@ function GameDetailsPage() {
       const response = await fetchWithAuth(
         `/api/games/game-teams/?game=${gameId}&team=${teamId}`
       );
-      const data = await response.json();
 
       if (!response.ok) {
         return toast.error("Failed to fetch game data!");
       }
 
-      if (response.ok) {
-        setGame(data.results[0]);
-      }
+      const data = await response.json();
+      setGame(data.results[0]);
     } catch (error) {
       console.error(error);
     } finally {
@@ -40,15 +38,13 @@ function GameDetailsPage() {
       const response = await fetchWithAuth(
         `/api/teams/teams/${teamId}/players/`
       );
-      const data = await response.json();
 
       if (!response.ok) {
         return toast.error("Failed to fetch avail players!");
       }
 
-      if (response.ok) {
-        setAvailPlayers(data);
-      }
+      const data = await response.json();
+      setAvailPlayers(data);
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +58,12 @@ function GameDetailsPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header enableBack title={"Game Details"} />
+        <div className={classes.topBar}>
+          <div className={classes.pageTitle}>
+            <h1>Game Details</h1>
+          </div>
+        </div>
+
         {isFetchingDetails ? (
           <p className="loadingText">Loading...</p>
         ) : (

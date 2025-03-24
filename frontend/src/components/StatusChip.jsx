@@ -12,6 +12,10 @@ const STATUS_STYLES = {
     border: "1px solid #E65100",
   },
   completed: {
+    background: "linear-gradient(to right, #4CAF50, #66BB6A)",
+    border: "1px solid #388E3C",
+  },
+  scheduled: {
     background: "linear-gradient(to right, #2196F3, #64B5F6)",
     border: "1px solid #1976D2",
   },
@@ -59,9 +63,11 @@ const StatusChip = ({ status }) => {
         display: "inline-flex",
         justifyContent: "center",
         alignItems: "center",
-        minWidth: "120px", // Ensures uniform width
+        minWidth: "120px",
         textAlign: "center",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+        margin: '0px',
+        color: 'white'
       }}
     >
       {displayText}

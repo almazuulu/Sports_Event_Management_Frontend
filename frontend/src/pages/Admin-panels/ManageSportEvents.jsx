@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import classes from "./ManageSportEvents.module.css";
-import Header from "../../components/Header";
 import CreateButton from "../../components/Button/CreateButton";
 import SportEventTable from "../../components/SportEvents/SportEventTable";
 import Modal from "../../components/UI/Modal";
 import SportEventForm from "../../components/SportEvents/SportEventForm";
 import { fetchWithAuth } from "../../utils/FetchClient";
 import SportEventsFilter from "../../components/SportEvents/SportEventsFilter";
+import CountCard from "../../components/AdminPanel/CountCard";
 
 function ManageSportEventsPage() {
   const [sportEventList, setSportEventList] = useState([]);
+  const [seCount, setSeCount] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,15 +70,16 @@ function ManageSportEventsPage() {
       }`;
       const response = await fetchWithAuth(url);
 
-      const data = await response.json();
-
       if (!response.ok) {
         toast.error("Failed to fetch data");
       }
 
-      if (response.ok) {
-        setSportEventList(data.results);
-      }
+      const data = await response.json();
+      setSportEventList(data.results);
+
+      const res = await fetchWithAuth("/api/events/sport-events/");
+      const resData = await res.json();
+      setSeCount(resData.results);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -109,14 +111,44 @@ function ManageSportEventsPage() {
   return (
     <>
       <div className={classes.container}>
-        <Header title={"Manage Sport Events"} />
+        <div className={classes.topBar}>
+          <div className={classes.pageTitle}>
+            <h1>Sport Events Management</h1>
+          </div>
+          <div>
+            <CreateButton onClick={handleCreateNew}>
+              Create New Sport Event
+            </CreateButton>
+          </div>
+        </div>
+
+        <div className={classes.statsCards}>
+          {/* <CountCard label={"Total Sport Events"} count={seCount.length} /> */}
+          <CountCard
+            label={"Ongoing"}
+            count={seCount.filter((se) => se.status === "ongoing").length}
+          />
+          <CountCard
+            label={"Scheduled"}
+            count={seCount.filter((se) => se.status === "scheduled").length}
+          />
+          <CountCard
+            label={"Completed"}
+            count={seCount.filter((se) => se.status === "completed").length}
+          />
+          <CountCard
+            label={"Cancelled"}
+            count={seCount.filter((se) => se.status === "cancelled").length}
+          />
+          <CountCard
+            label={"Open for Registration"}
+            count={seCount.filter((se) => se.status === "registration").length}
+          />
+        </div>
+
+        <SportEventsFilter onFilter={fetchSportEvents} />
+
         <div className={classes.card}>
-          <section className={classes.sectionButton}>
-            <CreateButton
-              title={"Create New Sport Event"}
-              onClick={handleCreateNew}
-            />
-          </section>
           {loading ? (
             <p style={{ color: "#000", textAlign: "center" }}>Loading...</p>
           ) : sportEventList.length === 0 ? (
@@ -124,13 +156,10 @@ function ManageSportEventsPage() {
               No sport events available at the moment.
             </p>
           ) : (
-            <>
-              <SportEventsFilter onFilter={fetchSportEvents} />
-              <SportEventTable
-                sportEventList={sportEventList}
-                onRefetchData={fetchSportEvents}
-              />
-            </>
+            <SportEventTable
+              sportEventList={sportEventList}
+              onRefetchData={fetchSportEvents}
+            />
           )}
         </div>
       </div>

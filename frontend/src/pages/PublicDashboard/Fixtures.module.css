@@ -1,12 +1,11 @@
 .container {
-  width: 100%;
-  max-width: 800px;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
   margin: 0 auto;
-  padding: 1.5rem;
-  text-align: center;
-  gap: 1.5rem;
+  gap: 20px;
 }
 
 .heading {
@@ -27,5 +26,11 @@
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 

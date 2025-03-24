@@ -1,24 +1,39 @@
 .container {
+    padding: 20px;
+}
+
+.topBar {
     display: flex;
-    flex-direction: column;
-    padding: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid gray;
+}
+
+.pageTitle h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+}
+
+.statsCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
 .card {
     background: white;
-    margin-top: 1.5rem;
-    padding: 1.5rem;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-}
-
-.sectionButton {
-    align-self: flex-end;
-    margin-bottom: 1rem;
 }
 
 .modalContainer {

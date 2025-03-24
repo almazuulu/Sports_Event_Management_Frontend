@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import classes from './FixturesFilter.module.css'
+import classes from "./FixturesFilter.module.css";
 import { GAMES_STATUS_OPTIONS } from "../../constant";
 
 function FixturesFilter({ onFilter }) {
@@ -21,34 +21,42 @@ function FixturesFilter({ onFilter }) {
     onFilter({});
   };
   return (
-    <div className={classes.filterContainer}>
-      <input
-        className={classes.input}
-        type="text"
-        placeholder="Search game..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <div className={classes.container}>
+      <div className={classes.filters}>
+        <div className={classes.filter}>
+          <label>Search</label>
+          <input
+            className={classes.input}
+            type="text"
+            placeholder="Search game..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-      <select
-        className={classes.select}
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option value="">All Status</option>
-        {GAMES_STATUS_OPTIONS.map((status) => (
-          <option key={status.id} value={status.id}>
-            {status.name}
-          </option>
-        ))}
-      </select>
+        <div className={classes.filter}>
+          <label>Status</label>
+          <select
+            className={classes.select}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="">All Status</option>
+            {GAMES_STATUS_OPTIONS.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <button className={classes.button} onClick={handleApplyFilter}>
-        Apply Filter
-      </button>
-      <button className={classes.button} onClick={handleClearFilter}>
-        Clear Filter
-      </button>
+        <button className={classes.button} onClick={handleApplyFilter}>
+          Apply Filter
+        </button>
+        <button className={classes.button} onClick={handleClearFilter}>
+          Clear Filter
+        </button>
+      </div>
     </div>
   );
 }
