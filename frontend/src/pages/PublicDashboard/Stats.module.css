@@ -54,3 +54,197 @@
     color: #555;
   }
   
+ 
+  
+  /* Container */
+.container {
+  width: 90%;
+  max-width: 1300px;
+  margin: 20px auto;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Search and Filter Bar */
+.searchFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
+}
+
+.searchBox,
+.filter {
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+  transition: 0.3s;
+}
+
+.searchBox {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filter {
+  background: white;
+  min-width: 180px;
+}
+
+.filter:hover,
+.searchBox:hover {
+  border-color: #007bff;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin: 25px 0;
+  gap: 20px;
+}
+
+.tab, .activeTab {
+  padding: 14px 22px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.tab {
+  background: #e0e0e0;
+}
+
+.activeTab {
+  background: #3498db;
+  color: white;
+}
+
+/* Cards Container */
+.cards {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Individual Card */
+.card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+  width: 400px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Bigger Header */
+/* Bigger Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px; /* Increased font size */
+  font-weight: bold;
+  color: white;
+  background: #2c3e50;
+  padding: 20px; /* Increased padding for a larger feel */
+  border-radius: 12px;
+  height: 80px; /* Increased height */
+}
+
+
+/* Event Name */
+.name {
+  margin: 18px 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Teams and Update Info */
+.teams, .updated {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Card Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* Status Badge */
+.final, .live {
+  padding: 9px 14px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.final {
+  background:#e74c3c;
+  color: white;
+}
+
+.live {
+  background: green;
+  color: white;
+}
+
+/* View Standings Button */
+.button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .searchFilter {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .searchBox,
+  .filter {
+    width: 100%;
+  }
+
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 420px;
+  }
+}
