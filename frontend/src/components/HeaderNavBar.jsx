@@ -112,8 +112,8 @@ const NAVIGATIONS = [
     path: "/results",
   },
   {
-    title: "Stats",
-    path: "/stats",
+    title: "Leader Board",
+    path: "/leader-board",
   },
   {
     title: "Teams",

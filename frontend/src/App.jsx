@@ -83,7 +83,7 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "stats",
+            path: "leader-board",
             element: <StatsPage />,
           },
           {
