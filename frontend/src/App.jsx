@@ -24,6 +24,7 @@ import DashboardPage from "./pages/PublicDashboard/Dashboard";
 import FixturesPage from "./pages/PublicDashboard/Fixtures";
 import ResultsPage from "./pages/PublicDashboard/Results";
 import StatsPage from "./pages/PublicDashboard/Stats";
+import StatsDetails from "./pages/PublicDashboard/StatsDetails";
 import ManageUsersPage from "./pages/Admin-panels/ManageUsers";
 import ManageTeamsPage from "./pages/Admin-panels/ManageTeams";
 import ManageGamesPage from "./pages/Admin-panels/ManageGames";
@@ -84,7 +85,14 @@ const router = createBrowserRouter([
           },
           {
             path: "leader-board",
-            element: <StatsPage />,
+            element: <PageRootLayout />,
+            children: [
+              { index: true, element: <StatsPage /> },
+              {
+                path: ":leader-boardId",
+                 element: <StatsDetails />,
+              },
+            ],
           },
           {
             path: "teams",
